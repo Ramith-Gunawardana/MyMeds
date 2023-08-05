@@ -1,6 +1,6 @@
-# mymeds_app
+# medical_map
 
-Medication Reminder Mobile Application
+A new Flutter project.
 
 ## Getting Started
 
