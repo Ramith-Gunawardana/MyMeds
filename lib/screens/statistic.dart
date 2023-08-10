@@ -10,7 +10,7 @@ class Statistic extends StatefulWidget {
 class _StatisticState extends State<Statistic> {
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: Text('History'),
     );
   }

@@ -52,11 +52,11 @@ class _DashboardState extends State<Dashboard> {
     //pages
     final List<Widget> _pages = <Widget>[
       //main page
-      Home(),
+      const  Home(),
       //medication
-      Mediaction(),
+      const Mediaction(),
       //statistic
-      Statistic(),
+      const Statistic(),
 
       
       Scaffold(
@@ -78,7 +78,7 @@ class _DashboardState extends State<Dashboard> {
         ),
         body: Column(
           children: [
-            AppSettings(),
+           const AppSettings(),
             Center(
               child: Column(
                 children: [
@@ -87,7 +87,7 @@ class _DashboardState extends State<Dashboard> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => SetPhotoScreen(),
+                          builder: (context) =>const SetPhotoScreen(),
                         ),
                       );
                     },

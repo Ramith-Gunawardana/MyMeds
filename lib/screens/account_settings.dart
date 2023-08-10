@@ -264,7 +264,7 @@ class _SettingPageUIState extends State<SettingsPageUI> {
                     onPressed: () {
                       FirebaseAuth.instance.signOut();
                     },
-                    child: Text('Sign out'),
+                    child:const Text('Sign out'),
                   ),
                 )
               ],
@@ -330,7 +330,7 @@ class _SettingPageUIState extends State<SettingsPageUI> {
         if (title == "   Edit Profile") {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => UserProfile()),
+            MaterialPageRoute(builder: (context) =>const UserProfile()),
           );
         } else if (title == "   Notification Settings") {
           Navigator.push(

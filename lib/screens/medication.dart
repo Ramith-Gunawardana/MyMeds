@@ -10,7 +10,7 @@ class Mediaction extends StatefulWidget {
 class _MediactionState extends State<Mediaction> {
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: Text('Medications'),
     );
   }

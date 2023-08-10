@@ -118,12 +118,12 @@ class _HomeState extends State<Home> {
         Container(
           alignment: Alignment.center,
           height: 50,
-          child: Text('Calendar'),
+          child:const Text('Calendar'),
         ),
 
         //date text
         Container(
-          padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+          padding:const EdgeInsets.fromLTRB(20, 0, 20, 0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -153,9 +153,9 @@ class _HomeState extends State<Home> {
             axisDirection: AxisDirection.down,
             color: const Color.fromARGB(255, 7, 83, 96),
             child: ListView(
-              physics: AlwaysScrollableScrollPhysics(),
+              physics:const AlwaysScrollableScrollPhysics(),
               shrinkWrap: true,
-              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+              padding:const EdgeInsets.fromLTRB(20, 0, 20, 0),
               children: const [
                 TimeLine(
                   isFirst: true,
