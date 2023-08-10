@@ -57,7 +57,7 @@ class _DashboardState extends State<Dashboard> {
       Mediaction(),
       //statistic
       Statistic(),
-<<<<<<< Updated upstream
+
       
       Scaffold(
         appBar: AppBar(
@@ -108,11 +108,11 @@ class _DashboardState extends State<Dashboard> {
             ),
           ],
         ),
-=======
+      ),
       //settings
       AppSettings(
-        
->>>>>>> Stashed changes
+
+
       ),
     ];
 
