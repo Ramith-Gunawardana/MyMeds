@@ -110,10 +110,6 @@ class _DashboardState extends State<Dashboard> {
         ),
       ),
       //settings
-      AppSettings(
-
-
-      ),
     ];
 
     //scaffold
