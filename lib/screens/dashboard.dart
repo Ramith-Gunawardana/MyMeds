@@ -52,66 +52,230 @@ class _DashboardState extends State<Dashboard> {
     //pages
     final List<Widget> _pages = <Widget>[
       //main page
-      const  Home(),
+      const Home(),
       //medication
       const Mediaction(),
       //statistic
       const Statistic(),
 
       Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            'App Settings',
-            style: TextStyle(color: Colors.white),
-          ),
-          backgroundColor: Colors.black,
-          leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.pop(context,
-              MaterialPageRoute(
-                builder: (context) =>const Home(),
-                ),);
-            },
-          ),
-        ),
-        body: Column(
-          children: [
-           const AppSettings(),
-            Center(
-              child: Column(
-                children: [
-                  OutlinedButton.icon(
+        // appBar: AppBar(
+        //   title: const Text(
+        //     'App Settings',
+        //     style: TextStyle(color: Colors.white),
+        //   ),
+        //   backgroundColor: Colors.black,
+        //   leading: IconButton(
+        //     icon: const Icon(
+        //       Icons.arrow_back,
+        //       color: Colors.white,
+        //     ),
+        //     onPressed: () {
+        //       Navigator.pop(context,
+        //       MaterialPageRoute(
+        //         builder: (context) =>const Home(),
+        //         ),);
+        //     },
+        //   ),
+        // ),
+        // body: ListView(
+        //   children: [
+        //     Padding(
+        //       padding: const EdgeInsets.all(16.0),
+        //        child: Card(
+        //         elevation: 4, // Add some elevation for a card effect
+        //         shape: RoundedRectangleBorder(
+        //           borderRadius: BorderRadius.circular(16.0), // Rounded corners
+        //         ),
+        //         child: GestureDetector(
+        //           onTap: () {
+        //             Navigator.push(
+        //               context,
+        //               MaterialPageRoute(
+        //                 builder: (context) => const SetPhotoScreen(),
+        //               ),
+        //             );
+        //           },
+        //           child: Container(
+        //             height: 100,
+        //             width: 150,
+        //             alignment: Alignment.center,
+        //             color: Colors.grey.shade200,
+        //             child: Column(
+        //               mainAxisAlignment: MainAxisAlignment.center,
+        //               children: [
+        //                const Icon(
+        //                   Icons.camera_alt_sharp,
+        //                   size: 40,
+        //                   color:  Color.fromARGB(255, 246, 68, 37),
+        //                 ),
+        //                 const SizedBox(height: 8),
+        //                 Text(
+        //                   'Camera',
+        //                   style: GoogleFonts.dancingScript(
+        //                     fontSize: 18,
+        //                     fontWeight: FontWeight.bold,
+        //                   ),
+        //                 ),
+        //               ],
+        //             ),
+        //           ),
+        //         ),
+        //       ),
+        //     ),
+        //     // Add other settings content here
+        //   ],
+        // ),
+        body: Padding(
+          padding: const EdgeInsets.all(5),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+          children:[ 
+            Row(mainAxisAlignment: MainAxisAlignment.center,
+             children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  width: 160, height: 100,
+                  child: ElevatedButton.icon(
                     onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>const SetPhotoScreen(),
+                          builder: (context) => const SetPhotoScreen(),
                         ),
                       );
                     },
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: const Color.fromARGB(255, 246, 68, 37),
+                    icon: const Icon(
+                      Icons.camera_alt_sharp,
+                      color: Colors.black,
                     ),
-                    icon: const Icon(Icons.camera_alt_sharp),
-                    label: Text(
-                      'Camera',
-                      style: GoogleFonts.dancingScript(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
+                    label: const Text('Camera',
+                        style: TextStyle(color: Colors.black)),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ) 
+                        ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              width: 40,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  width: 160, 
+                  height: 100,
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SetPhotoScreen(),
+                        ),
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.camera_alt_sharp,
+                      color: Colors.black,
+                    ),
+                    label: const Text('Camera',
+                        style: TextStyle(color: Colors.black)),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blueAccent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ],
+          ),
+
+          const SizedBox(
+              width: 40,
+              height: 30,
+            ),
+
+          Row(mainAxisAlignment: MainAxisAlignment.center,
+             children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  width: 160, height: 100,
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SetPhotoScreen(),
+                        ),
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.camera_alt_sharp,
+                      color: Colors.black,
+                    ),
+                    label: const Text('Camera',
+                        style: TextStyle(color: Colors.black)),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ) 
+                        ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              width: 40,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  width: 160, 
+                  height: 100,
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SetPhotoScreen(),
+                        ),
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.camera_alt_sharp,
+                      color: Colors.black,
+                    ),
+                    label: const Text('Camera',
+                        style: TextStyle(color: Colors.black)),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blueAccent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+          ),
+          ],
         ),
-      ),
-      //settings
+      ),),
     ];
 
     //scaffold
@@ -129,7 +293,7 @@ class _DashboardState extends State<Dashboard> {
       floatingActionButton: isFABvisible
           ? FloatingActionButton(
               onPressed: () {},
-              child:const Icon(Icons.add),
+              child: const Icon(Icons.add),
               // shape: const RoundedRectangleBorder(
               //   borderRadius: BorderRadius.all(
               //     Radius.circular(50.0),
