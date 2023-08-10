@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mymeds_app/screens/settings.dart';
 import '../components/common_buttons.dart';
 
 import '../components/constants.dart';
@@ -76,7 +77,12 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
         title: const Text('Set photo of prescription',
 
         style: TextStyle(fontSize: 23,color: Colors.white),),
-        leading: IconButton(onPressed: (){},
+        leading: IconButton(onPressed: (){
+          Navigator.pop(context,
+              MaterialPageRoute(
+                builder: (context) =>const AppSettings(),
+                ),);
+        },
         icon: const Icon(
           Icons.arrow_back,
           color: Color.fromARGB(255, 255, 255, 255),

@@ -58,7 +58,6 @@ class _DashboardState extends State<Dashboard> {
       //statistic
       const Statistic(),
 
-      
       Scaffold(
         appBar: AppBar(
           title: const Text(
@@ -72,7 +71,10 @@ class _DashboardState extends State<Dashboard> {
               color: Colors.white,
             ),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pop(context,
+              MaterialPageRoute(
+                builder: (context) =>const Home(),
+                ),);
             },
           ),
         ),
@@ -98,7 +100,7 @@ class _DashboardState extends State<Dashboard> {
                     label: Text(
                       'Camera',
                       style: GoogleFonts.dancingScript(
-                        fontSize: 25,
+                        fontSize: 22,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -127,7 +129,7 @@ class _DashboardState extends State<Dashboard> {
       floatingActionButton: isFABvisible
           ? FloatingActionButton(
               onPressed: () {},
-              child: const Icon(Icons.add),
+              child:const Icon(Icons.add),
               // shape: const RoundedRectangleBorder(
               //   borderRadius: BorderRadius.all(
               //     Radius.circular(50.0),
