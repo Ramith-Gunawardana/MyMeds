@@ -31,8 +31,14 @@ dependencies:
   flutter:
     sdk: flutter
   provider: ^5.0.0
+<<<<<<< Updated upstream
   image_picker: ^1.0.2
   image_cropper: ^5.0.0
+=======
+
+  image_cropper: ^5.0.0
+  image_picker: ^1.0.2
+>>>>>>> Stashed changes
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

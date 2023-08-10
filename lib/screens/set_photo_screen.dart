@@ -4,7 +4,11 @@ import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import '../components/common_buttons.dart';
+<<<<<<< Updated upstream
 import '../components/constants.dart';
+=======
+import '../constants.dart';
+>>>>>>> Stashed changes
 import 'select_photo_options_screen.dart';
 
 // ignore: must_be_immutable
@@ -73,7 +77,11 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
       appBar: AppBar(
         backgroundColor:const Color.fromARGB(255, 0, 0, 0),
         title: const Text('Set photo of prescription',
+<<<<<<< Updated upstream
         style: TextStyle(fontSize: 23,color: Colors.white),),
+=======
+        style: TextStyle(fontSize: 23),),
+>>>>>>> Stashed changes
         leading: IconButton(onPressed: (){},
         icon: const Icon(
           Icons.arrow_back,
