@@ -96,7 +96,7 @@ class _DashboardState extends State<Dashboard> {
                     ),
                     icon: const Icon(Icons.camera_alt_sharp),
                     label: Text(
-                      'Cmaera',
+                      'Camera',
                       style: GoogleFonts.dancingScript(
                         fontSize: 25,
                         fontWeight: FontWeight.bold,
