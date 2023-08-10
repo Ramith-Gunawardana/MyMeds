@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mymeds_app/screens/account_settings.dart';
 import 'package:mymeds_app/screens/home.dart';
 import 'package:mymeds_app/screens/medication.dart';
+import 'package:mymeds_app/screens/set_photo_screen.dart';
 import 'package:mymeds_app/screens/statistic.dart';
 import 'package:mymeds_app/screens/user_profile.dart';
 import 'package:mymeds_app/screens/settings.dart';
@@ -56,8 +57,57 @@ class _DashboardState extends State<Dashboard> {
       Mediaction(),
       //statistic
       Statistic(),
-      //settings
-      AppSettings(),
+      
+      Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            'App Settings',
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Colors.black,
+          leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
+        body: Column(
+          children: [
+            AppSettings(),
+            Center(
+              child: Column(
+                children: [
+                  OutlinedButton.icon(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SetPhotoScreen(),
+                        ),
+                      );
+                    },
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: const Color.fromARGB(255, 246, 68, 37),
+                    ),
+                    icon: const Icon(Icons.camera_alt_sharp),
+                    label: Text(
+                      'Cmaera',
+                      style: GoogleFonts.dancingScript(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     ];
 
     //scaffold
@@ -125,7 +175,6 @@ class _DashboardState extends State<Dashboard> {
               color: Color.fromRGBO(7, 82, 96, 1),
             ),
           ),
-          //settings
           NavigationDestination(
             icon: Icon(
               Icons.dashboard_customize_outlined,
