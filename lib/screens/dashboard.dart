@@ -131,6 +131,9 @@ class _DashboardState extends State<Dashboard> {
           child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
           children:[ 
+
+            //1st ROW
+
             Row(mainAxisAlignment: MainAxisAlignment.center,
              children: [
             Column(
@@ -154,7 +157,7 @@ class _DashboardState extends State<Dashboard> {
                     label: const Text('Camera',
                         style: TextStyle(color: Colors.black)),
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
+                        backgroundColor: const Color.fromARGB(255, 68, 250, 74),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ) 
@@ -182,10 +185,10 @@ class _DashboardState extends State<Dashboard> {
                       );
                     },
                     icon: const Icon(
-                      Icons.camera_alt_sharp,
+                      Icons.add_location_alt_sharp,
                       color: Colors.black,
                     ),
-                    label: const Text('Camera',
+                    label: const Text('Map',
                         style: TextStyle(color: Colors.black)),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blueAccent,
@@ -205,6 +208,8 @@ class _DashboardState extends State<Dashboard> {
               height: 30,
             ),
 
+            //2nd ROW
+
           Row(mainAxisAlignment: MainAxisAlignment.center,
              children: [
             Column(
@@ -222,13 +227,13 @@ class _DashboardState extends State<Dashboard> {
                       );
                     },
                     icon: const Icon(
-                      Icons.camera_alt_sharp,
+                      Icons.calculate,
                       color: Colors.black,
                     ),
-                    label: const Text('Camera',
+                    label: const Text('BMI',
                         style: TextStyle(color: Colors.black)),
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
+                        backgroundColor:const Color.fromARGB(255, 241, 255, 42),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ) 
@@ -256,13 +261,164 @@ class _DashboardState extends State<Dashboard> {
                       );
                     },
                     icon: const Icon(
-                      Icons.camera_alt_sharp,
+                      Icons.alarm,
                       color: Colors.black,
                     ),
-                    label: const Text('Camera',
+                    label: const Text('Alarm',
                         style: TextStyle(color: Colors.black)),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blueAccent,
+                      backgroundColor:const Color.fromARGB(255, 223, 17, 255),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+          ),
+
+          const SizedBox(
+              width: 40,
+              height: 30,
+            ),
+
+            //3rd ROW
+
+          Row(mainAxisAlignment: MainAxisAlignment.center,
+             children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  width: 160, height: 100,
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SetPhotoScreen(),
+                        ),
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.account_box,
+                      color: Colors.black,
+                    ),
+                    label: const Text('Profile',
+                        style: TextStyle(color: Colors.black)),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor:const Color.fromARGB(255, 254, 37, 37),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ) 
+                        ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              width: 40,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  width: 160, 
+                  height: 100,
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SetPhotoScreen(),
+                        ),
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.medical_information,
+                      color: Colors.black,
+                    ),
+                    label: const Text('Medicine',
+                        style: TextStyle(color: Colors.black)),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 68, 243, 255),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+          ),
+          const SizedBox(
+              width: 40,
+              height: 30,
+            ),
+
+            //4th ROW
+
+          Row(mainAxisAlignment: MainAxisAlignment.center,
+             children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  width: 160, height: 100,
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SetPhotoScreen(),
+                        ),
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.history,
+                      color: Colors.black,
+                    ),
+                    label: const Text('History',
+                        style: TextStyle(color: Colors.black)),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor:const Color.fromARGB(255, 255, 136, 0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ) 
+                        ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              width: 40,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  width: 160, 
+                  height: 100,
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SetPhotoScreen(),
+                        ),
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.food_bank,
+                      color: Colors.black,
+                    ),
+                    label: const Text('Foods',
+                        style: TextStyle(color: Colors.black)),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:const Color.fromARGB(255, 152, 0, 246),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
