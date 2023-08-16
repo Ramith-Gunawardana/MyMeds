@@ -129,7 +129,7 @@ class _DashboardState extends State<Dashboard> {
         body: Padding(
           padding: const EdgeInsets.all(5),
           child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
           children:[ 
 
             //1st ROW

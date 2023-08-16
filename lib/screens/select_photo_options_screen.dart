@@ -56,7 +56,7 @@ class SelectPhotoOptionsScreen extends StatelessWidget {
           ),
           Column(children: [
             SelectPhoto(
-              onTap: () => onTap(ImageSource.gallery),
+              onTap: () => _requestPermissionAndOpenSource(ImageSource.gallery),
               icon: Icons.image,
               textLabel: 'Browse Gallery',
             ),
