@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
+// import 'package:permission_handler/permission_handler.dart';
 import '/components/re_usable_select_photo_button.dart';
 
 class SelectPhotoOptionsScreen extends StatelessWidget {
@@ -10,24 +10,24 @@ class SelectPhotoOptionsScreen extends StatelessWidget {
     required this.onTap,
   }) : super(key: key);
 
-  Future<void> _requestPermissionAndOpenSource(ImageSource source) async {
-    PermissionStatus status;
+  // Future<void> _requestPermissionAndOpenSource(ImageSource source) async {
+  //   PermissionStatus status;
     
-    if (source == ImageSource.camera) {
-      status = await Permission.camera.request();
-    } else {
-      status = await Permission.photos.request();
-    }
+  //   if (source == ImageSource.camera) {
+  //     status = await Permission.camera.request();
+  //   } else {
+  //     status = await Permission.photos.request();
+  //   }
 
-    if (status.isGranted) {
-      final imagePicker = ImagePicker();
-      final image = await imagePicker.pickImage(source: source);
-      if (image != null) {
-        onTap(source);
-      }
-    } else {
-    }
-  }
+  //   if (status.isGranted) {
+  //     final imagePicker = ImagePicker();
+  //     final image = await imagePicker.pickImage(source: source);
+  //     if (image != null) {
+  //       onTap(source);
+  //     }
+  //   } else {
+  //   }
+  // }
 
 
   @override
@@ -56,7 +56,7 @@ class SelectPhotoOptionsScreen extends StatelessWidget {
           ),
           Column(children: [
             SelectPhoto(
-              onTap: () => _requestPermissionAndOpenSource(ImageSource.gallery),
+              onTap: () => onTap(ImageSource.gallery),
               icon: Icons.image,
               textLabel: 'Browse Gallery',
             ),
@@ -73,7 +73,7 @@ class SelectPhotoOptionsScreen extends StatelessWidget {
               height: 10,
             ),
             SelectPhoto(
-              onTap: () => _requestPermissionAndOpenSource(ImageSource.camera),
+              onTap: () => onTap(ImageSource.camera),
               icon: Icons.camera_alt_outlined,
               textLabel: 'Use a Camera',
             ),
