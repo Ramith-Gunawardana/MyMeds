@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mymeds_app/screens/account_settings.dart';
+import 'package:mymeds_app/screens/emergency.dart';
 import 'package:mymeds_app/screens/home.dart';
 import 'package:mymeds_app/screens/medication.dart';
 import 'package:mymeds_app/screens/set_photo_screen.dart';
@@ -298,7 +299,7 @@ class _DashboardState extends State<Dashboard> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const SetPhotoScreen(),
+                          builder: (context) => const Emergency(),
                         ),
                       );
                     },
@@ -306,7 +307,7 @@ class _DashboardState extends State<Dashboard> {
                       Icons.account_box,
                       color: Colors.black,
                     ),
-                    label: const Text('Profile',
+                    label: const Text('Emergency Calls',
                         style: TextStyle(color: Colors.black)),
                     style: ElevatedButton.styleFrom(
                         backgroundColor:const Color.fromARGB(255, 254, 37, 37),
