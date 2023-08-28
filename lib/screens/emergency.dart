@@ -36,165 +36,263 @@ class _Emergency extends State<Emergency> {
       body: Padding(
           padding: const EdgeInsets.all(5),
           child: ListView(
-          padding: EdgeInsets.symmetric(horizontal: 20),
+          padding:const EdgeInsets.symmetric(horizontal: 10),
           children:[ 
-
-            Column(mainAxisAlignment: MainAxisAlignment.center,
-             children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            Column(
               children: [
-                Container(
-                  width: 360, height: 80,
-                  child: ElevatedButton.icon(
-                    onPressed: () async{
-            final Uri url =Uri(
-              scheme: 'tel',
-              path: "+94714686902"
-            );
-            if (await canLaunchUrl(url)){
-              await launchUrl(url);
-            }
-            else{
-              print('cannot launch');
-            }
-                    },
-                    icon: const Icon(
-                      Icons.call,
-                      color: Colors.black,
-                    ),
-                    label: const Text('Police Emergency - 119',
-                        style: TextStyle(color: Colors.black)),
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor:const Color.fromARGB(255, 153, 155, 153),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ) 
-                        ),
-                  ),
+                _EmergencyButton(
+                  onPressed: () => _makeEmergencyCall("119"),
+                  icon: Icons.local_police,
+                  label: 'Police Emergency - 118/119',
                 ),
-              ],
-            ),
-            const SizedBox(
-              height: 40,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: 360, 
-                  height: 80,
-                  child: ElevatedButton.icon(
-                    onPressed: () async{
-            final Uri url =Uri(
-              scheme: 'tel',
-              path: "+94714686902"
-            );
-            if (await canLaunchUrl(url)){
-              await launchUrl(url);
-            }
-            else{
-              print('cannot launch');
-            }
-                    },
-                    icon: const Icon(
-                      Icons.call,
-                      color: Colors.black,
-                    ),
-                    label: const Text('Government Information Center - 1919',
-                        style: TextStyle(color: Colors.black)),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor:const Color.fromARGB(255, 153, 155, 153),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                  ),
+                _EmergencyButton(
+                  onPressed: () => _makeEmergencyCall("1990"),
+                  icon: Icons.medical_services_rounded,
+                  label: 'Suwa Seriya Ambulance - 1990',
                 ),
-              ],
-            ),
-            const SizedBox(
-              height: 40,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: 360, 
-                  height: 80,
-                  child: ElevatedButton.icon(
-                    onPressed: () async{
-            final Uri url =Uri(
-              scheme: 'tel',
-              path: "+94714686902"
-            );
-            if (await canLaunchUrl(url)){
-              await launchUrl(url);
-            }
-            else{
-              print('cannot launch');
-            }
-                    },
-                    icon: const Icon(
-                      Icons.call,
-                      color: Colors.black,
-                    ),
-                    label: const Text('Suwa Seriya Ambulance - 1990',
-                        style: TextStyle(color: Colors.black)),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor:const Color.fromARGB(255, 153, 155, 153),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                  ),
+                _EmergencyButton(
+                  onPressed: () => _makeEmergencyCall("110"),
+                  icon: Icons.fire_truck,
+                  label: 'Fire & rescue - 110',
                 ),
-              ],
-            ),
-            const SizedBox(
-              height: 40,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: 360, 
-                  height: 80,
-                  child: ElevatedButton.icon(
-                    onPressed: () async{
-            final Uri url =Uri(
-              scheme: 'tel',
-              path: "+94714686902"
-            );
-            if (await canLaunchUrl(url)){
-              await launchUrl(url);
-            }
-            else{
-              print('cannot launch');
-            }
-                    },
-                    icon: const Icon(
-                      Icons.call,
-                      color: Colors.black,
-                    ),
-                    label: const Text('Ambulance / Fire & rescue - 110',
-                        style: TextStyle(color: Colors.black)),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor:const Color.fromARGB(255, 153, 155, 153),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                  ),
+                _EmergencyButton(
+                  onPressed: () => _makeEmergencyCall("1919"),
+                  icon: Icons.info_rounded,
+                  label: 'Government Information Center - 1919',
                 ),
+                _EmergencyButton(
+                  onPressed: () => _makeEmergencyCall("011 5717171"),
+                  icon: Icons.emergency_sharp,
+                  label: 'Emergency Police Squad	- 011 5717171',
+                ),
+                _EmergencyButton(
+                  onPressed: () => _makeEmergencyCall("0112691111"),
+                  icon: Icons.miscellaneous_services_outlined,
+                  label: 'Accident Service - 011 2691111',
+                ),
+                // Add other _EmergencyButton instances here
               ],
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _makeEmergencyCall(String phoneNumber) async {
+    final Uri url = Uri(scheme: 'tel', path: phoneNumber);
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      print('Cannot launch');
+    }
+  }
+}
+
+class _EmergencyButton extends StatelessWidget {
+  final VoidCallback onPressed;
+  final IconData icon;
+  final String label;
+
+  const _EmergencyButton({
+    required this.onPressed,
+    required this.icon,
+    required this.label,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(
+            icon,
+            color: Colors.black,
           ),
-          ] 
+          const SizedBox(width: 10), // Add some spacing between icon and text
+          Text(
+            label,
+            style: TextStyle(color: Colors.black),
+          ),
+          const Spacer(), // Pushes the content to the left
+          ElevatedButton(
+            onPressed: onPressed,
+            child: Text('Call'),
+            style: ElevatedButton.styleFrom(
+              primary: const Color.fromARGB(255, 153, 155, 153),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+          ),
+        ],
       ),
-      ),
- 
+      
     );
   }
 }
+
+
+          // children:[ 
+          //   Column(mainAxisAlignment: MainAxisAlignment.center,
+          //    children: [
+          //   Row(
+          //     mainAxisAlignment: MainAxisAlignment.start,
+          //     children: [
+          //       Container(
+          //         width: 360,
+          //         height: 80,
+          //         child: ElevatedButton.icon(
+          //           onPressed: () async{
+          //   final Uri url =Uri(
+          //     scheme: 'tel',
+          //     path: "+94714686902"
+          //   );
+          //   if (await canLaunchUrl(url)){
+          //     await launchUrl(url);
+          //   }
+          //   else{
+          //     print('cannot launch');
+          //   }
+          //           },
+          //           icon: const Icon(
+          //             Icons.call,
+          //             color: Colors.black,
+          //           ),
+          //           label: const Text('Police Emergency - 119',
+          //               style: TextStyle(color: Colors.black)),
+          //           style: ElevatedButton.styleFrom(
+          //               backgroundColor:const Color.fromARGB(255, 153, 155, 153),
+          //               shape: RoundedRectangleBorder(
+          //                 borderRadius: BorderRadius.circular(10),
+          //               ) 
+          //               ),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+            // const SizedBox(
+            //   height: 40,
+            // ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: [
+            //     Container(
+            //       width: 360, 
+            //       height: 80,
+            //       child: ElevatedButton.icon(
+            //         onPressed: () async{
+            // final Uri url =Uri(
+            //   scheme: 'tel',
+            //   path: "+94714686902"
+            // );
+            // if (await canLaunchUrl(url)){
+            //   await launchUrl(url);
+            // }
+            // else{
+            //   print('cannot launch');
+            // }
+            //         },
+            //         icon: const Icon(
+            //           Icons.call,
+            //           color: Colors.black,
+            //         ),
+            //         label: const Text('Government Information Center - 1919',
+            //             style: TextStyle(color: Colors.black)),
+            //         style: ElevatedButton.styleFrom(
+            //           backgroundColor:const Color.fromARGB(255, 153, 155, 153),
+            //           shape: RoundedRectangleBorder(
+            //             borderRadius: BorderRadius.circular(10),
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            //   ],
+            // ),
+            // const SizedBox(
+            //   height: 40,
+            // ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: [
+            //     Container(
+            //       width: 360, 
+            //       height: 80,
+            //       child: ElevatedButton.icon(
+            //         onPressed: () async{
+            // final Uri url =Uri(
+            //   scheme: 'tel',
+            //   path: "+94714686902"
+            // );
+            // if (await canLaunchUrl(url)){
+            //   await launchUrl(url);
+            // }
+            // else{
+            //   print('cannot launch');
+            // }
+            //         },
+            //         icon: const Icon(
+            //           Icons.call,
+            //           color: Colors.black,
+            //         ),
+            //         label: const Text('Suwa Seriya Ambulance - 1990',
+            //             style: TextStyle(color: Colors.black)),
+            //         style: ElevatedButton.styleFrom(
+            //           backgroundColor:const Color.fromARGB(255, 153, 155, 153),
+            //           shape: RoundedRectangleBorder(
+            //             borderRadius: BorderRadius.circular(10),
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            //   ],
+            // ),
+            // const SizedBox(
+            //   height: 40,
+            // ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: [
+            //     Container(
+            //       width: 360, 
+            //       height: 80,
+            //       child: ElevatedButton.icon(
+            //         onPressed: () async{
+            // final Uri url =Uri(
+            //   scheme: 'tel',
+            //   path: "+94714686902"
+            // );
+            // if (await canLaunchUrl(url)){
+            //   await launchUrl(url);
+            // }
+            // else{
+            //   print('cannot launch');
+            // }
+            //         },
+            //         icon: const Icon(
+            //           Icons.call,
+            //           color: Colors.black,
+            //         ),
+            //         label: const Text('Ambulance / Fire & rescue - 110',
+            //             style: TextStyle(color: Colors.black,),),
+            //         style: ElevatedButton.styleFrom(
+            //           backgroundColor:const Color.fromARGB(255, 153, 155, 153),
+            //           shape: RoundedRectangleBorder(
+            //             borderRadius: BorderRadius.circular(10),
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            //   ],
+            // ),
+//           ],
+//           ),
+//           ] 
+//       ),
+//       ),
+ 
+//     );
+//   }
+// }
