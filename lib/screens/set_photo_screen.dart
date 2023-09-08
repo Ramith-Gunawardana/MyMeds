@@ -5,15 +5,12 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:mymeds_app/screens/settings.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../components/common_buttons.dart';
+
 import '../components/constants.dart';
 import 'select_photo_options_screen.dart';
 
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-
+// ignore: must_be_immutable
 class SetPhotoScreen extends StatefulWidget {
   const SetPhotoScreen({super.key});
 
@@ -24,16 +21,7 @@ class SetPhotoScreen extends StatefulWidget {
 }
 
 class _SetPhotoScreenState extends State<SetPhotoScreen> {
-  String buttonText = 'Save Photo';
-  bool showIcon = false;
-  String? imageUrl;
-   File? _image;
-
-  void initState() {
-    super.initState();
-    _loadSavedImage();
-    Firebase.initializeApp();
-  }
+  File? _image;
 
   Future<void> _pickImage(ImageSource source) async {
     try {
@@ -41,76 +29,15 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
       if (image == null) return;
       File? img = File(image.path);
       img = await _cropImage(imageFile: img);
-
-      if (img != null) {
-        // await _saveImage(img);
-        await uploadImage(img);
-        setState(() {
-          _image = img;
-          Navigator.of(context).pop();
-        });
-      }
-      // setState(() {
-      //   _image =img;
-      //   Navigator.of(context).pop();
-      // });
+      setState(() {
+        _image = img;
+        Navigator.of(context).pop();
+      });
     } on PlatformException catch (e) {
       print(e);
       Navigator.of(context).pop();
     }
   }
-
-  Future<void> uploadImage(File imageFile) async {
-    try {
-      final storageReference = firebase_storage
-          .FirebaseStorage.instance
-          .ref()
-          .child('images/${DateTime.now().millisecondsSinceEpoch}.jpg');
-      final UploadTask uploadTask = storageReference.putFile(imageFile);
-      final TaskSnapshot downloadTaskSnapshot = await uploadTask;
-      final String url = await downloadTaskSnapshot.ref.getDownloadURL();
-
-      // Update the state to store the image URL
-      setState(() {
-        imageUrl = url;
-        buttonText = 'Photo Uploaded';
-        showIcon = true;
-      });
-      print('Image uploaded to Firebase Storage');
-    } catch (e) {
-      print('Error uploading image: $e');
-      setState(() {
-        buttonText = 'Error Uploading';
-        showIcon = false;
-      });
-    }
-  }
-
-
-  Future<void> _loadSavedImage() async {
-  final prefs = await SharedPreferences.getInstance();
-  final imagePath = prefs.getString('saved_image_path');
-
-  if (imagePath != null) {
-    // If there's a local image path, load it from Firebase Storage
-    try {
-      final storageReference = firebase_storage
-          .FirebaseStorage.instance
-          .ref()
-          .child('images/image.jpg');
-
-      final url = await storageReference.getDownloadURL();
-
-      setState(() {
-        // Update the _image variable with the downloaded image
-        _image = File(url);
-      });
-    } catch (e) {
-      print('Error loading image from Firebase Storage: $e');
-    }
-  }
-}
-
 
   Future<File?> _cropImage({required File imageFile}) async {
     CroppedFile? croppedImage =
@@ -267,16 +194,11 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
               ),
               Center(
                 child: ElevatedButton(
-                  onPressed: () {
-                    if (_image != null) {
-                      _saveImage(_image!);
-                    }
-                  },
-                  child: Row(
+                  onPressed: () {},
+                  child: const Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(buttonText),
-                      if (showIcon) Icon(Icons.check_circle),
+                      Text('Save'),
                     ],
                   ),
                 ),
