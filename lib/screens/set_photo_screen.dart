@@ -23,6 +23,10 @@ class SetPhotoScreen extends StatefulWidget {
 
 class _SetPhotoScreenState extends State<SetPhotoScreen> {
   File? _image;
+  String? _lastUploadedImageUrl;
+
+  String _saveBtnText = 'Save';
+IconData _saveBtnIcon = Icons.save;
 
   Future<void> _pickImage(ImageSource source) async {
     try {
@@ -31,23 +35,40 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
       File? img = File(image.path);
       img = await _cropImage(imageFile: img);
 
-      if (img != null) {
-      final storageRef = FirebaseStorage.instance
-        .ref()
-        .child('prescription_photos/${DateTime.now().millisecondsSinceEpoch}.png');
+    //   if (img != null) {
+    //   final storageRef = FirebaseStorage.instance
+    //     .ref()
+    //     .child('prescription_photos/${DateTime.now().millisecondsSinceEpoch}.png');
 
-    await storageRef.putFile(img);
+    // await storageRef.putFile(img);
 
-    final imageUrl = await storageRef.getDownloadURL();
+    // final imageUrl = await storageRef.getDownloadURL();
 
       setState(() {
         _image = img;
         Navigator.of(context).pop();
       });
-      }
+      //}
     } on PlatformException catch (e) {
       print(e);
       Navigator.of(context).pop();
+    }
+  }
+
+  Future<void> _saveImageToFirebase() async {
+    if (_image != null) {
+      final storageRef = FirebaseStorage.instance
+          .ref()
+          .child('prescription_photos/${DateTime.now().millisecondsSinceEpoch}.png');
+
+      await storageRef.putFile(_image!);
+
+      final imageUrl = await storageRef.getDownloadURL();
+      setState(() {
+      _lastUploadedImageUrl = imageUrl;
+      _saveBtnText = 'Saved';
+      _saveBtnIcon = Icons.library_add_check;
+    });
     }
   }
 
@@ -159,10 +180,12 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
                           ),
                           child: Center(
                             child: _image == null
-                                ? const Text(
+                            ? (_lastUploadedImageUrl != null
+                                  ? Image.network(_lastUploadedImageUrl!)
+                                : const Text(
                                     'No image selected',
                                     style: TextStyle(fontSize: 20),
-                                  )
+                                  ))
                                 : Image.file(
                                     _image!,
                                     width:
@@ -206,11 +229,13 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
               ),
               Center(
                 child: ElevatedButton(
-                  onPressed: () {},
-                  child: const Row(
+                  onPressed: _saveImageToFirebase,
+                  child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text('Save'),
+                      Text(_saveBtnText),
+                      SizedBox(width: 8), 
+                      Icon(_saveBtnIcon),
                     ],
                   ),
                 ),
