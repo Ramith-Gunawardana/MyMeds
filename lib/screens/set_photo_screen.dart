@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:mymeds_app/screens/settings.dart';
 import '../components/common_buttons.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 import '../components/constants.dart';
 import 'select_photo_options_screen.dart';
@@ -29,10 +30,21 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
       if (image == null) return;
       File? img = File(image.path);
       img = await _cropImage(imageFile: img);
+
+      if (img != null) {
+      final storageRef = FirebaseStorage.instance
+        .ref()
+        .child('prescription_photos/${DateTime.now().millisecondsSinceEpoch}.png');
+
+    await storageRef.putFile(img);
+
+    final imageUrl = await storageRef.getDownloadURL();
+
       setState(() {
         _image = img;
         Navigator.of(context).pop();
       });
+      }
     } on PlatformException catch (e) {
       print(e);
       Navigator.of(context).pop();
