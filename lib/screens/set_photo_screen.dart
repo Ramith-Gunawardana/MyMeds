@@ -23,10 +23,20 @@ class SetPhotoScreen extends StatefulWidget {
 
 class _SetPhotoScreenState extends State<SetPhotoScreen> {
   File? _image;
-  String? _lastUploadedImageUrl;
+  String? _selectedImageUrl;
 
   String _saveBtnText = 'Save';
 IconData _saveBtnIcon = Icons.save;
+
+@override
+  void initState() {
+    super.initState();
+    if (_selectedImageUrl != null) {
+      setState(() {
+        _image = null;
+      });
+    }
+  }
 
   Future<void> _pickImage(ImageSource source) async {
     try {
@@ -65,7 +75,6 @@ IconData _saveBtnIcon = Icons.save;
 
       final imageUrl = await storageRef.getDownloadURL();
       setState(() {
-      _lastUploadedImageUrl = imageUrl;
       _saveBtnText = 'Saved';
       _saveBtnIcon = Icons.library_add_check;
     });
@@ -180,8 +189,8 @@ IconData _saveBtnIcon = Icons.save;
                           ),
                           child: Center(
                             child: _image == null
-                            ? (_lastUploadedImageUrl != null
-                                  ? Image.network(_lastUploadedImageUrl!)
+                            ? (_selectedImageUrl != null
+                                  ? Image.network(_selectedImageUrl!)
                                 : const Text(
                                     'No image selected',
                                     style: TextStyle(fontSize: 20),
