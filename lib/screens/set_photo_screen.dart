@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -22,15 +23,32 @@ class SetPhotoScreen extends StatefulWidget {
 }
 
 class _SetPhotoScreenState extends State<SetPhotoScreen> {
+  //current user
+  final currentUser = FirebaseAuth.instance.currentUser;
+  //************IMAGE PATH***********
+  final storageRef = FirebaseStorage.instance
+      .ref()
+      .child('${FirebaseAuth.instance.currentUser!.email}/Prescription');
+
+  String? url;
+
+  Future<String> getPhotoUrl() async {
+    url = await storageRef.getDownloadURL();
+    print(url);
+    return url!;
+  }
+
+  //image
   File? _image;
   String? _selectedImageUrl;
 
   String _saveBtnText = 'Save';
-IconData _saveBtnIcon = Icons.save;
+  IconData _saveBtnIcon = Icons.save;
 
-@override
+  @override
   void initState() {
     super.initState();
+    getPhotoUrl();
     if (_selectedImageUrl != null) {
       setState(() {
         _image = null;
@@ -45,14 +63,14 @@ IconData _saveBtnIcon = Icons.save;
       File? img = File(image.path);
       img = await _cropImage(imageFile: img);
 
-    //   if (img != null) {
-    //   final storageRef = FirebaseStorage.instance
-    //     .ref()
-    //     .child('prescription_photos/${DateTime.now().millisecondsSinceEpoch}.png');
+      //   if (img != null) {
+      //   final storageRef = FirebaseStorage.instance
+      //     .ref()
+      //     .child('prescription_photos/${DateTime.now().millisecondsSinceEpoch}.png');
 
-    // await storageRef.putFile(img);
+      // await storageRef.putFile(img);
 
-    // final imageUrl = await storageRef.getDownloadURL();
+      // final imageUrl = await storageRef.getDownloadURL();
 
       setState(() {
         _image = img;
@@ -67,17 +85,32 @@ IconData _saveBtnIcon = Icons.save;
 
   Future<void> _saveImageToFirebase() async {
     if (_image != null) {
-      final storageRef = FirebaseStorage.instance
-          .ref()
-          .child('prescription_photos/${DateTime.now().millisecondsSinceEpoch}.png');
+      //loading circle
+      showDialog(
+        context: context,
+        builder: (context) {
+          return const Center(
+            child: CircularProgressIndicator(
+              color: Color.fromRGBO(7, 82, 96, 1),
+            ),
+          );
+        },
+      );
 
       await storageRef.putFile(_image!);
+      if (!mounted) {
+        return;
+      }
+      //pop loading cicle
+      Navigator.of(context).pop();
 
-      final imageUrl = await storageRef.getDownloadURL();
+      final _imageUrl = await storageRef.getDownloadURL();
+      print('Image url: $_imageUrl');
       setState(() {
-      _saveBtnText = 'Saved';
-      _saveBtnIcon = Icons.library_add_check;
-    });
+        _saveBtnText = 'Saved';
+        _saveBtnIcon = Icons.library_add_check;
+        getPhotoUrl();
+      });
     }
   }
 
@@ -181,35 +214,75 @@ IconData _saveBtnIcon = Icons.save;
                     },
                     child: Center(
                       child: Container(
-                          width: MediaQuery.of(context).size.width * 1.5,
-                          height: MediaQuery.of(context).size.width * 1.0,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.rectangle,
-                            color: Colors.grey.shade200,
-                          ),
-                          child: Center(
-                            child: _image == null
-                            ? (_selectedImageUrl != null
-                                  ? Image.network(_selectedImageUrl!)
-                                : const Text(
-                                    'No image selected',
-                                    style: TextStyle(fontSize: 20),
-                                  ))
-                                : Image.file(
-                                    _image!,
-                                    width:
-                                        MediaQuery.of(context).size.width * 1.5,
-                                    height:
-                                        MediaQuery.of(context).size.width * 1.0,
-                                    fit: BoxFit.fill,
-                                  ),
+                        width: MediaQuery.of(context).size.width * 1.5,
+                        height: MediaQuery.of(context).size.width * 1.0,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          color: Colors.grey.shade200,
+                        ),
+                        child: Center(
+                          child: _image == null
+                              ? (_selectedImageUrl == null
+                                  ? FutureBuilder(
+                                      future: getPhotoUrl(),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.done) {
+                                          print(snapshot);
+                                          if (snapshot.hasData) {
+                                            return Image.network(url!);
+                                          } else {
+                                            return Text('No image');
+                                          }
+                                        } else if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          return Center(
+                                              child:
+                                                  CircularProgressIndicator());
+                                        } else {
+                                          return Text('Error');
+                                        }
+                                      },
+                                    )
+                                  : const Text(
+                                      'No image selected',
+                                      style: TextStyle(fontSize: 20),
+                                    ))
+                              : Image.file(
+                                  _image!,
+                                  width:
+                                      MediaQuery.of(context).size.width * 1.5,
+                                  height:
+                                      MediaQuery.of(context).size.width * 1.0,
+                                  fit: BoxFit.fill,
+                                ),
 
-                            // :CircleAvatar(
-                            //   radius: 100.0,
-                            //   backgroundImage: FileImage(_image!),
-                            //   fit:BoxFit.fill,
-                            //   )
-                          )),
+                          // Center(
+                          //   child: _image == null
+                          //       ? (url != null
+                          //           ? Image.network(url!)
+                          //           : const Text(
+                          //               'No image selected',
+                          //               style: TextStyle(fontSize: 20),
+                          //             ))
+                          //       : Image.file(
+                          //           _image!,
+                          //           width:
+                          //               MediaQuery.of(context).size.width * 1.5,
+                          //           height:
+                          //               MediaQuery.of(context).size.width * 1.0,
+                          //           fit: BoxFit.fill,
+                          //         ),
+
+                          //   // :CircleAvatar(
+                          //   //   radius: 100.0,
+                          //   //   backgroundImage: FileImage(_image!),
+                          //   //   fit:BoxFit.fill,
+                          //   //   )
+                          // ),
+                        ),
+                        // child: Image.network(url!),
+                      ),
                     ),
                   ),
                 ),
@@ -243,7 +316,7 @@ IconData _saveBtnIcon = Icons.save;
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(_saveBtnText),
-                      SizedBox(width: 8), 
+                      SizedBox(width: 8),
                       Icon(_saveBtnIcon),
                     ],
                   ),
