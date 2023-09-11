@@ -109,6 +109,8 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
       setState(() {
         _saveBtnText = 'Saved';
         _saveBtnIcon = Icons.library_add_check;
+        _image=null;
+        _selectedImageUrl=null;
         getPhotoUrl();
       });
     }
