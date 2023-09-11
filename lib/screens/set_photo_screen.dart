@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:mymeds_app/screens/settings.dart';
 import '../components/common_buttons.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -234,15 +233,15 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
                                           if (snapshot.hasData) {
                                             return Image.network(url!);
                                           } else {
-                                            return Text('No image');
+                                            return const Text('No image');
                                           }
                                         } else if (snapshot.connectionState ==
                                             ConnectionState.waiting) {
-                                          return Center(
+                                          return const Center(
                                               child:
                                                   CircularProgressIndicator());
                                         } else {
-                                          return Text('Error');
+                                          return const Text('Error');
                                         }
                                       },
                                     )
@@ -318,7 +317,7 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(_saveBtnText),
-                      SizedBox(width: 8),
+                      const SizedBox(width: 8),
                       Icon(_saveBtnIcon),
                     ],
                   ),
