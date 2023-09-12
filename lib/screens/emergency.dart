@@ -17,7 +17,7 @@ class _Emergency extends State<Emergency> {
           "Emergency Calls",
           style: TextStyle(
               fontSize: 28,
-              color: Colors.cyan,
+              color: Color.fromARGB(255, 84, 194, 141),
               fontWeight: FontWeight.bold),
         ),
       ),
