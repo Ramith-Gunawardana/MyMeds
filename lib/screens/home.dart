@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_timeline_calendar/timeline/flutter_timeline_calendar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mymeds_app/components/time_line.dart';
-import 'package:timeline_tile/timeline_tile.dart';
 
 import 'account_settings.dart';
 
@@ -57,16 +56,16 @@ class _HomeState extends State<Home> {
                         context,
                         MaterialPageRoute(
                           builder: (context) {
-                            return SettingsPageUI();
+                            return const SettingsPageUI();
                           },
                         ),
                       );
                     },
                     child: CircleAvatar(
                       radius: 20,
-                      child: const Icon(Icons.person_outlined),
                       backgroundColor: Theme.of(context).colorScheme.primary,
                       foregroundColor: Theme.of(context).colorScheme.surface,
+                      child: const Icon(Icons.person_outlined),
                     ),
                   ),
                 ],
@@ -184,9 +183,9 @@ class _HomeState extends State<Home> {
             axisDirection: AxisDirection.down,
             color: const Color.fromARGB(255, 7, 83, 96),
             child: ListView(
-              physics: AlwaysScrollableScrollPhysics(),
+              physics: const AlwaysScrollableScrollPhysics(),
               shrinkWrap: true,
-              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
               children: const [
                 TimeLine(
                   isFirst: true,

@@ -32,7 +32,7 @@ class _AddMedication1State extends State<AddMedication2> {
   final _medicationQuantityController = TextEditingController();
   final _medicationDosageController = TextEditingController();
   final _medicationFrequencyController = TextEditingController();
-  var _medicationTimeOfDayController = TextEditingController();
+  final _medicationTimeOfDayController = TextEditingController();
   final _medicationReminderController = TextEditingController();
   final _medicationNoteController = TextEditingController();
   final _medicationPhotoController = TextEditingController();
@@ -83,7 +83,7 @@ class _AddMedication1State extends State<AddMedication2> {
           padding: const EdgeInsets.all(16),
           child: ListView(
             children: [
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Text_Field(
                 label: 'Medication Freqency',
                 hint: 'Everyday',
@@ -92,15 +92,15 @@ class _AddMedication1State extends State<AddMedication2> {
                 txtEditController: _medicationNameController,
               ),
 
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextField(
                 onTap: () {
                   Navigator.of(context).push(
                     showPicker(
                       context: context,
                       value: _time,
-                      sunrise: TimeOfDay(hour: 6, minute: 0), // optional
-                      sunset: TimeOfDay(hour: 18, minute: 0), // optional
+                      sunrise: const TimeOfDay(hour: 6, minute: 0), // optional
+                      sunset: const TimeOfDay(hour: 18, minute: 0), // optional
                       duskSpanInMinutes: 120, // optional
                       onChange: onTimeChanged,
                       iosStylePicker: iosStyle,
@@ -146,7 +146,7 @@ class _AddMedication1State extends State<AddMedication2> {
                 ),
               ),
 
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextField(
                 onTap: () async {
                   var datePicked = await DatePicker.showSimpleDatePicker(
@@ -216,7 +216,7 @@ class _AddMedication1State extends State<AddMedication2> {
               //     return null;
               //   },
               // ),
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
@@ -240,7 +240,7 @@ class _AddMedication1State extends State<AddMedication2> {
                     //navigate to add_medicine2
                   }
                 },
-                child: Text('Next'),
+                child: const Text('Next'),
               ),
             ],
           ),

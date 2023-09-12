@@ -10,13 +10,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: StatusBar(),
     );
   }
 }
 
 class StatusBar extends StatefulWidget {
+  const StatusBar({super.key});
+
   @override
   _StatusBarState createState() => _StatusBarState();
 }
@@ -33,8 +35,8 @@ class _StatusBarState extends State<StatusBar> {
     _chartData = getChartData();
     data = getChartDataW();
     _tooltip = TooltipBehavior(enable: true);
-    takenColor = Color.fromRGBO(8, 142, 255, 1); // Color for "Taken" series
-    missedColor = Color.fromRGBO(255, 8, 136, 1); // Color for "Missed" series
+    takenColor = const Color.fromRGBO(8, 142, 255, 1); // Color for "Taken" series
+    missedColor = const Color.fromRGBO(255, 8, 136, 1); // Color for "Missed" series
     super.initState();
   }
 
@@ -48,9 +50,9 @@ class _StatusBarState extends State<StatusBar> {
               child: SfCircularChart(
                 title: ChartTitle(
                   text: 'Daily Dosage Usage',
-                  textStyle: TextStyle(fontSize: 20),
+                  textStyle: const TextStyle(fontSize: 20),
                 ),
-                legend: Legend(
+                legend: const Legend(
                   isVisible: true,
                   overflowMode: LegendItemOverflowMode.wrap,
                 ),
@@ -59,7 +61,7 @@ class _StatusBarState extends State<StatusBar> {
                     dataSource: _chartData,
                     xValueMapper: (GDPData data, _) => data.type,
                     yValueMapper: (GDPData data, _) => data.amount,
-                    dataLabelSettings: DataLabelSettings(
+                    dataLabelSettings: const DataLabelSettings(
                       isVisible: true,
                       labelPosition: ChartDataLabelPosition.outside,
                       labelAlignment: ChartDataLabelAlignment.top,
@@ -81,9 +83,9 @@ class _StatusBarState extends State<StatusBar> {
               child: SfCartesianChart(
                 title: ChartTitle(
                   text: 'Weekly Dosage Usage',
-                  textStyle: TextStyle(fontSize: 20),
+                  textStyle: const TextStyle(fontSize: 20),
                 ),
-                legend: Legend(
+                legend: const Legend(
                   isVisible: true,
                   overflowMode: LegendItemOverflowMode.wrap,
                 ),

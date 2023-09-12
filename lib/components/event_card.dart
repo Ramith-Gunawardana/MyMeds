@@ -8,7 +8,7 @@ class EventCard extends StatelessWidget {
   final String time;
   final bool isTaken;
 
-  EventCard({
+  const EventCard({
     super.key,
     required this.isPast,
     required this.medName,
@@ -35,8 +35,8 @@ class EventCard extends StatelessWidget {
       takenIcon = Icons.schedule;
     }
     return Container(
-      margin: EdgeInsets.all(25.0),
-      padding: EdgeInsets.all(20),
+      margin: const EdgeInsets.all(25.0),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: isPast
@@ -94,7 +94,7 @@ class EventCard extends StatelessWidget {
             children: [
               //time
               Padding(
-                padding: EdgeInsets.fromLTRB(0, 6, 0, 0),
+                padding: const EdgeInsets.fromLTRB(0, 6, 0, 0),
                 child: Text(
                   time,
                   style: GoogleFonts.roboto(

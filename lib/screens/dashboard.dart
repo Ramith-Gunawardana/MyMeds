@@ -1,12 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:mymeds_app/screens/account_settings.dart';
 import 'package:mymeds_app/screens/home.dart';
 import 'package:mymeds_app/screens/medication.dart';
 import 'package:mymeds_app/screens/statistic.dart';
-import 'package:mymeds_app/screens/user_profile.dart';
 import 'package:mymeds_app/screens/settings.dart';
 import 'package:mymeds_app/screens/add_medication1.dart';
 
@@ -50,15 +46,15 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     //pages
-    final List<Widget> _pages = <Widget>[
+    final List<Widget> pages = <Widget>[
       //main page
-      Home(),
+      const Home(),
       //medication
-      Mediaction(),
+      const Mediaction(),
       //statistic
-      Statistic(),
+      const Statistic(),
       //settings
-      AppSettings(),
+      const AppSettings(),
     ];
 
     //scaffold
@@ -69,7 +65,7 @@ class _DashboardState extends State<Dashboard> {
       ),
       body: SafeArea(
         child: Center(
-          child: _pages.elementAt(_selectedIndex),
+          child: pages.elementAt(_selectedIndex),
         ),
       ),
       //floating action button
@@ -83,7 +79,6 @@ class _DashboardState extends State<Dashboard> {
                   ),
                 );
               },
-              child: const Icon(Icons.add),
               // shape: const RoundedRectangleBorder(
               //   borderRadius: BorderRadius.all(
               //     Radius.circular(50.0),
@@ -91,6 +86,7 @@ class _DashboardState extends State<Dashboard> {
               // ),
               backgroundColor: Theme.of(context).colorScheme.primary,
               foregroundColor: Theme.of(context).colorScheme.background,
+              child: const Icon(Icons.add),
             )
           : null,
       // floatingActionButtonLocation:

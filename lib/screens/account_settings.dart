@@ -2,8 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:mymeds_app/screens/user_profile.dart';
-import 'package:provider/provider.dart';
-import 'package:mymeds_app/screens/edit_profile.dart';
 import 'package:mymeds_app/screens/help_center.dart';
 import 'package:mymeds_app/screens/notification_settings.dart';
 import 'package:mymeds_app/screens/terms_of_services.dart';
@@ -11,6 +9,8 @@ import 'package:mymeds_app/screens/terms_of_services.dart';
 // import 'package:settings/usersettings.dart';
 
 class SettingsPageUI extends StatefulWidget {
+  const SettingsPageUI({super.key});
+
   @override
   _SettingPageUIState createState() => _SettingPageUIState();
 }
@@ -264,7 +264,7 @@ class _SettingPageUIState extends State<SettingsPageUI> {
                     onPressed: () {
                       FirebaseAuth.instance.signOut();
                     },
-                    child: Text('Sign out'),
+                    child: const Text('Sign out'),
                   ),
                 )
               ],
@@ -330,22 +330,22 @@ class _SettingPageUIState extends State<SettingsPageUI> {
         if (title == "   Edit Profile") {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => UserProfile()),
+            MaterialPageRoute(builder: (context) => const UserProfile()),
           );
         } else if (title == "   Notification Settings") {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => NotificationSettings()),
+            MaterialPageRoute(builder: (context) => const NotificationSettings()),
           );
         } else if (title == "   Help Center") {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => HelpCenter()),
+            MaterialPageRoute(builder: (context) => const HelpCenter()),
           );
         } else if (title == "   Terms of Services") {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => TermsOfServices()),
+            MaterialPageRoute(builder: (context) => const TermsOfServices()),
           );
         } else if (title == "   Select Language") {
           _showLanguageSelectionDialog(context);

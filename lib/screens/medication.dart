@@ -14,7 +14,7 @@ class _MediactionState extends State<Mediaction> {
   // final user = FirebaseAuth.instance.currentUser;
 
   //bottom nav bar
-  int _selectedIndex = 1;
+  final int _selectedIndex = 1;
 
   /*Floating Action Button should reutrn add_medication1.dart file method
   and the method should return the floating action button.*/
@@ -30,8 +30,8 @@ class _MediactionState extends State<Mediaction> {
           ),
         );
       },
+      backgroundColor: const Color.fromARGB(255, 146, 191, 199),
       child: const Icon(Icons.add),
-      backgroundColor: Color.fromARGB(255, 146, 191, 199),
     );
   }
 

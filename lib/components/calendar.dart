@@ -4,7 +4,7 @@ import 'package:flutter_timeline_calendar/timeline/flutter_timeline_calendar.dar
 class TopCalendar extends StatelessWidget {
   // Function onDateChange;
 
-  TopCalendar({
+  const TopCalendar({
     super.key,
   });
 

@@ -50,6 +50,10 @@ dependencies:
   flutter_spinner_picker: ^0.0.7
   day_night_time_picker: 
   syncfusion_flutter_charts: ^22.2.9
+  syncfusion_flutter_calendar: ^22.2.10
+  flutter_charts: ^0.4.0
+  table_calendar: ^3.0.9
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:

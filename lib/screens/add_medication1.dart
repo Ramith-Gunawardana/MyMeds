@@ -1,10 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mymeds_app/components/text_field.dart';
 import 'add_medication2.dart';
@@ -26,6 +23,8 @@ class AddMedication1 extends StatefulWidget {
   // ];
 
   List<CategoryModel> categories = [];
+
+  AddMedication1({super.key});
 
   void _getInitialInfo() {
     categories = CategoryModel.getCategories();
@@ -128,7 +127,7 @@ class _AddMedication1State extends State<AddMedication1> {
   final _medicationQuantityController = TextEditingController();
   final _medicationDosageController = TextEditingController();
   final _medicationFrequencyController = TextEditingController();
-  var _medicationTimeOfDayController = TextEditingController();
+  final _medicationTimeOfDayController = TextEditingController();
   final _medicationStrengthValueController = TextEditingController();
   final _medicationNoteController = TextEditingController();
   final _medicationPhotoController = TextEditingController();
@@ -188,7 +187,7 @@ class _AddMedication1State extends State<AddMedication1> {
                     color: Colors.grey[300],
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Icon(Icons.add_a_photo, size: 50),
+                  child: const Icon(Icons.add_a_photo, size: 50),
                 ),
               ),
               const Padding(
@@ -201,7 +200,7 @@ class _AddMedication1State extends State<AddMedication1> {
                       fontWeight: FontWeight.w600),
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text_Field(
                 label: 'Medication Name',
                 hint: 'Medicine',
@@ -222,7 +221,7 @@ class _AddMedication1State extends State<AddMedication1> {
               const SizedBox(
                 height: 15,
               ),
-              Container(
+              SizedBox(
                 height: 120,
                 child: ListView.separated(
                   itemCount: widget.categories.length,
@@ -298,7 +297,7 @@ class _AddMedication1State extends State<AddMedication1> {
                       fontWeight: FontWeight.w600),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Row(
                 children: [
                   Expanded(
@@ -339,7 +338,7 @@ class _AddMedication1State extends State<AddMedication1> {
                       ),
                     ),
                   ),
-                  SizedBox(width: 8), // Add spacing between the two text fields
+                  const SizedBox(width: 8), // Add spacing between the two text fields
                   Expanded(
                     child: TextFormField(
                       onTap: () => showDialog(
@@ -453,14 +452,14 @@ class _AddMedication1State extends State<AddMedication1> {
                   ),
                 ],
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _medicationNoteController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     labelText: 'Medication Note',
                     hintText: 'Take note about this medication'),
               ),
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: () async {
                   // if (_formKey.currentState!.validate()) {
@@ -492,11 +491,11 @@ class _AddMedication1State extends State<AddMedication1> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => AddMedication2(),
+                      builder: (context) => const AddMedication2(),
                     ),
                   );
                 },
-                child: Text('Next'),
+                child: const Text('Next'),
               ),
             ],
           ),
