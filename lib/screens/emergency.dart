@@ -16,21 +16,21 @@ class _Emergency extends State<Emergency> {
         title:const Text("Emergency calls"),
       ),
       // body: Center(
-      //   // child: ElevatedButton(
-      //   //   onPressed: () async{
-      //   //     final Uri url =Uri(
-      //   //       scheme: 'tel',
-      //   //       path: "+94714686902"
-      //   //     );
-      //   //     if (await canLaunchUrl(url)){
-      //   //       await launchUrl(url);
-      //   //     }
-      //   //     else{
-      //   //       print('cannot launch');
-      //   //     }
-      //   //             },
-      //   //   child:const Text("Call"),
-      //   // ),
+        // child: ElevatedButton(
+        //   onPressed: () async{
+        //     final Uri url =Uri(
+        //       scheme: 'tel',
+        //       path: "+94714686902"
+        //     );
+        //     if (await canLaunchUrl(url)){
+        //       await launchUrl(url);
+        //     }
+        //     else{
+        //       print('cannot launch');
+        //     }
+        //             },
+        //   child:const Text("Call"),
+        // ),
       // ), 
 
       body:  Padding(
