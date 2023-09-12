@@ -110,23 +110,23 @@ class _EmergencyButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Icon(
             icon,
             color: Colors.black,
           ),
-          const SizedBox(width: 10), // Add some spacing between icon and text
+          const SizedBox(width: 10), 
           Text(
             label,
-            style: TextStyle(color: Colors.black),
+            style:const TextStyle(color: Colors.black),
           ),
           const Spacer(), // Pushes the content to the left
           ElevatedButton(
             onPressed: onPressed,
             child: Text('Call'),
             style: ElevatedButton.styleFrom(
-              primary: const Color.fromARGB(255, 153, 155, 153),
+              primary:const Color.fromARGB(255, 197, 197, 197),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
