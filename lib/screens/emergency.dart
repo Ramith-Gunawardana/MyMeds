@@ -33,45 +33,44 @@ class _Emergency extends State<Emergency> {
       //   // ),
       // ), 
 
-      body: Padding(
-          padding: const EdgeInsets.all(5),
-          child: ListView(
-          padding:const EdgeInsets.symmetric(horizontal: 10),
-          children:[ 
-            Column(
-              children: [
-                _EmergencyButton(
-                  onPressed: () => _makeEmergencyCall("119"),
-                  icon: Icons.local_police,
-                  label: 'Police Emergency - 118/119',
-                ),
-                _EmergencyButton(
-                  onPressed: () => _makeEmergencyCall("1990"),
-                  icon: Icons.medical_services_rounded,
-                  label: 'Suwa Seriya Ambulance - 1990',
-                ),
-                _EmergencyButton(
-                  onPressed: () => _makeEmergencyCall("110"),
-                  icon: Icons.fire_truck,
-                  label: 'Fire & rescue - 110',
-                ),
-                _EmergencyButton(
-                  onPressed: () => _makeEmergencyCall("1919"),
-                  icon: Icons.info_rounded,
-                  label: 'Government Information Center - 1919',
-                ),
-                _EmergencyButton(
-                  onPressed: () => _makeEmergencyCall("011 5717171"),
-                  icon: Icons.emergency_sharp,
-                  label: 'Emergency Police Squad	- 011 5717171',
-                ),
-                _EmergencyButton(
-                  onPressed: () => _makeEmergencyCall("0112691111"),
-                  icon: Icons.miscellaneous_services_outlined,
-                  label: 'Accident Service - 011 2691111',
-                ),
-                // Add other _EmergencyButton instances here
-              ],
+      body:  Padding(
+        padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+        child: Column(
+          children: [
+            Image.asset(
+              'lib/assets/emer1.gif',
+              height: 200, 
+            ),
+            const SizedBox(height: 8),
+            _EmergencyButton(
+              onPressed: () => _makeEmergencyCall("119"),
+              icon: Icons.local_police,
+              label: 'Fire & rescue - 110',
+            ),
+            _EmergencyButton(
+              onPressed: () => _makeEmergencyCall("1990"),
+              icon: Icons.medical_services_rounded,
+              label: 'Police Emergency - 118/119',
+            ),
+            _EmergencyButton(
+              onPressed: () => _makeEmergencyCall("110"),
+              icon: Icons.fire_truck,
+              label: 'Suwa Seriya Ambulance - 1990',
+            ),
+            _EmergencyButton(
+              onPressed: () => _makeEmergencyCall("1919"),
+              icon: Icons.info_rounded,
+              label: 'Accident Service - 011 2691111',
+            ),
+            _EmergencyButton(
+              onPressed: () => _makeEmergencyCall("011 5717171"),
+              icon: Icons.emergency_sharp,
+              label: 'Government Information Center - 1919',
+            ),
+            _EmergencyButton(
+              onPressed: () => _makeEmergencyCall("0112691111"),
+              icon: Icons.miscellaneous_services_outlined,
+              label: 'Emergency Police Squad	- 011 5717171',
             ),
           ],
         ),

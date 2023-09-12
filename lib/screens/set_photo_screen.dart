@@ -112,6 +112,14 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
         _selectedImageUrl=null;
         getPhotoUrl();
       });
+      Future.delayed(const Duration(seconds: 5), () {
+      if (mounted) {
+        setState(() {
+          _saveBtnText = 'Save';
+          _saveBtnIcon = Icons.save;
+        });
+      }
+    });
     }
   }
 

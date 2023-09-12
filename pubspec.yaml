@@ -86,6 +86,8 @@ flutter:
     - lib/assets/icon.png
     - lib/assets/icon_small.png
     - lib/assets/user.png
+    - lib/assets/call.gif
+    - lib/assets/emer1.gif
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
