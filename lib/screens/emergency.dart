@@ -50,17 +50,17 @@ class _Emergency extends State<Emergency> {
             const SizedBox(height: 8),
             _EmergencyButton(
               onPressed: () => _makeEmergencyCall("110"),
-              icon: Icons.fire_truck,
+              icon: Icons.fire_truck_outlined,
               label: 'Fire & rescue - 110',
             ),
             _EmergencyButton(
               onPressed: () => _makeEmergencyCall("118"),
-              icon: Icons.local_police,
+              icon: Icons.local_police_outlined,
               label: 'Police Emergency - 118/119',
             ),
             _EmergencyButton(
               onPressed: () => _makeEmergencyCall("1990"),
-              icon: Icons.medical_services_rounded,
+              icon: Icons.medical_services_outlined,
               label: 'Suwa Seriya Ambulance - 1990',
             ),
             _EmergencyButton(
@@ -70,12 +70,12 @@ class _Emergency extends State<Emergency> {
             ),
             _EmergencyButton(
               onPressed: () => _makeEmergencyCall("1919"),
-              icon: Icons.info_rounded,
+              icon: Icons.perm_device_information_outlined,
               label: 'Government Information Center - 1919',
             ),
             _EmergencyButton(
               onPressed: () => _makeEmergencyCall("0115717171"),
-              icon: Icons.emergency_sharp,
+              icon: Icons.emergency_outlined,
               label: 'Emergency Police Squad	- 011 5717171',
             ),
           ],
