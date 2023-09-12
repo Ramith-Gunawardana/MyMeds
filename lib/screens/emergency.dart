@@ -48,7 +48,7 @@ class _Emergency extends State<Emergency> {
               label: 'Fire & rescue - 110',
             ),
             _EmergencyButton(
-              onPressed: () => _makeEmergencyCall("118/119"),
+              onPressed: () => _makeEmergencyCall("118"),
               icon: Icons.medical_services_rounded,
               label: 'Police Emergency - 118/119',
             ),
