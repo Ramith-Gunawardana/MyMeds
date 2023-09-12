@@ -58,7 +58,7 @@ class _Emergency extends State<Emergency> {
               label: 'Suwa Seriya Ambulance - 1990',
             ),
             _EmergencyButton(
-              onPressed: () => _makeEmergencyCall("011 2691111"),
+              onPressed: () => _makeEmergencyCall("0112691111"),
               icon: Icons.info_rounded,
               label: 'Accident Service - 011 2691111',
             ),
@@ -68,7 +68,7 @@ class _Emergency extends State<Emergency> {
               label: 'Government Information Center - 1919',
             ),
             _EmergencyButton(
-              onPressed: () => _makeEmergencyCall("011 5717171"),
+              onPressed: () => _makeEmergencyCall("0115717171"),
               icon: Icons.miscellaneous_services_outlined,
               label: 'Emergency Police Squad	- 011 5717171',
             ),
