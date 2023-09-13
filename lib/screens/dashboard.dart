@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mymeds_app/screens/add_medication1.dart';
+// import 'package:mymeds_app/screens/settings.dart';
 import 'package:mymeds_app/screens/homepage2.dart';
 import 'package:mymeds_app/screens/medication.dart';
 import 'package:mymeds_app/screens/more.dart';
+// import 'package:my_navigation/stat';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});

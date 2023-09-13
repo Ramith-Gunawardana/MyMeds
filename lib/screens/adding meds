@@ -20,10 +20,25 @@ class _AddMediFrequencyState extends State<AddMediFrequency> {
   bool showFrequencySection = false;
   bool showDaysSection = false;
 
+  // var time = DateTime.now();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    widget._getInitialInfo();
+  }
+
+  void _openImagePicker() {
+    // Implement your image picker logic here
+    // This function will be called when the image is clicked
+  }
+
   @override
   Widget build(BuildContext context) {
+    widget._getInitialInfo();
     return Scaffold(
       appBar: AppBar(
+
         title: const Text(
           'Frequency',
           style: TextStyle(
@@ -33,6 +48,7 @@ class _AddMediFrequencyState extends State<AddMediFrequency> {
         ),
         leading: IconButton(
           icon: const Icon(
+
             Icons.arrow_back_ios,
             color: Colors.black,
           ),
@@ -40,7 +56,6 @@ class _AddMediFrequencyState extends State<AddMediFrequency> {
           onPressed: () {
             Navigator.pop(context);
           },
-        ),
         centerTitle: true,
         backgroundColor: Colors.white,
       ),
@@ -78,6 +93,7 @@ class _AddMediFrequencyState extends State<AddMediFrequency> {
                     child: Text('Done'),
                   ),
                 ],
+
               ),
               CustomRadioButton(
                 elevation: 4,
@@ -99,6 +115,194 @@ class _AddMediFrequencyState extends State<AddMediFrequency> {
                     showFrequencySection = value == "At Regular Intervals";
                     showDaysSection = value == "On Specific Days of the Week";
                   });
+          child: ListView(
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(top: 20, left: 10),
+                child: Text(
+                  'Dosage per Intake',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600),
+                ),
+              ),
+              SizedBox(height: 20),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      controller: _medicationStrengthValueController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please select the dosage per intake';
+                        }
+                        return null;
+                      },
+                      keyboardType: TextInputType.number,
+                      cursorColor: const Color.fromARGB(255, 7, 82, 96),
+                      decoration: InputDecoration(
+                        hintText: '1',
+                        labelText: 'Count',
+                        labelStyle: GoogleFonts.poppins(
+                          color: const Color.fromARGB(255, 16, 15, 15),
+                        ),
+                        filled: true,
+                        floatingLabelBehavior: FloatingLabelBehavior.auto,
+                        focusedBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(20),
+                          ),
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 7, 82, 96),
+                          ),
+                        ),
+                        enabledBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(20),
+                          ),
+                          borderSide: BorderSide(
+                            color: Colors.transparent,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 8), // Add spacing between the two text fields
+                  Expanded(
+                    child: TextFormField(
+                      onTap: () => showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text(
+                              'Select Unit',
+                              style: GoogleFonts.poppins(
+                                color: const Color.fromARGB(255, 16, 15, 15),
+                              ),
+                            ),
+                            content: StatefulBuilder(
+                              builder: (BuildContext context,
+                                  void Function(void Function()) setState) {
+                                return SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      for (Units unit in Units.values)
+                                        RadioListTile<Units>(
+                                          title: Text(
+                                            unitToString(unit),
+                                            style: GoogleFonts.poppins(
+                                              color: const Color.fromARGB(
+                                                  255, 16, 15, 15),
+                                            ),
+                                          ),
+                                          value: unit,
+                                          groupValue: _units,
+                                          onChanged: (Units? value) {
+                                            setState(() {
+                                              _units = value;
+                                              _medicationStrengthController
+                                                  .text = unitToString(value!);
+                                              Navigator.pop(
+                                                  context); // Close the dialog
+                                            });
+                                          },
+                                        ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                            actions: [
+                              // ... OK and Cancel buttons ...
+                              //by clicking on the cancel button the dialog will be closed and the selected value should be cleared
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  'Cancel',
+                                  style: GoogleFonts.poppins(
+                                    color:
+                                        const Color.fromARGB(255, 16, 15, 15),
+                                  ),
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  'Ok',
+                                  style: GoogleFonts.poppins(
+                                    color:
+                                        const Color.fromARGB(255, 16, 15, 15),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                      controller: _medicationStrengthController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter the dosage per intake';
+                        }
+                        return null;
+                      },
+                      readOnly: true, // Prevent direct input
+                      cursorColor: const Color.fromARGB(255, 7, 82, 96),
+                      decoration: InputDecoration(
+                        labelText: 'Unit',
+                        labelStyle: GoogleFonts.poppins(
+                          color: const Color.fromARGB(255, 16, 15, 15),
+                        ),
+                        filled: true,
+                        floatingLabelBehavior: FloatingLabelBehavior.auto,
+                        focusedBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(20),
+                          ),
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 7, 82, 96),
+                          ),
+                        ),
+                        enabledBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(20),
+                          ),
+                          borderSide: BorderSide(
+                            color: Colors.transparent,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 12),
+              Padding(
+                padding: EdgeInsets.only(top: 16),
+                child: Row(
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft, // Align to the left
+                      child: Checkbox(
+                        value: isPillCountRequired,
+                        onChanged: (newValue) {
+                          setState(() {
+                            isPillCountRequired = newValue!;
+                          });
+                        },
+                      ),
+                    ),
+                    Text(
+                      'Available Pill Count (Optional)',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
                 },
                 selectedColor: Theme.of(context).colorScheme.secondary,
                 unSelectedBorderColor: Theme.of(context).colorScheme.secondary,
@@ -215,8 +419,206 @@ class _AddMediFrequencyState extends State<AddMediFrequency> {
   }
 }
 
-// void main() {
-//   runApp(MaterialApp(
-//     home: AddMediFrequency(),
-//   ));
-// }
+onTap: () => showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text(
+                        'Select the Medication Strength',
+                        style: GoogleFonts.poppins(
+                          color: const Color.fromARGB(255, 16, 15, 15),
+                        ),
+                      ),
+                      content: StatefulBuilder(
+                        builder: (BuildContext context,
+                            void Function(void Function()) setState) {
+                          return Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Row(
+                                children: [
+                                  Radio<Units>(
+                                    value: Units.mg,
+                                    groupValue: _units,
+                                    onChanged: (Units? value) {
+                                      setState(() {
+                                        _units = value;
+                                      });
+                                    },
+                                  ),
+                                  Text(
+                                    'mg',
+                                    style: GoogleFonts.poppins(
+                                      color:
+                                          const Color.fromARGB(255, 16, 15, 15),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Radio<Units>(
+                                    value: Units.mcg,
+                                    groupValue: _units,
+                                    onChanged: (Units? value) {
+                                      setState(() {
+                                        _units = value;
+                                      });
+                                    },
+                                  ),
+                                  Text(
+                                    'mcg',
+                                    style: GoogleFonts.poppins(
+                                      color:
+                                          const Color.fromARGB(255, 16, 15, 15),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Radio<Units>(
+                                    value: Units.g,
+                                    groupValue: _units,
+                                    onChanged: (Units? value) {
+                                      setState(() {
+                                        _units = value;
+                                      });
+                                    },
+                                  ),
+                                  Text(
+                                    'g',
+                                    style: GoogleFonts.poppins(
+                                      color:
+                                          const Color.fromARGB(255, 16, 15, 15),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Radio<Units>(
+                                    value: Units.ml,
+                                    groupValue: _units,
+                                    onChanged: (Units? value) {
+                                      setState(() {
+                                        _units = value;
+                                      });
+                                    },
+                                  ),
+                                  Text(
+                                    'ml',
+                                    style: GoogleFonts.poppins(
+                                      color:
+                                          const Color.fromARGB(255, 16, 15, 15),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Radio<Units>(
+                                    value: Units.percentage,
+                                    groupValue: _units,
+                                    onChanged: (Units? value) {
+                                      setState(() {
+                                        _units = value;
+                                      });
+                                    },
+                                  ),
+                                  Text(
+                                    '%',
+                                    style: GoogleFonts.poppins(
+                                      color:
+                                          const Color.fromARGB(255, 16, 15, 15),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text(
+                            'Cancel',
+                            style: GoogleFonts.poppins(
+                              color: const Color.fromARGB(255, 16, 15, 15),
+                            ),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text(
+                            'Ok',
+                            style: GoogleFonts.poppins(
+                              color: const Color.fromARGB(255, 16, 15, 15),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+                controller: _medicationStrengthController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter the medication strength';
+                  }
+                  return null;
+                },
+                cursorColor: const Color.fromARGB(255, 7, 82, 96),
+                decoration: InputDecoration(
+                  hintText: '00',
+                  labelText: 'Medication Strength',
+                  labelStyle: GoogleFonts.poppins(
+                    color: const Color.fromARGB(255, 16, 15, 15),
+                  ),
+                  filled: true,
+                  floatingLabelBehavior: FloatingLabelBehavior.auto,
+                  // fillColor: Colors.white,
+                  focusedBorder: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(
+                        20,
+                      ),
+                    ),
+                    borderSide: BorderSide(
+                      color: Color.fromARGB(255, 7, 82, 96),
+                    ),
+                  ),
+                  enabledBorder: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(
+                        20,
+                      ),
+                    ),
+                    borderSide: BorderSide(
+                      color: Colors.transparent,
+                    ),
+                  ),
+                ),
+
+      
+      
+var timePicked = await showTimePicker(
+                    context: context,
+                    initialTime: TimeOfDay.now(),
+                  );
+                  //In 24 hours format
+                  // String time = '${timePicked!.hour}:${timePicked.minute}';
+                  //In 12 hours format
+                  String time = timePicked!.format(context);
+
+                  setState(() {
+                    _medicationTimeOfDayController =
+                        TextEditingController(text: time);
+                  });
+                    
+                    

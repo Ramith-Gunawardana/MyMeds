@@ -4,7 +4,6 @@ class CategoryModel {
   String name;
   String iconPath;
   Color boxColor;
-
   bool isSelected;
 
   CategoryModel({
@@ -18,9 +17,10 @@ class CategoryModel {
     List<CategoryModel> categories = [];
 
     categories.add(CategoryModel(
-        name: 'Capsule',
-        iconPath: 'lib/assets/icons/pills.gif',
-        boxColor: Color.fromRGBO(7, 82, 96, 1)));
+      name: 'Capsule',
+      iconPath: 'lib/assets/icons/pills.gif',
+      boxColor: Colors.transparent,
+    ));
 
     categories.add(CategoryModel(
         name: 'Tablet',
@@ -30,7 +30,7 @@ class CategoryModel {
     categories.add(CategoryModel(
         name: 'Liquid',
         iconPath: 'lib/assets/icons/liquid.gif',
-        boxColor: Color.fromARGB(255, 7, 82, 96)));
+        boxColor: Colors.transparent));
 
     categories.add(CategoryModel(
         name: 'Topical',
@@ -40,7 +40,7 @@ class CategoryModel {
     categories.add(CategoryModel(
         name: 'Cream',
         iconPath: 'lib/assets/icons/cream.gif',
-        boxColor: Color.fromARGB(255, 7, 82, 96)));
+        boxColor: Colors.transparent));
 
     categories.add(CategoryModel(
         name: 'Drops',

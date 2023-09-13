@@ -57,7 +57,6 @@ dependencies:
   settings_ui: ^2.0.2
   flutter_svg: ^1.1.6
   flutter_spinner_picker: ^0.0.7
-
   day_night_time_picker:
   custom_date_range_picker: ^1.0.10
   custom_radio_grouped_button: ^2.2.0
@@ -65,7 +64,8 @@ dependencies:
   weekday_selector: ^1.1.0
   direct_select: ^2.0.0
   flutter_awesome_alert_box: ^2.0.0
-
+  multi_dropdown: ^2.0.1
+  multi_select_flutter:
 
 dev_dependencies:
   flutter_test:
@@ -102,8 +102,7 @@ flutter:
     - lib/assets/user.png
 
     - lib/assets/images/medication.gif
-    - lib/assets/images/done.gif
-
+    
     - lib/assets/icons/cream.gif
     - lib/assets/icons/drops.gif
     - lib/assets/icons/foam.gif
@@ -124,6 +123,8 @@ flutter:
     - lib/assets/icons/syringe.gif
     - lib/assets/icons/tablet.gif
     - lib/assets/icons/tube.gif
+    - lib/assets/icons/medicine.gif
+    - lib/assets/icons/summerymedicine.gif
 
     # - lib/assets/icons/pill.svg
     # - lib/assets/icons/ico.png

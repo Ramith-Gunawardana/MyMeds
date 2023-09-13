@@ -1,5 +1,7 @@
 import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 import 'package:flutter/material.dart';
+import 'package:multi_dropdown/multiselect_dropdown.dart';
+import 'package:mymeds_app/components/controller_data.dart';
 import 'package:weekday_selector/weekday_selector.dart';
 
 class AddMediFrequency extends StatefulWidget {
@@ -13,10 +15,12 @@ List<bool> values = List.filled(7, false);
 
 class _AddMediFrequencyState extends State<AddMediFrequency> {
   final _formKey = GlobalKey<FormState>();
-  final _medicationTimeOfDayController = TextEditingController();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  bool showFrequencySection = false;
+  TextEditingController _medicationFrequencyController =
+      MedicationControllerData().medicationFrequencyController;
+
+  bool showFrequencySection = true;
   bool showDaysSection = false;
 
   void _showSnackBar(String message) {
@@ -64,7 +68,12 @@ class _AddMediFrequencyState extends State<AddMediFrequency> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
+                      _clearSelectionAndResetControllers();
                       Navigator.pop(context);
+                      //should cancel the changes and controller should be empty
+                      _medicationFrequencyController.clear();
+                      //printing the output in Debug Console
+                      print(_medicationFrequencyController.text);
                     },
                     child: Text('Cancel'),
                     style: ElevatedButton.styleFrom(),
@@ -75,6 +84,11 @@ class _AddMediFrequencyState extends State<AddMediFrequency> {
                         _showSnackBar('Saved Successfully');
                         Navigator.pop(context);
                       }
+                      if (_medicationFrequencyController.text.isEmpty) {
+                        _showSnackBar('Please select a frequency');
+                      }
+                      //printing the output in Debug Console
+                      print(_medicationFrequencyController.text);
                     },
                     child: Text('Done'),
                   ),
@@ -115,7 +129,7 @@ class _AddMediFrequencyState extends State<AddMediFrequency> {
               if (showFrequencySection) ...[
                 SizedBox(height: 16),
                 Text(
-                  'Select the Frequency',
+                  'Choose the Interval',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -123,40 +137,42 @@ class _AddMediFrequencyState extends State<AddMediFrequency> {
                   ),
                 ),
                 SizedBox(height: 16),
-                TextField(
-                  onTap: () async {},
-                  controller: _medicationTimeOfDayController,
-                  readOnly: true,
-                  style: TextStyle(
-                    height: 2,
-                    color: const Color.fromARGB(255, 16, 15, 15),
-                  ),
-                  cursorColor: const Color.fromARGB(255, 7, 82, 96),
-                  decoration: InputDecoration(
-                    hintText: 'Choose from the list',
-                    labelText: 'Select the Frequency',
-                    labelStyle: TextStyle(
-                      color: const Color.fromARGB(255, 16, 15, 15),
-                    ),
-                    filled: true,
-                    floatingLabelBehavior: FloatingLabelBehavior.auto,
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(20),
-                      ),
-                      borderSide: BorderSide(
-                        color: Color.fromARGB(255, 7, 82, 96),
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(20),
-                      ),
-                      borderSide: BorderSide(
-                        color: Colors.transparent,
-                      ),
-                    ),
-                  ),
+                MultiSelectDropDown(
+                  onOptionSelected: (List<ValueItem> selectedOptions) {
+                    if (selectedOptions.isNotEmpty) {
+                      // Assuming you want to concatenate selected options into a single string
+                      String selectedValue = selectedOptions
+                          .map((option) => option.value)
+                          .join(', ');
+                      _medicationFrequencyController.text = selectedValue;
+                    } else {
+                      // Handle the case where no options are selected
+                      _medicationFrequencyController.text = '';
+                    }
+                  },
+                  options: const <ValueItem>[
+                    ValueItem(label: 'Every Day', value: '1'),
+                    ValueItem(label: 'Every 2 Days', value: '2'),
+                    ValueItem(label: 'Every 3 Days', value: '3'),
+                    ValueItem(label: 'Every 4 Days', value: '4'),
+                    ValueItem(label: 'Every 5 Days', value: '5'),
+                    ValueItem(label: 'Every 6 Days', value: '6'),
+                    ValueItem(label: 'Every Week (7 Days)', value: '7'),
+                    ValueItem(label: 'Every 2 Weeks (14 Days)', value: '14'),
+                    ValueItem(label: 'Every 3 Weeks (21 Days)', value: '21'),
+                    ValueItem(label: 'Every Month (30 Days)', value: '30'),
+                    ValueItem(label: 'Every 2 Months (60 Days)', value: '60'),
+                    ValueItem(label: 'Every 3 Months (90 Days)', value: '90'),
+                  ],
+                  selectionType: SelectionType.single,
+                  chipConfig: const ChipConfig(wrapType: WrapType.wrap),
+                  dropdownHeight: 300,
+                  optionTextStyle: const TextStyle(fontSize: 16),
+                  selectedOptionIcon: const Icon(Icons.check_circle),
+                  //default selected option should be everyday
+                  selectedOptions: const <ValueItem>[
+                    ValueItem(label: 'Every Day', value: '1'),
+                  ],
                 ),
               ],
               if (showDaysSection) ...[
@@ -185,10 +201,14 @@ class _AddMediFrequencyState extends State<AddMediFrequency> {
       ),
     );
   }
-}
 
-void main() {
-  runApp(MaterialApp(
-    home: AddMediFrequency(),
-  ));
+  void _clearSelectionAndResetControllers() {
+    setState(() {
+      // Clear selected states
+      values = List.filled(7, false);
+
+      // Reset controllers to default values
+      // _medicationFrequencyController.clear();
+    });
+  }
 }
