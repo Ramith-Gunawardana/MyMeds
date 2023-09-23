@@ -69,25 +69,25 @@ class _AddMedication1State extends State<AddMedication1> {
                 crossAxisAlignment: CrossAxisAlignment
                     .center, // Align children vertically in the center
                 children: [
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Text(
-                          'Add each medicine separately',
-                          style: GoogleFonts.roboto(
-                              fontSize: 11, color: Colors.teal),
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(height: 6),
-                        Image.asset(
-                          'lib/assets/icons/medicine.gif',
-                          width: 30,
-                          height: 30,
-                          fit: BoxFit.fitHeight,
-                        ),
-                      ],
-                    ),
-                  ),
+                  // Expanded(
+                  //   child: Column(
+                  //     children: [
+                  //       Text(
+                  //         'Add each medicine separately',
+                  //         style: GoogleFonts.roboto(
+                  //             fontSize: 11, color: Colors.teal),
+                  //         textAlign: TextAlign.center,
+                  //       ),
+                  //       SizedBox(height: 6),
+                  //       Image.asset(
+                  //         'lib/assets/icons/medicine.gif',
+                  //         width: 30,
+                  //         height: 30,
+                  //         fit: BoxFit.fitHeight,
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                   // SizedBox(width: 20),
                   Expanded(
                     child: GestureDetector(
@@ -124,6 +124,7 @@ class _AddMedication1State extends State<AddMedication1> {
                 isPassword: false,
                 keyboard: TextInputType.text,
                 txtEditController: _medicationNameController,
+                focusNode: FocusNode(),
               ),
               const Padding(
                 padding: EdgeInsets.only(top: 20, left: 10),

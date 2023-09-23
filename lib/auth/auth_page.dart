@@ -11,6 +11,12 @@ class AuthPage extends StatefulWidget {
 
 class _AuthPageState extends State<AuthPage> {
   bool showSigninPage = true;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   void toggleScreens() {
     setState(() {
       showSigninPage = !showSigninPage;

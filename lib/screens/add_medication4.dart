@@ -401,7 +401,7 @@ class _AddMedication4State extends State<AddMedication4> {
               Row(
                 children: [
                   const Padding(
-                    padding: EdgeInsets.only(top: 10, left: 10),
+                    padding: EdgeInsets.only(top: 10, left: 12, right: 20),
                     child: Text(
                       'Notes',
                       style: TextStyle(

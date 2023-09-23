@@ -4,6 +4,7 @@ class CategoryModel {
   String name;
   String iconPath;
   Color boxColor;
+
   bool isSelected;
 
   CategoryModel({
@@ -17,10 +18,9 @@ class CategoryModel {
     List<CategoryModel> categories = [];
 
     categories.add(CategoryModel(
-      name: 'Capsule',
-      iconPath: 'lib/assets/icons/pills.gif',
-      boxColor: Colors.transparent,
-    ));
+        name: 'Capsule',
+        iconPath: 'lib/assets/icons/pills.gif',
+        boxColor: Colors.transparent));
 
     categories.add(CategoryModel(
         name: 'Tablet',
@@ -50,7 +50,7 @@ class CategoryModel {
     categories.add(CategoryModel(
         name: 'Foam',
         iconPath: 'lib/assets/icons/foam.gif',
-        boxColor: Color.fromARGB(255, 7, 82, 96)));
+        boxColor: Colors.transparent));
 
     categories.add(CategoryModel(
         name: 'Gel',
@@ -60,7 +60,7 @@ class CategoryModel {
     categories.add(CategoryModel(
         name: 'Herbal',
         iconPath: 'lib/assets/icons/herbal.gif',
-        boxColor: Color.fromARGB(255, 7, 82, 96)));
+        boxColor: Colors.transparent));
 
     categories.add(CategoryModel(
         name: 'Inhaler',
@@ -70,7 +70,7 @@ class CategoryModel {
     categories.add(CategoryModel(
         name: 'Injection',
         iconPath: 'lib/assets/icons/syringe.gif',
-        boxColor: Color.fromARGB(255, 7, 82, 96)));
+        boxColor: Colors.transparent));
 
     categories.add(CategoryModel(
         name: 'Lotion',
@@ -80,7 +80,7 @@ class CategoryModel {
     categories.add(CategoryModel(
         name: 'Nasal Spray',
         iconPath: 'lib/assets/icons/nasalspray.gif',
-        boxColor: Color.fromARGB(255, 7, 82, 96)));
+        boxColor: Colors.transparent));
 
     categories.add(CategoryModel(
         name: 'Ointment',
@@ -90,7 +90,7 @@ class CategoryModel {
     categories.add(CategoryModel(
         name: 'Patch',
         iconPath: 'lib/assets/icons/patch.gif',
-        boxColor: Color.fromARGB(255, 7, 82, 96)));
+        boxColor: Colors.transparent));
 
     categories.add(CategoryModel(
         name: 'Powder',
@@ -100,7 +100,7 @@ class CategoryModel {
     categories.add(CategoryModel(
         name: 'Spray',
         iconPath: 'lib/assets/icons/spray.gif',
-        boxColor: Color.fromARGB(255, 7, 82, 96)));
+        boxColor: Colors.transparent));
 
     categories.add(CategoryModel(
         name: 'Suppository',

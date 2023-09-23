@@ -1,17 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:mymeds_app/screens/user_profile.dart';
-import 'package:provider/provider.dart';
-import 'package:mymeds_app/screens/edit_profile.dart';
-import 'package:mymeds_app/screens/help_center.dart';
-import 'package:mymeds_app/screens/notification_settings.dart';
-import 'package:mymeds_app/screens/terms_of_services.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 // import 'package:settings/usersettings.dart';
 
 class SettingsPageUI extends StatefulWidget {
+  const SettingsPageUI({super.key});
+
   @override
   _SettingPageUIState createState() => _SettingPageUIState();
 }
@@ -288,6 +284,9 @@ class _SettingPageUIState extends State<SettingsPageUI> {
           //   ),
           // ),
           SettingsList(
+        lightTheme: const SettingsThemeData(
+          settingsListBackground: Color.fromRGBO(241, 250, 251, 1),
+        ),
         sections: [
           SettingsSection(
             title: Text(
@@ -299,12 +298,13 @@ class _SettingPageUIState extends State<SettingsPageUI> {
             ),
             tiles: <SettingsTile>[
               SettingsTile.navigation(
-                leading: Icon(Icons.account_circle_outlined),
-                title: Text('Edit Profile'),
+                leading: const Icon(Icons.account_circle_outlined),
+                title: const Text('Edit Profile'),
                 onPressed: (context) {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => UserProfile()),
+                    MaterialPageRoute(
+                        builder: (context) => const UserProfile()),
                   );
                 },
               ),
@@ -320,12 +320,12 @@ class _SettingPageUIState extends State<SettingsPageUI> {
             ),
             tiles: <SettingsTile>[
               SettingsTile.navigation(
-                leading: Icon(Icons.notifications_active_outlined),
-                title: Text('Notification Settings'),
+                leading: const Icon(Icons.notifications_active_outlined),
+                title: const Text('Notification Settings'),
               ),
               SettingsTile.navigation(
-                leading: Icon(Icons.language_rounded),
-                title: Text('Language'),
+                leading: const Icon(Icons.language_rounded),
+                title: const Text('Language'),
               ),
             ],
           ),
@@ -339,21 +339,21 @@ class _SettingPageUIState extends State<SettingsPageUI> {
             ),
             tiles: <SettingsTile>[
               SettingsTile.navigation(
-                leading: Icon(Icons.help_outline_outlined),
-                title: Text('Help Center'),
+                leading: const Icon(Icons.help_outline_outlined),
+                title: const Text('Help Center'),
               ),
               SettingsTile.navigation(
-                leading: Icon(Icons.description_outlined),
-                title: Text('Terms and Conditions'),
+                leading: const Icon(Icons.description_outlined),
+                title: const Text('Terms and Conditions'),
               ),
             ],
           ),
           SettingsSection(
-            title: Text(''),
+            title: const Text(''),
             tiles: <SettingsTile>[
               SettingsTile.navigation(
-                leading: Icon(Icons.login_rounded),
-                title: Text('Sign Out'),
+                leading: const Icon(Icons.login_rounded),
+                title: const Text('Sign Out'),
                 onPressed: (context) {
                   FirebaseAuth.instance.signOut();
                   Navigator.pop(context);
