@@ -1,11 +1,16 @@
+import 'dart:async';
+
+import 'package:alarm/alarm.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mymeds_app/screens/add_medication1.dart';
+// import 'package:my_navigation/stat';
+import 'package:mymeds_app/screens/alarm_ring.dart';
 // import 'package:mymeds_app/screens/settings.dart';
 import 'package:mymeds_app/screens/homepage2.dart';
 import 'package:mymeds_app/screens/medication.dart';
 import 'package:mymeds_app/screens/more.dart';
-// import 'package:my_navigation/stat';
+import 'package:mymeds_app/screens/statistic.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -23,6 +28,29 @@ class _DashboardState extends State<Dashboard> {
   //Floating Action Button
   bool isFABvisible = false;
 
+  //alarm list
+  late List<AlarmSettings> alarms;
+
+  static StreamSubscription? subscription;
+
+  void loadAlarms() {
+    setState(() {
+      alarms = Alarm.getAlarms();
+      alarms.sort((a, b) => a.dateTime.isBefore(b.dateTime) ? 0 : 1);
+    });
+  }
+
+//show alarm ring screen
+  Future<void> navigateToRingScreen(AlarmSettings alarmSettings) async {
+    print('Opened ring screen');
+    await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => AlarmScreen(alarmSettings: alarmSettings),
+        ));
+    loadAlarms();
+  }
+
   // // documnet IDs
   // List<String> docIDs = [];
 
@@ -38,24 +66,27 @@ class _DashboardState extends State<Dashboard> {
   //       );
   // }
 
-  // @override
-  // void initState() {
-  //   getDocIDs();
-  //   super.initState();
-  // }
+  @override
+  void initState() {
+    loadAlarms();
+    subscription ??= Alarm.ringStream.stream.listen(
+      (alarmSettings) => navigateToRingScreen(alarmSettings),
+    );
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     //pages
-    final List<Widget> _pages = <Widget>[
+    final List<Widget> pages = <Widget>[
       //main page
-      HomePage2(),
+      const HomePage2(),
       //medication
-      Mediaction(),
+      const Mediaction(),
       //statistic
-      // Statistic(),
+      const Statistic(),
       //settings
-      More(),
+      const More(),
     ];
 
     //scaffold
@@ -66,7 +97,7 @@ class _DashboardState extends State<Dashboard> {
       ),
       body: SafeArea(
         child: Center(
-          child: _pages.elementAt(_selectedIndex),
+          child: pages.elementAt(_selectedIndex),
         ),
       ),
       //floating action button
@@ -80,7 +111,6 @@ class _DashboardState extends State<Dashboard> {
                   ),
                 );
               },
-              child: const Icon(Icons.add),
               // shape: const RoundedRectangleBorder(
               //   borderRadius: BorderRadius.all(
               //     Radius.circular(50.0),
@@ -89,13 +119,14 @@ class _DashboardState extends State<Dashboard> {
 
               backgroundColor: Theme.of(context).colorScheme.primary,
               foregroundColor: Theme.of(context).colorScheme.background,
+              child: const Icon(Icons.add),
             )
           : null,
       // floatingActionButtonLocation:
       //     FloatingActionButtonLocation.miniCenterDocked,
       //bottom navigation
       bottomNavigationBar: NavigationBar(
-        // type: BottomNavigationBarType.fixed,
+        backgroundColor: const Color.fromARGB(255, 242, 253, 255),
         destinations: const [
           //home
           NavigationDestination(

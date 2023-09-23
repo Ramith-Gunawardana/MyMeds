@@ -17,71 +17,77 @@ class PasswordReset extends StatefulWidget {
 class _PasswordResetState extends State<PasswordReset> {
   final _emailController = TextEditingController();
 
+  late FocusNode focusNode_email;
+
+  bool _isEmail = false;
+  bool _isRest = false;
+
+  bool _isError = false;
+  String errorMsg = '';
+
+  bool isEmail(String input) => RegExp(
+          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+      .hasMatch(input);
+
+  @override
+  void initState() {
+    super.initState();
+    focusNode_email = FocusNode();
+  }
+
   Future passwordReset() async {
-    try {
-      if (_emailController.text.isEmpty) {
-        showDialog(
-          context: context,
-          builder: (context) {
-            return const Alert_Dialog(
-                isError: true,
-                alertTitle: 'Error',
-                errorMessage: 'Email can\'t be empty.',
-                buttonText: 'Cancel');
-          },
-        );
+    if (_emailController.text.isEmpty) {
+      focusNode_email.requestFocus();
+    } else {
+      if (!isEmail(_emailController.text)) {
+        setState(() {
+          _isEmail = true;
+        });
       } else {
-        //loading circle
-        showDialog(
-          context: context,
-          builder: (context) {
-            return const Center(
-              child: CircularProgressIndicator(
-                color: Color.fromRGBO(7, 82, 96, 1),
-              ),
-            );
-          },
-        );
+        setState(() {
+          _isEmail = false;
+        });
+        try {
+          //loading circle
+          showDialog(
+            context: context,
+            builder: (context) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: Color.fromRGBO(7, 82, 96, 1),
+                ),
+              );
+            },
+          );
 
-        await FirebaseAuth.instance.sendPasswordResetEmail(
-          email: _emailController.text.trim(),
-        );
-        if (!mounted) {
-          return;
+          await FirebaseAuth.instance.sendPasswordResetEmail(
+            email: _emailController.text.trim(),
+          );
+
+          if (!mounted) {
+            return;
+          }
+
+          setState(() {
+            _isRest = true;
+            _isError = false;
+          });
+        } on FirebaseAuthException catch (e) {
+          print('${e.code}');
+          if (!mounted) {
+            return;
+          }
+
+          //pop loading cicle
+          Navigator.of(context).pop();
+
+          setState(() {
+            _isError = true;
+            _isRest = false;
+            errorMsg = getErrorMessage(e.code);
+          });
         }
-        //pop loading cicle
-        Navigator.of(context).pop();
-
-        showDialog(
-          context: context,
-          builder: (context) {
-            return const Alert_Dialog(
-              isError: false,
-              alertTitle: 'Alert',
-              errorMessage: 'Password reset link sent! Check your email.',
-              buttonText: 'Ok',
-            );
-          },
-        );
       }
-    } on FirebaseAuthException catch (e) {
-      print(e);
-      if (!mounted) {
-        return;
-      }
-      //pop loading cicle
-      Navigator.of(context).pop();
-
-      showDialog(
-        context: context,
-        builder: (context) {
-          return Alert_Dialog(
-              isError: true,
-              alertTitle: 'Error',
-              errorMessage: e.message.toString(),
-              buttonText: 'Cancel');
-        },
-      );
     }
   }
 
@@ -136,9 +142,117 @@ class _PasswordResetState extends State<PasswordReset> {
                 isPassword: false,
                 keyboard: TextInputType.emailAddress,
                 txtEditController: _emailController,
+                focusNode: focusNode_email,
               ),
               const SizedBox(
-                height: 20,
+                height: 2,
+              ),
+              //text not a valid email
+              Visibility(
+                visible: _isEmail,
+                maintainSize: true,
+                maintainAnimation: true,
+                maintainState: true,
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
+                    child: Text(
+                      'Enter a valid email address',
+                      style: GoogleFonts.roboto(
+                        fontSize: 12,
+                        color: const Color.fromRGBO(255, 16, 15, 15),
+                      ),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              //firebase error message
+              Visibility(
+                visible: _isError,
+                maintainSize: false,
+                maintainAnimation: true,
+                maintainState: true,
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    child: GlowingOverscrollIndicator(
+                      axisDirection: AxisDirection.right,
+                      color: const Color.fromRGBO(255, 16, 15, 15),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          const Icon(
+                            Icons.error_outline_rounded,
+                            color: Color.fromRGBO(255, 16, 15, 15),
+                          ),
+                          const SizedBox(
+                            width: 3,
+                          ),
+                          Text(
+                            errorMsg,
+                            style: GoogleFonts.roboto(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                              color: const Color.fromRGBO(255, 16, 15, 15),
+                            ),
+                            textAlign: TextAlign.start,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              //success message
+              Visibility(
+                visible: _isRest,
+                maintainSize: false,
+                maintainAnimation: true,
+                maintainState: true,
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    child: GlowingOverscrollIndicator(
+                      axisDirection: AxisDirection.right,
+                      color: const Color.fromARGB(239, 0, 198, 89),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          const Icon(
+                            Icons.check_circle_outline,
+                            color: Color.fromARGB(239, 0, 198, 89),
+                          ),
+                          const SizedBox(
+                            width: 3,
+                          ),
+                          Text(
+                            'Password reset link sent! Check your email.',
+                            style: GoogleFonts.roboto(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                              color: Color.fromARGB(239, 0, 198, 89),
+                            ),
+                            textAlign: TextAlign.start,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+
+              const SizedBox(
+                height: 15,
               ),
               //button
               SizedBox(
@@ -172,5 +286,25 @@ class _PasswordResetState extends State<PasswordReset> {
         ),
       ),
     );
+  }
+
+  // firebase error messages
+  String getErrorMessage(String errorCode) {
+    switch (errorCode) {
+      case 'user-disabled':
+        return "User disabled.";
+      case 'user-not-found':
+        return 'No user found with this email.';
+      case 'weak-password':
+        return 'Please enter a strong password';
+      case 'invalid-action-code':
+        return 'Invalid action code. Please try again';
+      case 'expired-action-cod':
+        return 'Action code is expired.';
+      case 'network-request-failed':
+        return 'Network error.';
+      default:
+        return 'Error while resetting password.';
+    }
   }
 }

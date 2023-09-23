@@ -206,6 +206,7 @@ class _AddMedication2State extends State<AddMedication2> {
                   isPassword: false,
                   keyboard: TextInputType.number,
                   txtEditController: _medicationCountController,
+                  focusNode: FocusNode(),
                 ),
               SizedBox(height: 24),
               Container(

@@ -10,13 +10,15 @@ class MedCard extends StatelessWidget {
   final int index;
   final int size;
   late CalendarDateTime selectedDate;
+  final VoidCallback refreshCallback;
 
   MedCard(
       {super.key,
       required this.documentID,
       required this.index,
       required this.size,
-      required this.selectedDate});
+      required this.selectedDate,
+      required this.refreshCallback});
 
   @override
   Widget build(BuildContext context) {
@@ -29,12 +31,13 @@ class MedCard extends StatelessWidget {
         .collection('Medications');
 
     return FutureBuilder(
-      future:
-          medications.doc(documentID).get(GetOptions(source: Source.server)),
+      future: medications
+          .doc(documentID)
+          .get(const GetOptions(source: Source.cache)),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasData) {
-            Map<String, dynamic>? med_data = snapshot.data!.data() != null
+            Map<String, dynamic>? medData = snapshot.data!.data() != null
                 ? snapshot.data!.data() as Map<String, dynamic>
                 : <String, dynamic>{};
 
@@ -51,45 +54,61 @@ class MedCard extends StatelessWidget {
                       .doc(documentID)
                       .collection('Logs')
                       .doc('$selectedDate')
-                      .get(const GetOptions(source: Source.server)),
+                      .get(const GetOptions(source: Source.cache)),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
                       if (snapshot.hasData) {
-                        Map<String, dynamic>? log_data =
+                        Map<String, dynamic>? logData =
                             snapshot.data!.data() != null
                                 ? snapshot.data!.data() as Map<String, dynamic>
                                 : <String, dynamic>{};
 
                         // print(snapshot.data!.data());
                         if (snapshot.data!.data() == null) {
-                          // print('No medications for ${selectedDate}');
+                          print('No medications for $selectedDate');
+                          return const Text('');
                         } else {
                           // print('${log_data['isTaken']}');
                           // print(
                           // '${med_data['medname']} ${med_data['strength']} ${med_data['strength_unit']}');
+                          List<String> time =
+                              medData['times'].toString().split(':');
+                          int hour = int.parse(time[0]);
+                          int minute = int.parse(time[1]);
+
                           return TimeLine(
+                            documentID: documentID,
                             isFirst: index == 0 ? true : false,
                             isLast: index == size - 1,
                             isPast: true,
-                            medName: med_data['medname'],
+                            medName: medData['medname'],
                             dosage:
-                                '${med_data['strength']} ${med_data['strength_unit']}',
-                            time: med_data['times'],
-                            isTaken: log_data['isTaken'],
+                                '${medData['strength']} ${medData['strength_unit']}',
+                            time: TimeOfDay(
+                              hour: hour,
+                              minute: minute,
+                            ).format(context).toString(),
+                            isTaken: logData['isTaken'],
+                            selectedDate: selectedDate.toString(),
+                            refreshCallback: refreshCallback,
                           );
                         }
                       }
                     }
-                    return Container(
-                      width: double.infinity,
-                      height: 120.0,
-                      margin: const EdgeInsets.fromLTRB(50, 20, 25, 20),
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20.0),
-                        color: Colors.grey.shade300,
-                      ),
-                    );
+                    return Shimmer.fromColors(
+                        baseColor: Colors.grey.shade300,
+                        highlightColor: Colors.grey.shade100,
+                        enabled: true,
+                        child: const SingleChildScrollView(
+                          physics: NeverScrollableScrollPhysics(),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              BannerPlaceholder(),
+                            ],
+                          ),
+                        ));
                   },
                 )
               ],
