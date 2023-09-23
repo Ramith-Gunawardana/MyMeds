@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 
 class Text_Field extends StatelessWidget {
-  const Text_Field({
+  Text_Field({
     super.key,
     required this.label,
     required this.hint,
     required this.isPassword,
     required this.keyboard,
     required this.txtEditController,
+    required this.focusNode,
   });
 
   final String label;
@@ -16,13 +18,13 @@ class Text_Field extends StatelessWidget {
   final bool isPassword;
   final TextInputType keyboard;
   final TextEditingController txtEditController;
+  late FocusNode focusNode;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      focusNode: focusNode,
       keyboardType: keyboard,
-
-      // keyboardType: isEmail ? TextInputType.emailAddress : TextInputType.name,
       obscureText: isPassword,
       controller: txtEditController,
       style: GoogleFonts.roboto(

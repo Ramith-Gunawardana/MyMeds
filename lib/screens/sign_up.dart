@@ -3,9 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
-
-import 'package:mymeds_app/components/alert.dart';
 
 import '../components/text_field.dart';
 import '../services/auth_service.dart';
@@ -26,98 +23,45 @@ class _SignUpState extends State<SignUp> {
   final _passwordController = TextEditingController();
   final _confirmpasswordController = TextEditingController();
   final _nameController = TextEditingController();
-  var _dobController = TextEditingController();
+  final _dobController = TextEditingController();
   final _genderController = TextEditingController();
+
+  late FocusNode focusNode_email;
+  late FocusNode focusNode_pwd;
+  late FocusNode focusNode_pwdConfirm;
+  late FocusNode focusNode_name;
+  late FocusNode focusNode_dob;
+  late FocusNode focusNode_gender;
+
+  bool _isEmail = false;
+  bool _isName = false;
+  bool _isPwd = false;
+  bool _isPwdConfirm = false;
+
+  bool _isError = false;
+  bool _isSuccess = false;
+  //firebase error message
+  String errorMsg = '';
 
   Genders? _genderSelected;
 
-  Future signUp() async {
-    try {
-      if (_emailController.text.isEmpty ||
-          _passwordController.text.isEmpty ||
-          _confirmpasswordController.text.isEmpty) {
-        showDialog(
-          context: context,
-          builder: (context) {
-            return const Alert_Dialog(
-              isError: true,
-              alertTitle: 'Error',
-              errorMessage: 'Email or password can\'t be empty.',
-              buttonText: 'Cancel',
-            );
-          },
-        );
-      } else {
-        if (isPasswordConfirmed()) {
-          //create user
-          UserCredential userCredential =
-              await FirebaseAuth.instance.createUserWithEmailAndPassword(
-            email: _emailController.text.trim(),
-            password: _passwordController.text.trim(),
-          );
+  bool isName(String input) => RegExp(r'^[a-zA-Z]').hasMatch(input);
+  bool isEmail(String input) => RegExp(
+          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+      .hasMatch(input);
+  bool isPassword(String input) =>
+      RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
+          .hasMatch(input);
 
-          //add user data
-          // addUserData(
-          //   _nameController.text.trim(),
-          //   _dobController.text.trim(),
-          //   _genderController.text.trim(),
-          //   _emailController.text.trim(),
-          // );
-          await FirebaseFirestore.instance
-              .collection('Users')
-              .doc(userCredential.user!.email)
-              .set(
-            {
-              'name': _nameController.text.trim(),
-              'dob': _dobController.text.trim(),
-              'gender': _genderController.text.trim(),
-              'nic': null,
-              'address': null,
-              'mobile': null,
-            },
-          );
-
-          if (!mounted) {
-            return;
-          }
-          showDialog(
-            context: context,
-            builder: (context) {
-              return const Alert_Dialog(
-                isError: false,
-                alertTitle: 'Alert',
-                errorMessage: 'Account created successfully',
-                buttonText: 'Ok',
-              );
-            },
-          );
-        }
-      }
-    } on FirebaseAuthException catch (e) {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return Alert_Dialog(
-            isError: true,
-            alertTitle: 'Error',
-            errorMessage: e.message.toString(),
-            buttonText: 'Cancel',
-          );
-        },
-      );
-    }
-  }
-
-  Future addUserData(
-      String name, String dob, String gender, String email) async {
-    // await FirebaseFirestore.instance.collection('users').add(
-    //   {
-    //     'name': name,
-    //     'dob': dob,
-    //     'gender': gender,
-    //     'email': email,
-    //   },
-    // );
+  @override
+  void initState() {
+    focusNode_email = FocusNode();
+    focusNode_pwd = FocusNode();
+    focusNode_pwdConfirm = FocusNode();
+    focusNode_name = FocusNode();
+    focusNode_dob = FocusNode();
+    focusNode_gender = FocusNode();
+    super.initState();
   }
 
   bool isPasswordConfirmed() {
@@ -125,20 +69,242 @@ class _SignUpState extends State<SignUp> {
         _confirmpasswordController.text.trim()) {
       return true;
     } else {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return const Alert_Dialog(
-            isError: true,
-            alertTitle: 'Error',
-            errorMessage: 'Passwords mismatch',
-            buttonText: 'Ok',
-          );
-        },
-      );
       return false;
     }
   }
+
+  Future signUp() async {
+    //check empty fields
+    if (_nameController.text.isEmpty) {
+      focusNode_name.requestFocus();
+      // } else if (_dobController.text.isEmpty) {
+      //   focusNode_dob.requestFocus();
+      // } else if (_genderController.text.isEmpty) {
+      //   focusNode_gender.requestFocus();
+    } else if (_emailController.text.isEmpty) {
+      focusNode_email.requestFocus();
+    } else if (_passwordController.text.isEmpty) {
+      focusNode_pwd.requestFocus();
+    } else if (_confirmpasswordController.text.isEmpty) {
+      focusNode_pwdConfirm.requestFocus();
+    } else {
+      //check input validation (RegEx)
+      if (!isName(_nameController.text)) {
+        //show error
+        setState(() {
+          _isName = true;
+        });
+      } else {
+        //hide error
+        setState(() {
+          _isName = false;
+        });
+      }
+      if (!isEmail(_emailController.text)) {
+        setState(() {
+          _isEmail = true;
+        });
+      } else {
+        setState(() {
+          _isEmail = false;
+        });
+      }
+      if (!isPassword(_passwordController.text)) {
+        setState(() {
+          _isPwd = true;
+        });
+      } else {
+        setState(() {
+          _isPwd = false;
+        });
+
+        try {
+          //check confirm password
+          if (isPasswordConfirmed()) {
+            //passwords mismatch
+            setState(() {
+              _isPwdConfirm = false;
+            });
+            //loading circle
+            showDialog(
+              context: context,
+              builder: (context) {
+                return const Center(
+                  child: CircularProgressIndicator(
+                    color: Color.fromRGBO(7, 82, 96, 1),
+                  ),
+                );
+              },
+            );
+            //create user
+            UserCredential userCredential =
+                await FirebaseAuth.instance.createUserWithEmailAndPassword(
+              email: _emailController.text.trim(),
+              password: _passwordController.text.trim(),
+            );
+
+            await FirebaseFirestore.instance
+                .collection('Users')
+                .doc(userCredential.user!.email)
+                .set(
+              {
+                'name': _nameController.text.trim(),
+                'dob': null,
+                'gender': null,
+                'nic': null,
+                'address': null,
+                'mobile': null,
+              },
+            );
+
+            if (!mounted) {
+              return;
+            }
+
+            //pop loading cicle
+            Navigator.of(context).pop();
+
+            //account created successfully
+            setState(() {
+              _isError = false;
+              _isSuccess = true;
+            });
+
+            // showDialog(
+            //   context: context,
+            //   builder: (context) {
+            //     return const Alert_Dialog(
+            //       isError: false,
+            //       alertTitle: 'Alert',
+            //       errorMessage: 'Account created successfully',
+            //       buttonText: 'Ok',
+            //     );
+            //   },
+            // );
+          } else {
+            //passwords mismatch
+            setState(() {
+              _isPwdConfirm = true;
+            });
+          }
+        } on FirebaseAuthException catch (e) {
+          //firebase error
+          setState(() {
+            _isError = true;
+            _isSuccess = false;
+            errorMsg = getErrorMessage(e.code);
+          });
+
+          // showDialog(
+          //   context: context,
+          //   builder: (context) {
+          //     return Alert_Dialog(
+          //       isError: true,
+          //       alertTitle: 'Error',
+          //       errorMessage: e.message.toString(),
+          //       buttonText: 'Cancel',
+          //     );
+          //   },
+          // );
+
+          //pop loading cicle
+          Navigator.of(context).pop();
+        }
+      }
+
+      //   try {
+      //     if (_emailController.text.isEmpty ||
+      //         _passwordController.text.isEmpty ||
+      //         _confirmpasswordController.text.isEmpty) {
+      //       showDialog(
+      //         context: context,
+      //         builder: (context) {
+      //           return const Alert_Dialog(
+      //             isError: true,
+      //             alertTitle: 'Error',
+      //             errorMessage: 'Email or password can\'t be empty.',
+      //             buttonText: 'Cancel',
+      //           );
+      //         },
+      //       );
+      //     } else {
+      //       if (isPasswordConfirmed()) {
+      //         //create user
+      //         UserCredential userCredential =
+      //             await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      //           email: _emailController.text.trim(),
+      //           password: _passwordController.text.trim(),
+      //         );
+
+      //         await FirebaseFirestore.instance
+      //             .collection('Users')
+      //             .doc(userCredential.user!.email)
+      //             .set(
+      //           {
+      //             'name': _nameController.text.trim(),
+      //             'dob': _dobController.text.trim(),
+      //             'gender': _genderController.text.trim(),
+      //             'nic': null,
+      //             'address': null,
+      //             'mobile': null,
+      //           },
+      //         );
+
+      //         if (!mounted) {
+      //           return;
+      //         }
+      //         showDialog(
+      //           context: context,
+      //           builder: (context) {
+      //             return const Alert_Dialog(
+      //               isError: false,
+      //               alertTitle: 'Alert',
+      //               errorMessage: 'Account created successfully',
+      //               buttonText: 'Ok',
+      //             );
+      //           },
+      //         );
+      //       }
+      //     }
+      //   } on FirebaseAuthException catch (e) {
+      //     showDialog(
+      //       context: context,
+      //       builder: (context) {
+      //         return Alert_Dialog(
+      //           isError: true,
+      //           alertTitle: 'Error',
+      //           errorMessage: e.message.toString(),
+      //           buttonText: 'Cancel',
+      //         );
+      //       },
+      //     );
+    }
+  }
+
+  //used for testing
+  // Future signUp() async {
+  //   try {
+  //     //create user
+  //     UserCredential userCredential =
+  //         await FirebaseAuth.instance.createUserWithEmailAndPassword(
+  //       email: _emailController.text.trim(),
+  //       password: _passwordController.text.trim(),
+  //     );
+
+  //     //account created successfully
+  //     setState(() {
+  //       _isError = false;
+  //       _isSuccess = true;
+  //     });
+  //   } on FirebaseAuthException catch (e) {
+  //     //firebase error
+  //     setState(() {
+  //       _isError = true;
+  //       _isSuccess = false;
+  //       errorMsg = getErrorMessage(e.code);
+  //     });
+  //   }
+  // }
 
   // for memory mgt
   @override
@@ -155,18 +321,6 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(0),
-        child: AppBar(
-            // systemOverlayStyle: const SystemUiOverlayStyle(
-            //     statusBarColor: Color.fromARGB(255, 233, 237, 237)),
-            // elevation: 0,
-            // iconTheme: const IconThemeData(
-            //     color: Color.fromRGBO(7, 82, 96, 1),
-            //     ),
-            ),
-      ),
-      // backgroundColor: const Color.fromARGB(255, 233, 237, 237),
       body: SafeArea(
         child: Container(
           margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -203,7 +357,7 @@ class _SignUpState extends State<SignUp> {
                             //title
                             Text(
                               'MyMeds',
-                              style: GoogleFonts.roboto(
+                              style: GoogleFonts.poppins(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w600,
                                 color: const Color.fromRGBO(7, 82, 96, 1),
@@ -214,26 +368,8 @@ class _SignUpState extends State<SignUp> {
                       ],
                     ),
                     const SizedBox(
-                      height: 20,
+                      height: 40,
                     ),
-                    // ElevatedButton(
-                    //   child: Text("open picker dialog"),
-                    //   onPressed: () async {
-                    //     var datePicked = await DatePicker.showSimpleDatePicker(
-                    //       context,
-                    //       initialDate: DateTime.now(),
-                    //       firstDate: DateTime(1900),
-                    //       lastDate: DateTime(2099),
-                    //       dateFormat: "dd-MMMM-yyyy",
-                    //       locale: DateTimePickerLocale.en_us,
-                    //       looping: true,
-                    //     );
-
-                    //     final snackBar =
-                    //         SnackBar(content: Text("Date Picked $datePicked"));
-                    //     ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    //   },
-                    // ),
 
                     //name
                     Text_Field(
@@ -242,209 +378,274 @@ class _SignUpState extends State<SignUp> {
                       isPassword: false,
                       keyboard: TextInputType.text,
                       txtEditController: _nameController,
+                      focusNode: focusNode_name,
                     ),
-
                     const SizedBox(
-                      height: 15,
+                      height: 2,
+                    ),
+                    //text not a valid name
+                    Visibility(
+                      visible: _isName,
+                      maintainSize: true,
+                      maintainAnimation: true,
+                      maintainState: true,
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
+                          child: Text(
+                            'Enter a valid name',
+                            style: GoogleFonts.roboto(
+                              fontSize: 12,
+                              color: const Color.fromRGBO(255, 16, 15, 15),
+                            ),
+                            textAlign: TextAlign.start,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
                     ),
 
                     //date of birth
-                    TextField(
-                      onTap: () async {
-                        var datePicked = await DatePicker.showSimpleDatePicker(
-                          context,
-                          titleText: 'Select your birthday',
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(1900),
-                          lastDate: DateTime(2099),
-                          dateFormat: "dd-MMMM-yyyy",
-                          locale: DateTimePickerLocale.en_us,
-                          looping: true,
-                        );
-                        String date =
-                            '${datePicked!.day}-${datePicked.month}-${datePicked.year}';
+                    // TextField(
+                    //   onTap: () async {
+                    //     var datePicked = await DatePicker.showSimpleDatePicker(
+                    //       context,
+                    //       titleText: 'Select your birthday',
+                    //       initialDate: DateTime.now(),
+                    //       firstDate: DateTime(1900),
+                    //       lastDate: DateTime(2099),
+                    //       dateFormat: "dd-MMMM-yyyy",
+                    //       locale: DateTimePickerLocale.en_us,
+                    //       looping: true,
+                    //     );
+                    //     String date =
+                    //         '${datePicked!.day}-${datePicked.month}-${datePicked.year}';
 
-                        setState(() {
-                          _dobController = TextEditingController(text: date);
-                        });
-                      },
-                      controller: _dobController,
-                      readOnly: true,
-                      style: GoogleFonts.roboto(
-                        height: 2,
-                        color: const Color.fromARGB(255, 16, 15, 15),
-                      ),
-                      cursorColor: const Color.fromARGB(255, 7, 82, 96),
-                      decoration: InputDecoration(
-                        hintText: 'DD-MM-YYYY',
-                        labelText: 'Date of Birth',
-                        labelStyle: GoogleFonts.roboto(
-                          color: const Color.fromARGB(255, 16, 15, 15),
-                        ),
-                        filled: true,
-                        floatingLabelBehavior: FloatingLabelBehavior.auto,
-                        // fillColor: Colors.white,
-                        focusedBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(
-                              20,
-                            ),
-                          ),
-                          borderSide: BorderSide(
-                            color: Color.fromARGB(255, 7, 82, 96),
-                          ),
-                        ),
-                        enabledBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(
-                              20,
-                            ),
-                          ),
-                          borderSide: BorderSide(
-                            color: Colors.transparent,
-                          ),
-                        ),
-                      ),
-                    ),
+                    //     setState(() {
+                    //       _dobController = TextEditingController(text: date);
+                    //     });
+                    //   },
+                    //   focusNode: focusNode_dob,
+                    //   controller: _dobController,
+                    //   readOnly: true,
+                    //   style: GoogleFonts.roboto(
+                    //     height: 2,
+                    //     color: const Color.fromARGB(255, 16, 15, 15),
+                    //   ),
+                    //   cursorColor: const Color.fromARGB(255, 7, 82, 96),
+                    //   decoration: InputDecoration(
+                    //     hintText: 'DD-MM-YYYY',
+                    //     labelText: 'Date of Birth',
+                    //     labelStyle: GoogleFonts.roboto(
+                    //       color: const Color.fromARGB(255, 16, 15, 15),
+                    //     ),
+                    //     filled: true,
+                    //     floatingLabelBehavior: FloatingLabelBehavior.auto,
+                    //     // fillColor: Colors.white,
+                    //     focusedBorder: const OutlineInputBorder(
+                    //       borderRadius: BorderRadius.all(
+                    //         Radius.circular(
+                    //           20,
+                    //         ),
+                    //       ),
+                    //       borderSide: BorderSide(
+                    //         color: Color.fromARGB(255, 7, 82, 96),
+                    //       ),
+                    //     ),
+                    //     enabledBorder: const OutlineInputBorder(
+                    //       borderRadius: BorderRadius.all(
+                    //         Radius.circular(
+                    //           20,
+                    //         ),
+                    //       ),
+                    //       borderSide: BorderSide(
+                    //         color: Colors.transparent,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
 
-                    const SizedBox(
-                      height: 15,
-                    ),
+                    // const SizedBox(
+                    //   height: 18,
+                    // ),
+
                     // DropdownMenu(
-                    //   dropdownMenuEntries: [
+                    //   controller: _genderController,
+                    //   textStyle: GoogleFonts.roboto(
+                    //     height: 2,
+                    //     color: const Color.fromARGB(255, 16, 15, 15),
+                    //   ),
+                    //   width: MediaQuery.of(context).size.width * 0.82,
+                    //   menuStyle: const MenuStyle(
+                    //     shape: MaterialStatePropertyAll(
+                    //       RoundedRectangleBorder(
+                    //         borderRadius: BorderRadius.all(
+                    //           Radius.circular(20),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    //   inputDecorationTheme: const InputDecorationTheme(
+                    //     filled: true,
+                    //     focusedBorder: OutlineInputBorder(
+                    //       borderRadius: BorderRadius.all(
+                    //         Radius.circular(
+                    //           20,
+                    //         ),
+                    //       ),
+                    //       borderSide: BorderSide(
+                    //         color: Color.fromARGB(255, 7, 82, 96),
+                    //       ),
+                    //     ),
+                    //     enabledBorder: OutlineInputBorder(
+                    //       borderRadius: BorderRadius.all(
+                    //         Radius.circular(
+                    //           20,
+                    //         ),
+                    //       ),
+                    //       borderSide: BorderSide(
+                    //         color: Colors.transparent,
+                    //       ),
+                    //     ),
+                    //   ),
+                    //   dropdownMenuEntries: const [
                     //     DropdownMenuEntry(value: 'Male', label: 'Male'),
                     //     DropdownMenuEntry(value: 'Female', label: 'Female'),
                     //     DropdownMenuEntry(value: 'Other', label: 'Other'),
                     //   ],
-                    //   label: Text('Gender'),
+                    //   label: const Text('Gender'),
                     // ),
 
                     //gender
-                    TextField(
-                      // onTap: () async {
-                      //   DropdownButtonFormField(
-                      //     items: [
-                      //       DropdownMenuItem(
-                      //         child: Text('Male'),
-                      //       ),
-                      //       DropdownMenuItem(
-                      //         child: Text('Female'),
-                      //       ),
-                      //       DropdownMenuItem(
-                      //         child: Text('Other'),
-                      //       ),
-                      //     ],
-                      //     onChanged: (value) {},
-                      //   );
-                      // },
-                      onTap: () => showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: Text(
-                              'Select your gender',
-                              style: GoogleFonts.roboto(
-                                color: const Color.fromARGB(255, 16, 15, 15),
-                              ),
-                            ),
-                            content: StatefulBuilder(
-                              builder:
-                                  (BuildContext context, StateSetter setState) {
-                                return Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    RadioListTile(
-                                      value: Genders.male,
-                                      title: const Text('Male'),
-                                      groupValue: _genderSelected,
-                                      onChanged: (Genders? vale) {
-                                        setState(
-                                          () {
-                                            _genderSelected = vale;
-                                            _genderController.text = 'Male';
-                                            Navigator.of(context).pop();
-                                          },
-                                        );
-                                      },
-                                    ),
-                                    RadioListTile(
-                                      value: Genders.female,
-                                      title: const Text('Female'),
-                                      groupValue: _genderSelected,
-                                      onChanged: (Genders? vale) {
-                                        setState(
-                                          () {
-                                            _genderSelected = vale;
-                                            _genderController.text = 'Female';
-                                            Navigator.of(context).pop();
-                                          },
-                                        );
-                                      },
-                                    ),
-                                    RadioListTile(
-                                      value: Genders.other,
-                                      title: const Text('Other'),
-                                      groupValue: _genderSelected,
-                                      onChanged: (Genders? vale) {
-                                        setState(
-                                          () {
-                                            _genderSelected = vale;
-                                            _genderController.text = 'Other';
-                                            Navigator.of(context).pop();
-                                          },
-                                        );
-                                      },
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
-                          );
-                        },
-                      ),
-                      controller: _genderController,
-                      readOnly: true,
-                      style: GoogleFonts.roboto(
-                        height: 2,
-                        color: const Color.fromARGB(255, 16, 15, 15),
-                      ),
-                      cursorColor: const Color.fromARGB(255, 7, 82, 96),
-                      decoration: InputDecoration(
-                        labelText: 'Gender',
-                        labelStyle: GoogleFonts.roboto(
-                          color: const Color.fromARGB(255, 16, 15, 15),
-                        ),
-                        hintText: 'Gender',
-                        filled: true,
-                        floatingLabelBehavior: FloatingLabelBehavior.auto,
-                        // fillColor: Colors.white,
-                        focusedBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(
-                              20,
-                            ),
-                          ),
-                          borderSide: BorderSide(
-                            color: Color.fromARGB(255, 7, 82, 96),
-                          ),
-                        ),
-                        enabledBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(
-                              20,
-                            ),
-                          ),
-                          borderSide: BorderSide(
-                            color: Colors.transparent,
-                          ),
-                        ),
-                      ),
-                    ),
+                    // TextField(
+                    //   // onTap: () async {
+                    //   //   DropdownButtonFormField(
+                    //   //     items: [
+                    //   //       DropdownMenuItem(
+                    //   //         child: Text('Male'),
+                    //   //       ),
+                    //   //       DropdownMenuItem(
+                    //   //         child: Text('Female'),
+                    //   //       ),
+                    //   //       DropdownMenuItem(
+                    //   //         child: Text('Other'),
+                    //   //       ),
+                    //   //     ],
+                    //   //     onChanged: (value) {},
+                    //   //   );
+                    //   // },
+                    //   focusNode: focusNode_gender,
+                    //   onTap: () => showDialog(
+                    //     context: context,
+                    //     builder: (context) {
+                    //       return AlertDialog(
+                    //         title: Text(
+                    //           'Select your gender',
+                    //           style: GoogleFonts.roboto(
+                    //             color: const Color.fromARGB(255, 16, 15, 15),
+                    //           ),
+                    //         ),
+                    //         content: StatefulBuilder(
+                    //           builder:
+                    //               (BuildContext context, StateSetter setState) {
+                    //             return Column(
+                    //               mainAxisAlignment: MainAxisAlignment.center,
+                    //               mainAxisSize: MainAxisSize.min,
+                    //               children: <Widget>[
+                    //                 RadioListTile(
+                    //                   value: Genders.male,
+                    //                   title: const Text('Male'),
+                    //                   groupValue: _genderSelected,
+                    //                   onChanged: (Genders? vale) {
+                    //                     setState(
+                    //                       () {
+                    //                         _genderSelected = vale;
+                    //                         _genderController.text = 'Male';
+                    //                         Navigator.of(context).pop();
+                    //                       },
+                    //                     );
+                    //                   },
+                    //                 ),
+                    //                 RadioListTile(
+                    //                   value: Genders.female,
+                    //                   title: const Text('Female'),
+                    //                   groupValue: _genderSelected,
+                    //                   onChanged: (Genders? vale) {
+                    //                     setState(
+                    //                       () {
+                    //                         _genderSelected = vale;
+                    //                         _genderController.text = 'Female';
+                    //                         Navigator.of(context).pop();
+                    //                       },
+                    //                     );
+                    //                   },
+                    //                 ),
+                    //                 RadioListTile(
+                    //                   value: Genders.other,
+                    //                   title: const Text('Other'),
+                    //                   groupValue: _genderSelected,
+                    //                   onChanged: (Genders? vale) {
+                    //                     setState(
+                    //                       () {
+                    //                         _genderSelected = vale;
+                    //                         _genderController.text = 'Other';
+                    //                         Navigator.of(context).pop();
+                    //                       },
+                    //                     );
+                    //                   },
+                    //                 ),
+                    //               ],
+                    //             );
+                    //           },
+                    //         ),
+                    //       );
+                    //     },
+                    //   ),
+                    //   controller: _genderController,
+                    //   readOnly: true,
+                    //   style: GoogleFonts.roboto(
+                    //     height: 2,
+                    //     color: const Color.fromARGB(255, 16, 15, 15),
+                    //   ),
+                    //   cursorColor: const Color.fromARGB(255, 7, 82, 96),
+                    //   decoration: InputDecoration(
+                    //     labelText: 'Gender',
+                    //     labelStyle: GoogleFonts.roboto(
+                    //       color: const Color.fromARGB(255, 16, 15, 15),
+                    //     ),
+                    //     hintText: 'Gender',
+                    //     filled: true,
+                    //     floatingLabelBehavior: FloatingLabelBehavior.auto,
+                    //     // fillColor: Colors.white,
+                    //     focusedBorder: const OutlineInputBorder(
+                    //       borderRadius: BorderRadius.all(
+                    //         Radius.circular(
+                    //           20,
+                    //         ),
+                    //       ),
+                    //       borderSide: BorderSide(
+                    //         color: Color.fromARGB(255, 7, 82, 96),
+                    //       ),
+                    //     ),
+                    //     enabledBorder: const OutlineInputBorder(
+                    //       borderRadius: BorderRadius.all(
+                    //         Radius.circular(
+                    //           20,
+                    //         ),
+                    //       ),
+                    //       borderSide: BorderSide(
+                    //         color: Colors.transparent,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
 
-                    const SizedBox(
-                      height: 15,
-                    ),
+                    // const SizedBox(
+                    //   height: 18,
+                    // ),
 
                     //email
                     Text_Field(
@@ -453,10 +654,34 @@ class _SignUpState extends State<SignUp> {
                       isPassword: false,
                       keyboard: TextInputType.emailAddress,
                       txtEditController: _emailController,
+                      focusNode: focusNode_email,
                     ),
-
                     const SizedBox(
-                      height: 15,
+                      height: 2,
+                    ),
+                    //text not a valid email
+                    Visibility(
+                      visible: _isEmail,
+                      maintainSize: true,
+                      maintainAnimation: true,
+                      maintainState: true,
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
+                          child: Text(
+                            'Enter a valid email address',
+                            style: GoogleFonts.roboto(
+                              fontSize: 12,
+                              color: const Color.fromRGBO(255, 16, 15, 15),
+                            ),
+                            textAlign: TextAlign.start,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
                     ),
 
                     //password
@@ -466,10 +691,34 @@ class _SignUpState extends State<SignUp> {
                       isPassword: true,
                       keyboard: TextInputType.visiblePassword,
                       txtEditController: _passwordController,
+                      focusNode: focusNode_pwd,
                     ),
-
                     const SizedBox(
-                      height: 15,
+                      height: 2,
+                    ),
+                    //text not a valid password
+                    Visibility(
+                      visible: _isPwd,
+                      maintainSize: true,
+                      maintainAnimation: true,
+                      maintainState: true,
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
+                          child: Text(
+                            'Enter a strong password',
+                            style: GoogleFonts.roboto(
+                              fontSize: 12,
+                              color: const Color.fromRGBO(255, 16, 15, 15),
+                            ),
+                            textAlign: TextAlign.start,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
                     ),
 
                     //confirm password
@@ -479,13 +728,116 @@ class _SignUpState extends State<SignUp> {
                       isPassword: true,
                       keyboard: TextInputType.visiblePassword,
                       txtEditController: _confirmpasswordController,
+                      focusNode: focusNode_pwdConfirm,
                     ),
-
                     const SizedBox(
-                      height: 30,
+                      height: 2,
+                    ),
+                    //text password mismatch
+                    Visibility(
+                      visible: _isPwdConfirm,
+                      maintainSize: true,
+                      maintainAnimation: true,
+                      maintainState: true,
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
+                          child: Text(
+                            'Passwords do not match',
+                            style: GoogleFonts.roboto(
+                              fontSize: 12,
+                              color: const Color.fromRGBO(255, 16, 15, 15),
+                            ),
+                            textAlign: TextAlign.start,
+                          ),
+                        ),
+                      ),
+                    ),
+                    //firebase error message
+                    Visibility(
+                      visible: _isError,
+                      maintainSize: false,
+                      maintainAnimation: true,
+                      maintainState: true,
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                          child: GlowingOverscrollIndicator(
+                            axisDirection: AxisDirection.right,
+                            color: const Color.fromRGBO(255, 16, 15, 15),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                const Icon(
+                                  Icons.error_outline_rounded,
+                                  color: Color.fromRGBO(255, 16, 15, 15),
+                                ),
+                                const SizedBox(
+                                  width: 3,
+                                ),
+                                Text(
+                                  errorMsg,
+                                  style: GoogleFonts.roboto(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                    color:
+                                        const Color.fromRGBO(255, 16, 15, 15),
+                                  ),
+                                  textAlign: TextAlign.start,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
                     ),
 
-                    //sign up
+                    //success message
+                    Visibility(
+                      visible: _isSuccess,
+                      maintainSize: false,
+                      maintainAnimation: true,
+                      maintainState: true,
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                          child: GlowingOverscrollIndicator(
+                            axisDirection: AxisDirection.right,
+                            color: const Color.fromARGB(239, 0, 198, 89),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                const Icon(
+                                  Icons.check_circle_outline,
+                                  color: Color.fromARGB(239, 0, 198, 89),
+                                ),
+                                const SizedBox(
+                                  width: 3,
+                                ),
+                                Text(
+                                  'Account created successfully!',
+                                  style: GoogleFonts.roboto(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                    color:
+                                        const Color.fromARGB(239, 0, 198, 89),
+                                  ),
+                                  textAlign: TextAlign.start,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    //sign up button
                     SizedBox(
                       width: double.infinity,
                       height: 55,
@@ -549,7 +901,7 @@ class _SignUpState extends State<SignUp> {
                               'gender': null,
                               'nic': null,
                               'address': null,
-                              'mobile': userCredential.user!.phoneNumber,
+                              'mobile': null,
                             },
                           );
                         },
@@ -564,7 +916,7 @@ class _SignUpState extends State<SignUp> {
                           //     return Colors.transparent;
                           //   },
                           // ),
-                          elevation: const MaterialStatePropertyAll(2),
+                          elevation: MaterialStatePropertyAll(2),
                           // backgroundColor: const MaterialStatePropertyAll(
                           //   Colors.white,
                           // ),
@@ -649,5 +1001,23 @@ class _SignUpState extends State<SignUp> {
         ),
       ),
     );
+  }
+
+  // firebase error messages
+  String getErrorMessage(String errorCode) {
+    switch (errorCode) {
+      case 'email-already-in-use':
+        return 'Email already used. Go to Sign In page.';
+      case 'operation-not-allowed':
+        return 'Operation is not allowed.';
+      case 'invalid-email':
+        return 'Email address is invalid.';
+      case 'weak-password':
+        return 'Enter a strong password.';
+      case 'network-request-failed':
+        return 'Network error.';
+      default:
+        return 'Account creation failed. Please try again';
+    }
   }
 }
