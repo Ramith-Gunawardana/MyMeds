@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mymeds_app/screens/add_medication1.dart';
-import 'package:mymeds_app/screens/home.dart';
-import 'package:mymeds_app/screens/homepage2.dart';
 
 class Mediaction extends StatefulWidget {
   const Mediaction({super.key});
@@ -40,14 +38,6 @@ class _MediactionState extends State<Mediaction> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Medication',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-
         centerTitle: true,
         actions: [
           IconButton(
@@ -66,7 +56,7 @@ class _MediactionState extends State<Mediaction> {
           ),
         ],
         // backgroundColor: Color.fromARGB(163, 206, 240, 247)
-        backgroundColor: Colors.white,
+        // backgroundColor: Colors.white,
       ),
       body: Column(
         children: [
@@ -82,6 +72,8 @@ class _MediactionState extends State<Mediaction> {
                     //medication gif
                     Image.asset(
                       'lib/assets/images/medication.gif',
+                      color: const Color.fromARGB(255, 241, 250, 251),
+                      colorBlendMode: BlendMode.darken,
                     ),
                   ],
                 ),

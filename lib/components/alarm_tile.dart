@@ -24,7 +24,10 @@ class AlarmTile extends StatelessWidget {
           ? DismissDirection.endToStart
           : DismissDirection.none,
       background: Container(
-        color: const Color.fromARGB(255, 253, 96, 85),
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 253, 96, 85),
+          borderRadius: BorderRadius.circular(20),
+        ),
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.only(right: 30),
         child: const Icon(
@@ -35,65 +38,55 @@ class AlarmTile extends StatelessWidget {
       ),
       onDismissed: (_) => onDismissed?.call(),
       child: Container(
+        // color: Colors.white,
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.primary,
+          borderRadius: BorderRadius.circular(20),
+        ),
         height: 100,
         padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.calendar_month_outlined,
-                      size: 15,
-                    ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    Text(
-                      date,
-                      style: const TextStyle(
-                        fontSize: 20,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 15,
-                    ),
-                    const Icon(
-                      Icons.alarm_rounded,
-                      size: 15,
-                    ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    Text(
-                      time,
-                      style: const TextStyle(
-                        fontSize: 20,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 10,
+                Text(
+                  date,
+                  style: const TextStyle(
+                    fontSize: 22,
+                    color: Colors.white,
+                  ),
                 ),
                 Text(
-                  title,
+                  time,
                   style: const TextStyle(
-                      fontSize: 15, fontWeight: FontWeight.w500),
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w600),
                 ),
               ],
             ),
-            const Row(
-              children: [
-                Icon(Icons.keyboard_arrow_left_rounded, size: 15),
-                Icon(Icons.keyboard_arrow_left_rounded, size: 15),
-                Icon(Icons.delete_outline, size: 20),
-              ],
+            const SizedBox(
+              height: 10,
             ),
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                color: Colors.white,
+              ),
+            ),
+            // const Row(
+            //   children: [
+            //     Icon(Icons.keyboard_arrow_left_rounded, size: 15),
+            //     Icon(Icons.keyboard_arrow_left_rounded, size: 15),
+            //     Icon(Icons.delete_outline, size: 20),
+            //   ],
+            // ),
           ],
         ),
       ),

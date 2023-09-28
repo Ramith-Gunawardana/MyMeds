@@ -264,6 +264,11 @@ flutter:
     - lib/assets/icons/emergency-call.gif
     - lib/assets/icons/height.gif
     - lib/assets/icons/weight-scale.gif
+    - lib/assets/icons/more.gif
+    - lib/assets/icons/1.gif
+    - lib/assets/icons/2.gif
+    - lib/assets/icons/3.gif
+    - lib/assets/icons/4.gif
 
 
     - assets/audio/marimba.mp3

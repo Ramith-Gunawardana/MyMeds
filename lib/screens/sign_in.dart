@@ -4,11 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'package:mymeds_app/components/alert.dart';
 import 'package:mymeds_app/components/text_field.dart';
 import 'package:mymeds_app/screens/password_reset.dart';
 import 'package:mymeds_app/services/auth_service.dart';
-import 'package:text_scroll/text_scroll.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key, required this.showSignUpScreen});
@@ -212,7 +210,6 @@ class _SignInState extends State<SignIn> {
                         // onPressed: () {},
                         onPressed: () =>
                             AuthService().signInWithGoogle(context),
-
                         style: const ButtonStyle(
                           elevation: MaterialStatePropertyAll(2),
                           shape: MaterialStatePropertyAll(

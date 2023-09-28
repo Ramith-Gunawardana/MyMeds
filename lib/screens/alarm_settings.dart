@@ -77,26 +77,33 @@ class _AlarmSettingsPageState extends State<AlarmSettingsPage> {
       ),
       body: SafeArea(
         child: alarms.isNotEmpty
-            ? ListView.separated(
-                itemCount: alarms.length,
-                separatorBuilder: (context, index) => const Divider(height: 1),
-                itemBuilder: (context, index) {
-                  return AlarmTile(
-                    key: Key(alarms[index].id.toString()),
-                    date:
-                        '${alarms[index].dateTime.toString().substring(0, 10)} ',
-                    time: TimeOfDay(
-                      hour: alarms[index].dateTime.hour,
-                      minute: alarms[index].dateTime.minute,
-                    ).format(context).toString(),
-                    title: alarms[index].notificationBody.toString(),
-                    onPressed: () {},
-                    // onPressed: () => navigateToAlarmScreen(alarms[index]),
-                    onDismissed: () {
-                      Alarm.stop(alarms[index].id).then((_) => loadAlarms());
-                    },
-                  );
-                },
+            ? Padding(
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
+                child: ListView.separated(
+                  itemCount: alarms.length,
+                  separatorBuilder: (context, index) {
+                    return const SizedBox(
+                      height: 20,
+                    );
+                  },
+                  itemBuilder: (context, index) {
+                    return AlarmTile(
+                      key: Key(alarms[index].id.toString()),
+                      date:
+                          '${alarms[index].dateTime.toString().substring(0, 10)} ',
+                      time: TimeOfDay(
+                        hour: alarms[index].dateTime.hour,
+                        minute: alarms[index].dateTime.minute,
+                      ).format(context).toString(),
+                      title: alarms[index].notificationBody.toString(),
+                      onPressed: () {},
+                      // onPressed: () => navigateToAlarmScreen(alarms[index]),
+                      onDismissed: () {
+                        Alarm.stop(alarms[index].id).then((_) => loadAlarms());
+                      },
+                    );
+                  },
+                ),
               )
             : Center(
                 child: Text(

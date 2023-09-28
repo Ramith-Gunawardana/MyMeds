@@ -97,8 +97,8 @@ class _SettingsState extends State<More> {
         child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            // mainAxisSize: MainAxisSize.max,
             children: [
               //app logo and user icon
               Container(
@@ -136,7 +136,7 @@ class _SettingsState extends State<More> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return SettingsPageUI();
+                                  return const SettingsPageUI();
                                 },
                               ),
                             );
@@ -155,167 +155,238 @@ class _SettingsState extends State<More> {
                   ],
                 ),
               ),
-              //1st ROW
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: double.infinity,
-                      height: 100,
-                      child: ElevatedButton.icon(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const SetPhotoScreen(),
-                            ),
-                          );
-                        },
-                        icon: const Icon(
-                          Icons.camera_alt_outlined,
-                        ),
-                        label: const Text(
-                          'Save a photo of your prescription',
-                        ),
-                        style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        )),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-
-                    SizedBox(
-                      width: double.infinity,
-                      height: 100,
-                      child: ElevatedButton.icon(
-                        onPressed: () async {
-                          await _getCurrentLocation();
-                          if (_currentPosition != null) {
-                            MapsLauncher.launchQuery(
-                                'nearby hospitals and pharmacies');
-                          }
-                        },
-                        icon: const Icon(
-                          Icons.location_on_outlined,
-                        ),
-                        label:
-                            const Text('Find nearest pharmacies and hospitals'),
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(
-                      height: 20,
-                    ),
-
-                    //2nd ROW
-
-                    SizedBox(
-                      width: double.infinity,
-                      height: 100,
-                      child: ElevatedButton.icon(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const BMI(),
-                            ),
-                          );
-                          // ScaffoldMessenger.of(context).showSnackBar(
-                          //   const SnackBar(
-                          //     backgroundColor: Color.fromARGB(255, 7, 83, 96),
-                          //     behavior: SnackBarBehavior.floating,
-                          //     duration: Duration(seconds: 2),
-                          //     content: Text(
-                          //       'Coming soon...',
-                          //     ),
-                          //   ),
-                          // );
-                        },
-                        icon: const Icon(
-                          Icons.calculate_outlined,
-                        ),
-                        label: const Text('Calculate your BMI'),
-                        style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        )),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 100,
-                      child: ElevatedButton.icon(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return const AlarmSettingsPage();
-                              },
-                            ),
-                          );
-                          // ScaffoldMessenger.of(context).showSnackBar(
-                          //   const SnackBar(
-                          //     backgroundColor:
-                          //         Color.fromARGB(255, 7, 83, 96),
-                          //     behavior: SnackBarBehavior.floating,
-                          //     duration: Duration(seconds: 2),
-                          //     content: Text(
-                          //       'Coming soon...',
-                          //     ),
-                          //   ),
-                          // );
-                        },
-                        icon: const Icon(
-                          Icons.alarm_rounded,
-                        ),
-                        label: const Text('Alarm Settings'),
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 100,
-                      child: ElevatedButton.icon(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const Emergency(),
-                            ),
-                          );
-                        },
-                        icon: const Icon(
-                          Icons.call_outlined,
-                        ),
-                        label: const Text('Emergency phone numbers'),
-                        style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        )),
-                      ),
-                    )
-                  ],
+              ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Image(
+                  image: const AssetImage('lib/assets/icons/more.gif'),
+                  height: MediaQuery.of(context).size.height * 0.25,
+                  // width: MediaQuery.of(context).size.width * 0.6,
+                  color: const Color.fromARGB(255, 241, 250, 251),
+                  colorBlendMode: BlendMode.darken,
                 ),
+              ),
+              //1st ROW
+              Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.12,
+                        width: MediaQuery.of(context).size.width * 0.4,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const SetPhotoScreen(),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          )),
+                          child: const Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Icon(
+                                Icons.image_outlined,
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text('Presciption Image',
+                                  textAlign: TextAlign.center),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.12,
+                        width: MediaQuery.of(context).size.width * 0.4,
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            await _getCurrentLocation();
+                            if (_currentPosition != null) {
+                              MapsLauncher.launchQuery(
+                                  'nearby hospitals and pharmacies');
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ),
+                          child: const Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Icon(
+                                Icons.location_on_outlined,
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text('Nearby Pharmacies & Hospitals',
+                                  textAlign: TextAlign.center),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(
+                    height: 20,
+                  ),
+
+                  //2nd ROW
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.12,
+                        width: MediaQuery.of(context).size.width * 0.4,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const BMI(),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          )),
+                          child: const Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Icon(
+                                Icons.health_and_safety_outlined,
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text('Check your BMI',
+                                  textAlign: TextAlign.center),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.12,
+                        width: MediaQuery.of(context).size.width * 0.4,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return const AlarmSettingsPage();
+                                },
+                              ),
+                            );
+                            // ScaffoldMessenger.of(context).showSnackBar(
+                            //   const SnackBar(
+                            //     backgroundColor:
+                            //         Color.fromARGB(255, 7, 83, 96),
+                            //     behavior: SnackBarBehavior.floating,
+                            //     duration: Duration(seconds: 2),
+                            //     content: Text(
+                            //       'Coming soon...',
+                            //     ),
+                            //   ),
+                            // );
+                          },
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          )),
+                          child: const Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Icon(
+                                Icons.alarm_rounded,
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text('Upcoming Alarms',
+                                  textAlign: TextAlign.center),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  //3rd row
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.12,
+                        width: MediaQuery.of(context).size.width * 0.4,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const Emergency(),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          )),
+                          child: const Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Icon(
+                                Icons.call_outlined,
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text('Emergency Call',
+                                  textAlign: TextAlign.center),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                ],
               ),
 
               //3rd ROW

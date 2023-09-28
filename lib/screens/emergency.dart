@@ -38,46 +38,54 @@ class _Emergency extends State<Emergency> {
       // ),
 
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+        padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
         child: Column(
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.circular(40),
+              borderRadius: BorderRadius.circular(20),
               child: Image.asset(
                 'lib/assets/icons/emergency-call.gif',
+                color: const Color.fromARGB(255, 241, 250, 251),
+                colorBlendMode: BlendMode.darken,
                 height: 80.0,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 10),
             _EmergencyButton(
               onPressed: () => _makeEmergencyCall("110"),
               icon: Icons.fire_truck_outlined,
-              label: 'Fire & rescue - 110',
+              label: 'Fire & Rescue',
+              number: '110',
             ),
             _EmergencyButton(
-              onPressed: () => _makeEmergencyCall("118"),
+              onPressed: () => _makeEmergencyCall("119"),
               icon: Icons.local_police_outlined,
-              label: 'Police Emergency - 118/119',
+              label: 'Police Emergency',
+              number: '119',
             ),
             _EmergencyButton(
               onPressed: () => _makeEmergencyCall("1990"),
               icon: Icons.medical_services_outlined,
-              label: 'Suwa Seriya Ambulance - 1990',
+              label: 'Suwa Seriya Ambulance',
+              number: '1990',
             ),
             _EmergencyButton(
               onPressed: () => _makeEmergencyCall("0112691111"),
               icon: Icons.accessible_outlined,
-              label: 'Accident Service - 011 2691111',
+              label: 'Accident Service',
+              number: '011 2691111',
             ),
             _EmergencyButton(
               onPressed: () => _makeEmergencyCall("1919"),
               icon: Icons.info_outline,
-              label: 'Government Information Center - 1919',
+              label: 'Government Information Center',
+              number: '1919',
             ),
             _EmergencyButton(
               onPressed: () => _makeEmergencyCall("0115717171"),
               icon: Icons.emergency_outlined,
-              label: 'Emergency Police Squad	- 011 5717171',
+              label: 'Emergency Police Squad',
+              number: '011 5717171',
             ),
           ],
         ),
@@ -99,11 +107,13 @@ class _EmergencyButton extends StatelessWidget {
   final VoidCallback onPressed;
   final IconData icon;
   final String label;
+  final String number;
 
   const _EmergencyButton({
     required this.onPressed,
     required this.icon,
     required this.label,
+    required this.number,
   });
 
   @override
@@ -115,17 +125,35 @@ class _EmergencyButton extends StatelessWidget {
         children: [
           Icon(
             icon,
-            color: Colors.black,
+            color: const Color.fromARGB(221, 38, 38, 38),
           ),
-          const SizedBox(width: 10),
-          Text(
-            label,
-            style: const TextStyle(color: Colors.black),
+          const SizedBox(width: 15),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(width: 10),
+              Text(
+                label,
+                style: const TextStyle(
+                  color: Color.fromARGB(221, 38, 38, 38),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(width: 10),
+              Text(
+                number,
+                style: const TextStyle(color: Colors.black54),
+              ),
+            ],
           ),
           const Spacer(), // Pushes the content to the left
           IconButton(
             onPressed: onPressed,
-            icon: const Icon(Icons.call_outlined),
+            icon: const Icon(
+              Icons.call_outlined,
+              color: Color.fromARGB(221, 38, 38, 38),
+            ),
             // style: ElevatedButton.styleFrom(
             //   backgroundColor: const Color.fromARGB(255, 197, 197, 197),
             //   shape: RoundedRectangleBorder(

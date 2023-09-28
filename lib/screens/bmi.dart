@@ -87,23 +87,29 @@ class _BMIState extends State<BMI> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(40),
-                        child: Image.asset(
-                          'lib/assets/icons/weight-scale.gif',
-                          height: 80.0,
+                      Row(children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(40),
+                          child: Image.asset(
+                            'lib/assets/icons/weight-scale.gif',
+                            color: const Color.fromARGB(255, 241, 250, 251),
+                            colorBlendMode: BlendMode.darken,
+                            height: 80.0,
+                          ),
                         ),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(40),
-                        child: Image.asset(
-                          'lib/assets/icons/height.gif',
-                          height: 80.0,
+                        const SizedBox(
+                          width: 10,
                         ),
-                      ),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(40),
+                          child: Image.asset(
+                            'lib/assets/icons/height.gif',
+                            color: const Color.fromARGB(255, 241, 250, 251),
+                            colorBlendMode: BlendMode.darken,
+                            height: 80.0,
+                          ),
+                        ),
+                      ]),
                     ],
                   ),
                   const Padding(

@@ -157,9 +157,6 @@ class _HomePage2State extends State<HomePage2> {
         }
       }
     }
-
-    print(dates);
-    print(times);
   }
 
   @override
@@ -571,6 +568,9 @@ class _HomePage2State extends State<HomePage2> {
                                     borderRadius: BorderRadius.circular(50),
                                     child: Image.asset(
                                       'lib/assets/icons/no_reminders.gif',
+                                      color: const Color.fromARGB(
+                                          255, 241, 250, 251),
+                                      colorBlendMode: BlendMode.darken,
                                       height: 100.0,
                                     ),
                                   ),
