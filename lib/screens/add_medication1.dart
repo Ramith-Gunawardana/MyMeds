@@ -1,323 +1,318 @@
-// ignore_for_file: use_build_context_synchronously
-
-import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_holo_date_picker/flutter_holo_date_picker.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mymeds_app/components/text_field.dart';
-import 'add_medication2.dart';
 import 'package:mymeds_app/components/category_model.dart';
-// import 'package:time_picker_spinner/time_picker_spinner.dart';
-// import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
-// import 'package:show_time_picker/show_time_picker.dart';
+import 'package:mymeds_app/components/controller_data.dart';
+import 'package:mymeds_app/components/text_field.dart';
+import 'package:mymeds_app/screens/add_medication2.dart';
 
 class AddMedication1 extends StatefulWidget {
-  // List<Category> categories = [
-  //   Category('Pill', Icons.medication),
-  //   Category('Liquid', Icons.medication),
-  //   Category('Inhaler', Icons.medication),
-  //   Category('Injection', Icons.medication),
-  //   Category('Cream', Icons.medication),
-  //   Category('Patch', Icons.medication),
-  //   Category('Suppository', Icons.medication),
-  //   Category('Other', Icons.medication),
-  // ];
+  List<CategoryModel> categories = CategoryModel.getCategories();
 
-  List<CategoryModel> categories = [];
-
-  void _getInitialInfo() {
-    categories = CategoryModel.getCategories();
-  }
-
-  // void _getCategories() {
-  //   categories = CategoryModel.getCategories();
-  // }
+  AddMedication1({super.key});
 
   @override
   _AddMedication1State createState() => _AddMedication1State();
 }
 
-enum Units {
-  mg,
-  mcg,
-  g,
-  ml,
-  percentage, // Instead of %
-  IU,
-  oz,
-  tsp,
-  tbsp,
-  cup,
-  pt,
-  qt,
-  gal,
-  lb,
-  mg_per_ml // Instead of mg/mL
-}
-
-String unitToString(Units unit) {
-  switch (unit) {
-    case Units.mg:
-      return 'mg';
-    case Units.mcg:
-      return 'mcg';
-    case Units.g:
-      return 'g';
-    case Units.ml:
-      return 'ml';
-    case Units.percentage:
-      return '%';
-    case Units.IU:
-      return 'IU';
-    case Units.oz:
-      return 'oz';
-    case Units.tsp:
-      return 'tsp';
-    case Units.tbsp:
-      return 'tbsp';
-    case Units.cup:
-      return 'cup';
-    case Units.pt:
-      return 'pt';
-    case Units.qt:
-      return 'qt';
-    case Units.gal:
-      return 'gal';
-    case Units.lb:
-      return 'lb';
-    case Units.mg_per_ml:
-      return 'mg/mL';
-    default:
-      return ''; // Handle any unexpected cases
-  }
-}
-
-Units? _units;
-
-// class Category {
-//   final String name;
-//   final String iconPath;
-//   Color boxColor;
-//   bool isSelected;
-
-//   Category({
-//     required this.name,
-//     required this.iconPath,
-//     this.boxColor = Colors.white,
-//     this.isSelected = false,
-//   });
-// }
-
-// class CategoriesWidget extends StatefulWidget {
-//   final List<Category> categories;
-
-//   CategoriesWidget({required this.categories});
-
-//   @override
-//   _AddMedication1State createState() => _AddMedication1State();
-// }
-
 class _AddMedication1State extends State<AddMedication1> {
   final user = FirebaseAuth.instance.currentUser;
   final _formKey = GlobalKey<FormState>();
-  final _medicationNameController = TextEditingController();
-  final _medicationTypeController = TextEditingController();
-  final _medicationStrengthController = TextEditingController();
-  final _medicationQuantityController = TextEditingController();
-  final _medicationDosageController = TextEditingController();
-  final _medicationFrequencyController = TextEditingController();
-  var _medicationTimeOfDayController = TextEditingController();
-  final _medicationStrengthValueController = TextEditingController();
-  final _medicationNoteController = TextEditingController();
-  final _medicationPhotoController = TextEditingController();
 
-  // var time = DateTime.now();
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    widget._getInitialInfo();
-  }
+  final TextEditingController _medicationNameController =
+      MedicationControllerData().medicationNameController;
+  final TextEditingController _medicationTypeController =
+      MedicationControllerData().medicationTypeController;
+  final TextEditingController _medicationStrengthValueController =
+      MedicationControllerData().medicationStrengthValueController;
+  final TextEditingController _medicationStrengthController =
+      MedicationControllerData().medicationStrengthController;
+
+  late FocusNode focusNode_medName;
+  late FocusNode focusNode_medStrengthValue;
+
+  int _selectedCategoryIndex = -1;
 
   void _openImagePicker() {
     // Implement your image picker logic here
     // This function will be called when the image is clicked
   }
+  @override
+  void initState() {
+    super.initState();
+    focusNode_medName = FocusNode();
+    focusNode_medStrengthValue = FocusNode();
+  }
+
+  // for memory mgt
+  // @override
+  // void dispose() {
+  //   _medicationNameController.dispose();
+  //   _medicationTypeController.dispose();
+  //   _medicationStrengthValueController.dispose();
+  //   _medicationStrengthController.dispose();
+  //   focusNode_medName.dispose();
+  //   focusNode_medStrength.dispose();
+  //   focusNode_medStrengthValue.dispose();
+  //   focusNode_medType.dispose();
+  //   super.dispose();
+  // }
+
+  void goToNextPage() {
+    if (_medicationNameController.text.isEmpty) {
+      focusNode_medName.requestFocus();
+    } else if (_selectedCategoryIndex < 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor: Color.fromARGB(255, 7, 83, 96),
+          behavior: SnackBarBehavior.floating,
+          duration: Duration(seconds: 2),
+          content: Text(
+            'Please select the medication category',
+          ),
+        ),
+      );
+    } else {
+      if (_medicationStrengthValueController.text.isNotEmpty &&
+          _selectedCategoryIndex < 0) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: Color.fromARGB(255, 7, 83, 96),
+            behavior: SnackBarBehavior.floating,
+            duration: Duration(seconds: 2),
+            content: Text(
+              'Please select the strength value type',
+            ),
+          ),
+        );
+      } else {
+        //print all controller values
+        print(_medicationNameController.text);
+        print(_medicationTypeController.text);
+        print(_medicationStrengthValueController.text +
+            _medicationStrengthController.text);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AddMedication2(),
+          ),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    widget._getInitialInfo();
     return Scaffold(
       appBar: AppBar(
         title: const Text(
           'Add Medication',
           style: TextStyle(
-            // color: Colors.black,
-            fontWeight: FontWeight.w400,
+            color: Colors.black,
+            fontWeight: FontWeight.w600,
           ),
         ),
-        elevation: 5.0,
-        // leading: IconButton(
-        //   icon: const Icon(
-        //     Icons.arrow_back_ios,
-        //     color: Colors.black,
-        //   ),
-        //   padding: const EdgeInsets.only(left: 20),
-        //   onPressed: () {
-        //     Navigator.pop(context);
-        //   },
-        // ),
-        // centerTitle: true,
-        // backgroundColor: Colors.white,
+        elevation: 5,
       ),
-      body: Form(
-        key: _formKey,
-        child: Padding(
-          padding: const EdgeInsets.all(16),
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+        child: Form(
+          key: _formKey,
           child: ListView(
             children: [
-              GestureDetector(
-                onTap: _openImagePicker,
-                child: Container(
-                  margin: const EdgeInsets.only(
-                      left: 20, right: 20, top: 16, bottom: 10),
-                  height: 100,
-                  width: 100,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment
+                    .center, // Align children vertically in the center
+                children: [
+                  // Expanded(
+                  //   child: Column(
+                  //     children: [
+                  //       Text(
+                  //         'Add each medicine separately',
+                  //         style: GoogleFonts.roboto(
+                  //             fontSize: 11, color: Colors.teal),
+                  //         textAlign: TextAlign.center,
+                  //       ),
+                  //       SizedBox(height: 6),
+                  //       Image.asset(
+                  //         'lib/assets/icons/medicine.gif',
+                  //         width: 30,
+                  //         height: 30,
+                  //         fit: BoxFit.fitHeight,
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+                  // SizedBox(width: 20),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: _openImagePicker,
+                      child: Container(
+                        margin: const EdgeInsets.only(
+                            left: 40, right: 40, top: 10, bottom: 10),
+                        height: 80,
+                        width: 80,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: const Icon(Icons.add_a_photo_outlined, size: 50),
+                      ),
+                    ),
                   ),
-                  child: Icon(Icons.add_a_photo, size: 50),
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 16, left: 10),
-                child: Text(
-                  'Name',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600),
-                ),
-              ),
-              SizedBox(height: 8),
-              // Text_Field(
-              //   label: 'Medication Name',
-              //   hint: 'Medicine',
-              //   isPassword: false,
-              //   keyboard: TextInputType.text,
-              //   txtEditController: _medicationNameController,
-              // ),
-              const Padding(
-                padding: EdgeInsets.only(top: 20, left: 10),
-                child: Text(
-                  'Category',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600),
-                ),
+                ],
               ),
               const SizedBox(
-                height: 15,
+                height: 20,
               ),
-              Container(
+              //medication name
+              const Text(
+                'Medication Name',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Text_Field(
+                label: 'Medication Name',
+                hint: 'Vitamic C',
+                isPassword: false,
+                keyboard: TextInputType.text,
+                txtEditController: _medicationNameController,
+                focusNode: focusNode_medName,
+              ),
+              const SizedBox(
+                height: 40,
+              ),
+              const Text(
+                'Category',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              SizedBox(
                 height: 120,
-                child: ListView.separated(
+                child: ListView.builder(
                   itemCount: widget.categories.length,
                   scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.only(left: 10, right: 20),
-                  separatorBuilder: (context, index) => const SizedBox(
-                    width: 10,
-                  ),
+                  padding: const EdgeInsets.only(left: 0, right: 20),
                   itemBuilder: (context, index) {
-                    return Container(
-                      width: 100,
-                      decoration: BoxDecoration(
-                          color: widget.categories[index].boxColor
-                              .withOpacity(0.3),
-                          borderRadius: BorderRadius.circular(16)),
-                      child: GestureDetector(
+                    return Padding(
+                      padding: const EdgeInsets.only(
+                          right: 16), // Adjust the right padding for space
+                      child: InkWell(
                         onTap: () {
-                          print('Tapped category: ${index}');
                           setState(() {
-                            widget.categories[index].boxColor =
-                                const Color.fromARGB(255, 7, 82, 96);
-                            widget.categories[index].isSelected = true;
-                          });
+                            if (_selectedCategoryIndex == index) {
+                              // If the same category is tapped again, deselect it
+                              // _selectedCategoryIndex = -1;
+                              // _medicationTypeController.text = '';
+                            } else {
+                              // Deselect the previously selected category
+                              if (_selectedCategoryIndex != -1) {
+                                widget.categories[_selectedCategoryIndex]
+                                        .boxColor =
+                                    const Color.fromARGB(255, 158, 158, 158);
+                                widget.categories[_selectedCategoryIndex]
+                                    .isSelected = false;
+                              }
 
-                          for (int i = 0; i < widget.categories.length; i++) {
-                            if (i != index) {
-                              setState(() {
-                                widget.categories[i].boxColor =
-                                    Colors.transparent;
-                                widget.categories[i].isSelected = false;
-                              });
+                              // Select the tapped category
+                              _selectedCategoryIndex = index;
+                              _medicationTypeController.text =
+                                  widget.categories[index].name;
+                              widget.categories[index].boxColor =
+                                  const Color.fromARGB(255, 7, 82, 96)
+                                      .withOpacity(0.3);
+                              widget.categories[index].isSelected = true;
+
+                              print(_medicationTypeController.text);
                             }
-                          }
-
-                          _medicationTypeController.text =
-                              widget.categories[index].name;
+                          });
                         },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Container(
+                        child: Container(
+                          width: 100,
+                          decoration: BoxDecoration(
+                            color: widget.categories[index].boxColor
+                                .withOpacity(0.3),
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(
                                 width: 50,
                                 height: 50,
                                 decoration: const BoxDecoration(
-                                    color: Colors.white,
-                                    shape: BoxShape.circle),
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                ),
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Image.asset(
                                     widget.categories[index].iconPath,
                                   ),
-                                )),
-                            Text(
-                              widget.categories[index].name,
-                              style: const TextStyle(
+                                ),
+                              ),
+                              Text(
+                                widget.categories[index].name,
+                                style: const TextStyle(
                                   fontWeight: FontWeight.w400,
                                   color: Colors.black,
-                                  fontSize: 14),
-                            )
-                          ],
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     );
                   },
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.only(top: 20, left: 10),
-                child: Text(
-                  'Strength',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600),
-                ),
+              const SizedBox(
+                height: 40,
               ),
-              SizedBox(height: 20),
+              const Text(
+                'Strength (Optional)',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(height: 20),
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Text_Field(
+                  //   label: 'Strength Value',
+                  //   hint: '100',
+                  //   isPassword: false,
+                  //   keyboard: TextInputType.text,
+                  //   txtEditController: _medicationStrengthValueController,
+                  //   focusNode: focusNode_medStrengthValue,
+                  // ),
                   Expanded(
-                    child: TextFormField(
+                    child: TextField(
                       controller: _medicationStrengthValueController,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter the medication strength';
-                        }
-                        return null;
-                      },
+                      focusNode: focusNode_medStrengthValue,
                       keyboardType: TextInputType.number,
                       cursorColor: const Color.fromARGB(255, 7, 82, 96),
+                      style: const TextStyle(
+                        height: 2,
+                      ),
                       decoration: InputDecoration(
-                        hintText: '0.0',
+                        hintText: '100',
                         labelText: 'Strength Value',
-                        labelStyle: GoogleFonts.poppins(
+                        labelStyle: GoogleFonts.roboto(
                           color: const Color.fromARGB(255, 16, 15, 15),
                         ),
                         filled: true,
@@ -341,165 +336,152 @@ class _AddMedication1State extends State<AddMedication1> {
                       ),
                     ),
                   ),
-                  SizedBox(width: 8), // Add spacing between the two text fields
-                  Expanded(
-                    child: TextFormField(
-                      onTap: () => showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: Text(
-                              'Select the Medication Strength',
-                              style: GoogleFonts.poppins(
-                                color: const Color.fromARGB(255, 16, 15, 15),
-                              ),
-                            ),
-                            content: StatefulBuilder(
-                              builder: (BuildContext context,
-                                  void Function(void Function()) setState) {
-                                return SingleChildScrollView(
-                                  child: Column(
-                                    children: [
-                                      for (Units unit in Units.values)
-                                        RadioListTile<Units>(
-                                          title: Text(
-                                            unitToString(unit),
-                                            style: GoogleFonts.poppins(
-                                              color: const Color.fromARGB(
-                                                  255, 16, 15, 15),
-                                            ),
-                                          ),
-                                          value: unit,
-                                          groupValue: _units,
-                                          onChanged: (Units? value) {
-                                            setState(() {
-                                              _units = value;
-                                              _medicationStrengthController
-                                                  .text = unitToString(value!);
-                                              Navigator.pop(
-                                                  context); // Close the dialog
-                                            });
-                                          },
-                                        ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            ),
-                            actions: [
-                              // ... OK and Cancel buttons ...
-                              //by clicking on the cancel button the dialog will be closed and the selected value should be cleared
+                  const SizedBox(width: 10),
+                  //strength type
+                  DropdownMenu(
+                    controller: _medicationStrengthController,
+                    textStyle: GoogleFonts.roboto(
+                      height: 2,
+                      color: const Color.fromARGB(255, 16, 15, 15),
+                    ),
+                    width: MediaQuery.of(context).size.width * 0.45,
+                    menuStyle: const MenuStyle(
+                      shape: MaterialStatePropertyAll(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(20),
+                          ),
+                        ),
+                      ),
+                    ),
+                    inputDecorationTheme: const InputDecorationTheme(
+                      filled: true,
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(
+                            20,
+                          ),
+                        ),
+                        borderSide: BorderSide(
+                          color: Color.fromARGB(255, 7, 82, 96),
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(
+                            20,
+                          ),
+                        ),
+                        borderSide: BorderSide(
+                          color: Colors.transparent,
+                        ),
+                      ),
+                    ),
+                    dropdownMenuEntries: const [
+                      DropdownMenuEntry(label: 'mg', value: 'mg'),
+                      DropdownMenuEntry(label: 'mcg', value: 'mcg'),
+                      DropdownMenuEntry(label: 'g', value: 'g'),
+                      DropdownMenuEntry(label: 'ml', value: 'ml'),
+                      DropdownMenuEntry(label: 'tsp', value: 'tsp'),
+                      DropdownMenuEntry(label: 'tbsp', value: 'tbsp'),
+                      DropdownMenuEntry(label: '%', value: '%'),
+                      DropdownMenuEntry(label: 'cup', value: 'cup'),
+                      DropdownMenuEntry(label: 'IU', value: 'IU'),
+                      DropdownMenuEntry(label: 'oz', value: 'oz'),
+                      DropdownMenuEntry(label: 'pt', value: 'pt'),
+                      DropdownMenuEntry(label: 'qt', value: 'qt'),
+                      DropdownMenuEntry(label: 'gal', value: 'gal'),
+                      DropdownMenuEntry(label: 'lb', value: 'lb'),
+                      DropdownMenuEntry(label: 'mg/mL', value: 'mg/mL'),
+                    ],
+                    menuHeight: 200,
+                    label: const Text('Type'),
+                  ),
 
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Text(
-                                  'Cancel',
-                                  style: GoogleFonts.poppins(
-                                    color:
-                                        const Color.fromARGB(255, 16, 15, 15),
-                                  ),
-                                ),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Text(
-                                  'Ok',
-                                  style: GoogleFonts.poppins(
-                                    color:
-                                        const Color.fromARGB(255, 16, 15, 15),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-                      controller: _medicationStrengthController,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter the medication strength';
-                        }
-                        return null;
-                      },
-                      readOnly: true, // Prevent direct input
-                      cursorColor: const Color.fromARGB(255, 7, 82, 96),
-                      decoration: InputDecoration(
-                        labelText: 'Unit',
-                        labelStyle: GoogleFonts.poppins(
-                          color: const Color.fromARGB(255, 16, 15, 15),
-                        ),
-                        filled: true,
-                        floatingLabelBehavior: FloatingLabelBehavior.auto,
-                        focusedBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(20),
-                          ),
-                          borderSide: BorderSide(
-                            color: Color.fromARGB(255, 7, 82, 96),
-                          ),
-                        ),
-                        enabledBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(20),
-                          ),
-                          borderSide: BorderSide(
-                            color: Colors.transparent,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                  // Expanded(
+                  //   child: MultiSelectDropDown(
+                  //     onOptionSelected: (List<ValueItem> selectedOptions) {
+                  //       if (selectedOptions.isNotEmpty) {
+                  //         // Assuming you want to concatenate selected options into a single string
+                  //         String selectedValue = selectedOptions
+                  //             .map((option) => option.value)
+                  //             .join(', ');
+                  //         _medicationStrengthController.text = selectedValue;
+                  //       } else {
+                  //         // Handle the case where no options are selected
+                  //         _medicationStrengthController.text = '';
+                  //       }
+                  //     },
+                  //     options: const <ValueItem>[
+                  //       ValueItem(label: 'mg', value: 'mg'),
+                  //       ValueItem(label: 'mcg', value: 'mcg'),
+                  //       ValueItem(label: 'g', value: 'g'),
+                  //       ValueItem(label: 'ml', value: 'ml'),
+                  //       ValueItem(label: 'tsp', value: 'tsp'),
+                  //       ValueItem(label: 'tbsp', value: 'tbsp'),
+                  //       ValueItem(label: '%', value: '%'),
+                  //       ValueItem(label: 'cup', value: 'cup'),
+                  //       ValueItem(label: 'IU', value: 'IU'),
+                  //       ValueItem(label: 'oz', value: 'oz'),
+                  //       ValueItem(label: 'pt', value: 'pt'),
+                  //       ValueItem(label: 'qt', value: 'qt'),
+                  //       ValueItem(label: 'gal', value: 'gal'),
+                  //       ValueItem(label: 'lb', value: 'lb'),
+                  //       ValueItem(label: 'mg/mL', value: 'mg/mL'),
+                  //     ],
+                  //     selectionType: SelectionType.single,
+                  //     chipConfig: const ChipConfig(wrapType: WrapType.wrap),
+                  //     dropdownHeight: 200,
+                  //     optionTextStyle: const TextStyle(fontSize: 16),
+                  //     selectedOptionIcon: const Icon(Icons.check_circle),
+                  //     backgroundColor: Colors.transparent,
+                  //     focusedBorderWidth: 2,
+                  //     inputDecoration: BoxDecoration(
+                  //       color: const Color.fromARGB(255, 219, 228, 231),
+                  //       borderRadius: BorderRadius.circular(20),
+                  //     ),
+                  //     focusedBorderColor: const Color.fromARGB(255, 7, 82, 96),
+                  //     padding: const EdgeInsets.all(22),
+                  //   ),
+                  // ),
                 ],
               ),
-              SizedBox(height: 16),
-              TextFormField(
-                controller: _medicationNoteController,
-                decoration: InputDecoration(
-                    labelText: 'Medication Note',
-                    hintText: 'Take note about this medication'),
-              ),
-              SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: () async {
-                  // if (_formKey.currentState!.validate()) {
-                  //   await FirebaseFirestore.instance
-                  //       .collection('users')
-                  //       .doc(user!.uid)
-                  //       .collection('medications')
-                  //       .add({
-                  //     'medicationName': _medicationNameController.text,
-                  //     'medicationType': _medicationTypeController.text,
-                  //     'medicationQuantity': _medicationQuantityController.text,
-                  //     'medicationDosage': _medicationDosageController.text,
-                  //     'medicationFrequency':
-                  //         _medicationFrequencyController.text,
-                  //     'medicationTimeOfDay':
-                  //         _medicationTimeOfDayController.text,
-                  //     'medicationReminder': _medicationReminderController.text,
-                  //     'medicationNote': _medicationNoteController.text,
-                  //     'medicationPhoto': _medicationPhotoController.text,
-                  //   });
-                  //   //navigate to add_medicine2
-                  //   Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //       builder: (context) => AddMedication2(),
-                  //     ),
-                  //   );
-                  // }
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AddMedication2(),
+              const SizedBox(height: 40),
+              SizedBox(
+                width: double.infinity,
+                height: 55,
+                child: FilledButton(
+                  onPressed: goToNextPage,
+                  style: const ButtonStyle(
+                    elevation: MaterialStatePropertyAll(2),
+                    shape: MaterialStatePropertyAll(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(20),
+                        ),
+                      ),
                     ),
-                  );
-                },
-                child: Text('Next'),
+                  ),
+                  child: Text(
+                    'Next',
+                    style: GoogleFonts.roboto(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
               ),
+              // ElevatedButton(
+              //   onPressed: () {
+              //     goToNextPage();
+              //     //print all controller values
+              //     print(_medicationNameController.text);
+              //     print(_medicationTypeController.text);
+              //     print(_medicationStrengthValueController.text +
+              //         _medicationStrengthController.text);
+              //   },
+              //   child: const Text('Next'),
+              // ),
             ],
           ),
         ),

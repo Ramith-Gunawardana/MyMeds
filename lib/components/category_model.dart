@@ -3,14 +3,13 @@ import 'package:flutter/material.dart';
 class CategoryModel {
   String name;
   String iconPath;
-  Color boxColor;
+  Color boxColor = const Color.fromARGB(255, 158, 158, 158);
 
   bool isSelected;
 
   CategoryModel({
     required this.name,
     required this.iconPath,
-    required this.boxColor,
     this.isSelected = false,
   });
 
@@ -21,94 +20,93 @@ class CategoryModel {
       CategoryModel(
         name: 'Capsule',
         iconPath: 'lib/assets/icons/pills.gif',
-        boxColor: Color.fromRGBO(7, 82, 96, 1),
       ),
     );
 
     categories.add(CategoryModel(
-        name: 'Tablet',
-        iconPath: 'lib/assets/icons/tablet.gif',
-        boxColor: Colors.transparent));
+      name: 'Tablet',
+      iconPath: 'lib/assets/icons/tablet.gif',
+    ));
 
     categories.add(CategoryModel(
-        name: 'Liquid',
-        iconPath: 'lib/assets/icons/liquid.gif',
-        boxColor: Color.fromARGB(255, 7, 82, 96)));
+      name: 'Liquid',
+      iconPath: 'lib/assets/icons/liquid.gif',
+    ));
 
     categories.add(CategoryModel(
-        name: 'Topical',
-        iconPath: 'lib/assets/icons/tube.gif',
-        boxColor: Colors.transparent));
+      name: 'Topical',
+      iconPath: 'lib/assets/icons/tube.gif',
+    ));
 
     categories.add(CategoryModel(
-        name: 'Cream',
-        iconPath: 'lib/assets/icons/cream.gif',
-        boxColor: Color.fromARGB(255, 7, 82, 96)));
+      name: 'Cream',
+      iconPath: 'lib/assets/icons/cream.gif',
+    ));
 
     categories.add(CategoryModel(
-        name: 'Drops',
-        iconPath: 'lib/assets/icons/drops.gif',
-        boxColor: Colors.transparent));
+      name: 'Drops',
+      iconPath: 'lib/assets/icons/drops.gif',
+    ));
 
     categories.add(CategoryModel(
-        name: 'Foam',
-        iconPath: 'lib/assets/icons/foam.gif',
-        boxColor: Color.fromARGB(255, 7, 82, 96)));
+      name: 'Foam',
+      iconPath: 'lib/assets/icons/foam.gif',
+    ));
 
     categories.add(CategoryModel(
-        name: 'Gel',
-        iconPath: 'lib/assets/icons/tube.gif',
-        boxColor: Colors.transparent));
+      name: 'Gel',
+      iconPath: 'lib/assets/icons/tube.gif',
+    ));
 
     categories.add(CategoryModel(
-        name: 'Herbal',
-        iconPath: 'lib/assets/icons/herbal.gif',
-        boxColor: Color.fromARGB(255, 7, 82, 96)));
+      name: 'Herbal',
+      iconPath: 'lib/assets/icons/herbal.gif',
+    ));
 
     categories.add(CategoryModel(
-        name: 'Inhaler',
-        iconPath: 'lib/assets/icons/inhalator.gif',
-        boxColor: Colors.transparent));
+      name: 'Inhaler',
+      iconPath: 'lib/assets/icons/inhalator.gif',
+    ));
 
     categories.add(CategoryModel(
-        name: 'Injection',
-        iconPath: 'lib/assets/icons/syringe.gif',
-        boxColor: Color.fromARGB(255, 7, 82, 96)));
+      name: 'Injection',
+      iconPath: 'lib/assets/icons/syringe.gif',
+    ));
 
     categories.add(CategoryModel(
-        name: 'Lotion',
-        iconPath: 'lib/assets/icons/lotion.gif',
-        boxColor: Colors.transparent));
+      name: 'Lotion',
+      iconPath: 'lib/assets/icons/lotion.gif',
+    ));
 
     categories.add(CategoryModel(
-        name: 'Nasal Spray',
-        iconPath: 'lib/assets/icons/nasalspray.gif',
-        boxColor: Color.fromARGB(255, 7, 82, 96)));
+      name: 'Nasal Spray',
+      iconPath: 'lib/assets/icons/nasalspray.gif',
+    ));
 
     categories.add(CategoryModel(
-        name: 'Ointment',
-        iconPath: 'lib/assets/icons/tube.gif',
-        boxColor: Colors.transparent));
+      name: 'Ointment',
+      iconPath: 'lib/assets/icons/tube.gif',
+    ));
 
     categories.add(CategoryModel(
-        name: 'Patch',
-        iconPath: 'lib/assets/icons/patch.gif',
-        boxColor: Color.fromARGB(255, 7, 82, 96)));
+      name: 'Patch',
+      iconPath: 'lib/assets/icons/patch.gif',
+    ));
 
     categories.add(CategoryModel(
-        name: 'Powder',
-        iconPath: 'lib/assets/icons/powder.gif',
-        boxColor: Colors.transparent));
+      name: 'Powder',
+      iconPath: 'lib/assets/icons/powder.gif',
+    ));
 
     categories.add(CategoryModel(
-        name: 'Spray',
-        iconPath: 'lib/assets/icons/spray.gif',
-        boxColor: Color.fromARGB(255, 7, 82, 96)));
+      name: 'Spray',
+      iconPath: 'lib/assets/icons/spray.gif',
+    ));
 
     categories.add(CategoryModel(
-        name: 'Suppository',
-        iconPath: 'lib/assets/icons/suppository.gif',
-        boxColor: Colors.transparent));
+      name: 'Suppository',
+      iconPath: 'lib/assets/icons/suppository.gif',
+    ));
 
     return categories;
   }
