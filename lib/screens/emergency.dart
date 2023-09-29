@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Emergency extends StatefulWidget {
@@ -41,6 +42,7 @@ class _Emergency extends State<Emergency> {
         padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
         child: Column(
           children: [
+            const SizedBox(height: 20),
             ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: Image.asset(
@@ -50,12 +52,19 @@ class _Emergency extends State<Emergency> {
                 height: 80.0,
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 40),
             _EmergencyButton(
-              onPressed: () => _makeEmergencyCall("110"),
-              icon: Icons.fire_truck_outlined,
-              label: 'Fire & Rescue',
-              number: '110',
+              onPressed: () => _makeEmergencyCall("1990"),
+              icon: FontAwesomeIcons.truckMedical,
+              label: 'Suwa Seriya Ambulance',
+              number: '1990',
+            ),
+            _EmergencyButton(
+              onPressed: () => _makeEmergencyCall("0112691111"),
+              // icon: Icons.accessible_outlined,
+              icon: FontAwesomeIcons.personFallingBurst,
+              label: 'Accident Service',
+              number: '011 2691111',
             ),
             _EmergencyButton(
               onPressed: () => _makeEmergencyCall("119"),
@@ -64,16 +73,10 @@ class _Emergency extends State<Emergency> {
               number: '119',
             ),
             _EmergencyButton(
-              onPressed: () => _makeEmergencyCall("1990"),
-              icon: Icons.medical_services_outlined,
-              label: 'Suwa Seriya Ambulance',
-              number: '1990',
-            ),
-            _EmergencyButton(
-              onPressed: () => _makeEmergencyCall("0112691111"),
-              icon: Icons.accessible_outlined,
-              label: 'Accident Service',
-              number: '011 2691111',
+              onPressed: () => _makeEmergencyCall("110"),
+              icon: Icons.fire_truck_outlined,
+              label: 'Fire & Rescue',
+              number: '110',
             ),
             _EmergencyButton(
               onPressed: () => _makeEmergencyCall("1919"),

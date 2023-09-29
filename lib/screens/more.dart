@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mymeds_app/screens/account_settings.dart';
@@ -18,6 +19,8 @@ class More extends StatefulWidget {
 
 class _SettingsState extends State<More> {
   Position? _currentPosition;
+  //current user
+  User? currentUser = FirebaseAuth.instance.currentUser;
 
   // @override
   // void initState() {
@@ -141,14 +144,21 @@ class _SettingsState extends State<More> {
                               ),
                             );
                           },
-                          child: CircleAvatar(
-                            radius: 20,
-                            backgroundColor:
-                                Theme.of(context).colorScheme.primary,
-                            foregroundColor:
-                                Theme.of(context).colorScheme.surface,
-                            child: const Icon(Icons.person_outlined),
-                          ),
+                          child: currentUser!.photoURL!.isEmpty
+                              ? CircleAvatar(
+                                  radius: 20,
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.primary,
+                                  foregroundColor:
+                                      Theme.of(context).colorScheme.surface,
+                                  child: const Icon(Icons.person_outlined),
+                                )
+                              : CircleAvatar(
+                                  radius: 20,
+                                  backgroundImage:
+                                      NetworkImage(currentUser!.photoURL!),
+                                  backgroundColor: Colors.transparent,
+                                ),
                         ),
                       ],
                     ),

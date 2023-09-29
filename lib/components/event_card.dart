@@ -89,6 +89,7 @@ class EventCard extends StatelessWidget {
         showDialog(
           context: context,
           builder: (context) {
+            //alert dialog of med card
             return AlertDialog(
               // title: Text(
               //   'Medication details',
@@ -143,6 +144,10 @@ class EventCard extends StatelessWidget {
                           snapshot.data!.data() != null
                               ? snapshot.data!.data() as Map<String, dynamic>
                               : <String, dynamic>{};
+                      List<String> time =
+                          medData['times'].toString().split(':');
+                      int hour = int.parse(time[0]);
+                      int minute = int.parse(time[1]);
 
                       // print(snapshot.data!.data());
                       return Column(
@@ -174,10 +179,14 @@ class EventCard extends StatelessWidget {
                             height: 10,
                           ),
                           Text(
-                            'Take ${medData['medcount']} ${medData['category']}(s) at ${medData['times']}',
+                            'Take ${medData['medcount']} ${medData['category']}(s) at ${TimeOfDay(
+                              hour: hour,
+                              minute: minute,
+                            ).format(context).toString()}',
                             style: GoogleFonts.roboto(
                               color: const Color.fromARGB(255, 16, 15, 15),
                               fontSize: 16,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                           const SizedBox(

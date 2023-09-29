@@ -269,7 +269,10 @@ flutter:
     - lib/assets/icons/2.gif
     - lib/assets/icons/3.gif
     - lib/assets/icons/4.gif
-
+    - lib/assets/icons/no_alarm.gif
+    - lib/assets/images/taking_med.png
+    - lib/assets/images/bell.png
+    - lib/assets/images/ambulance.png
 
     - assets/audio/marimba.mp3
 

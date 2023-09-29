@@ -77,11 +77,14 @@ class _OnboardingState extends State<Onboarding> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Expanded(
+                            child: Center(
                               child: Image.asset(
-                            contents[i].image,
-                            color: const Color.fromARGB(255, 241, 250, 251),
-                            colorBlendMode: BlendMode.darken,
-                          )),
+                                contents[i].image,
+                                color: const Color.fromARGB(255, 241, 250, 251),
+                                colorBlendMode: BlendMode.darken,
+                              ),
+                            ),
+                          ),
                           const SizedBox(height: 50),
                           //title
                           Text(
@@ -157,11 +160,14 @@ class _OnboardingState extends State<Onboarding> {
                   // ),
                   SizedBox(
                     height: 50,
-                    width: 120,
+                    width: 140,
                     child: TextButton(
                       onPressed: widget.showSignInScreen,
                       style: const ButtonStyle(
-                        elevation: MaterialStatePropertyAll(2),
+                        backgroundColor: MaterialStatePropertyAll(
+                            Color.fromARGB(255, 217, 237, 239)),
+                        foregroundColor: MaterialStatePropertyAll(
+                            Color.fromRGBO(7, 82, 96, 1)),
                         shape: MaterialStatePropertyAll(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(

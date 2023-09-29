@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:alarm/alarm.dart';
 import 'package:mymeds_app/components/alarm_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:mymeds_app/screens/add_medication1.dart';
 import 'package:mymeds_app/screens/alarm_ring.dart';
 
 class AlarmSettingsPage extends StatefulWidget {
@@ -106,9 +107,37 @@ class _AlarmSettingsPageState extends State<AlarmSettingsPage> {
                 ),
               )
             : Center(
-                child: Text(
-                  "No alarms set",
-                  style: Theme.of(context).textTheme.titleMedium,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(50),
+                      child: Image.asset(
+                        'lib/assets/icons/no_alarm.gif',
+                        color: const Color.fromARGB(255, 241, 250, 251),
+                        colorBlendMode: BlendMode.darken,
+                        height: 100.0,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const Text('No upcoimg alarms'),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AddMedication1(),
+                          ),
+                        );
+                      },
+                      child: const Text('Add a medication'),
+                    ),
+                  ],
                 ),
               ),
       ),

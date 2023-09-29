@@ -135,9 +135,9 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
         const SnackBar(
           backgroundColor: Color.fromARGB(255, 7, 83, 96),
           behavior: SnackBarBehavior.floating,
-          duration: Duration(seconds: 2),
+          duration: Duration(seconds: 3),
           content: Text(
-            'Please select an prescription image first',
+            'Please select an image first',
           ),
         ),
       );
@@ -354,10 +354,11 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
                   SizedBox(
                     width: double.infinity,
                     height: 55,
-                    child: FilledButton(
+                    child: FilledButton.icon(
+                      icon: const Icon(Icons.add_photo_alternate_outlined),
                       onPressed: () => _showSelectPhotoOptions(context),
                       style: const ButtonStyle(
-                        elevation: MaterialStatePropertyAll(2),
+                        elevation: MaterialStatePropertyAll(6),
                         // backgroundColor: MaterialStatePropertyAll(
                         //   Color.fromARGB(255, 7, 82, 96),
                         // ),
@@ -369,7 +370,7 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
                           ),
                         ),
                       ),
-                      child: Text(
+                      label: Text(
                         'Add a Photo',
                         style: GoogleFonts.roboto(
                           fontSize: 20,
@@ -401,7 +402,7 @@ class _SetPhotoScreenState extends State<SetPhotoScreen> {
                   label: Text(
                     _saveBtnText,
                     style: GoogleFonts.roboto(
-                      fontSize: 25,
+                      fontSize: 20,
                       fontWeight: FontWeight.w600,
                     ),
                   ),

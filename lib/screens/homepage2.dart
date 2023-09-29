@@ -9,7 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mymeds_app/components/medcard.dart';
 import 'package:mymeds_app/screens/account_settings.dart';
 import 'package:mymeds_app/screens/add_medication1.dart';
-import 'package:awesome_notifications/awesome_notifications.dart';
+// import 'package:awesome_notifications/awesome_notifications.dart';
 
 class HomePage2 extends StatefulWidget {
   const HomePage2({super.key});
@@ -168,65 +168,65 @@ class _HomePage2State extends State<HomePage2> {
     //   (alarmSettings) => navigateToRingScreen(alarmSettings),
     // );
 
-    AwesomeNotifications().setListeners(
-      onActionReceivedMethod: onActionReceivedMethod,
-      onNotificationCreatedMethod: onNotificationCreatedMethod,
-      onNotificationDisplayedMethod: onNotificationDisplayedMethod,
-      onDismissActionReceivedMethod: onDismissActionReceivedMethod,
-    );
+    // AwesomeNotifications().setListeners(
+    //   onActionReceivedMethod: onActionReceivedMethod,
+    //   onNotificationCreatedMethod: onNotificationCreatedMethod,
+    //   onNotificationDisplayedMethod: onNotificationDisplayedMethod,
+    //   onDismissActionReceivedMethod: onDismissActionReceivedMethod,
+    // );
 
     //notification permission check
-    AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
-      if (!isAllowed) {
-        showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Text(
-                'Notifications',
-                style: GoogleFonts.roboto(
-                  color: const Color.fromARGB(255, 16, 15, 15),
-                ),
-              ),
-              content: Text(
-                'Would you like MyMeds to send notifications?',
-                style: GoogleFonts.roboto(
-                  color: const Color.fromARGB(255, 16, 15, 15),
-                ),
-              ),
-              actions: <Widget>[
-                TextButton(
-                  child: Text(
-                    'Don\'t allow',
-                    style: GoogleFonts.roboto(
-                      fontWeight: FontWeight.w600,
-                      color: const Color.fromARGB(255, 82, 82, 82),
-                    ),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-                TextButton(
-                  child: Text(
-                    'Allow',
-                    style: GoogleFonts.roboto(
-                      fontWeight: FontWeight.w600,
-                      color: const Color.fromRGBO(7, 82, 96, 1),
-                    ),
-                  ),
-                  onPressed: () {
-                    AwesomeNotifications()
-                        .requestPermissionToSendNotifications()
-                        .then((_) => Navigator.of(context).pop());
-                  },
-                ),
-              ],
-            );
-          },
-        );
-      }
-    });
+    // AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+    //   if (!isAllowed) {
+    //     showDialog(
+    //       context: context,
+    //       builder: (context) {
+    //         return AlertDialog(
+    //           title: Text(
+    //             'Notifications',
+    //             style: GoogleFonts.roboto(
+    //               color: const Color.fromARGB(255, 16, 15, 15),
+    //             ),
+    //           ),
+    //           content: Text(
+    //             'Would you like MyMeds to send notifications?',
+    //             style: GoogleFonts.roboto(
+    //               color: const Color.fromARGB(255, 16, 15, 15),
+    //             ),
+    //           ),
+    //           actions: <Widget>[
+    //             TextButton(
+    //               child: Text(
+    //                 'Don\'t allow',
+    //                 style: GoogleFonts.roboto(
+    //                   fontWeight: FontWeight.w600,
+    //                   color: const Color.fromARGB(255, 82, 82, 82),
+    //                 ),
+    //               ),
+    //               onPressed: () {
+    //                 Navigator.of(context).pop();
+    //               },
+    //             ),
+    //             TextButton(
+    //               child: Text(
+    //                 'Allow',
+    //                 style: GoogleFonts.roboto(
+    //                   fontWeight: FontWeight.w600,
+    //                   color: const Color.fromRGBO(7, 82, 96, 1),
+    //                 ),
+    //               ),
+    //               onPressed: () {
+    //                 AwesomeNotifications()
+    //                     .requestPermissionToSendNotifications()
+    //                     .then((_) => Navigator.of(context).pop());
+    //               },
+    //             ),
+    //           ],
+    //         );
+    //       },
+    //     );
+    //   }
+    // });
   }
 
 //   void loadAlarms() {
@@ -248,60 +248,60 @@ class _HomePage2State extends State<HomePage2> {
 //   }
 
 //notification action buttons click
-  Future<void> onActionReceivedMethod(
-      ReceivedNotification receivedNotification) async {
-    Map<String, dynamic> notificationData = receivedNotification.toMap();
-    print(
-        'Notification action clicked -${notificationData["buttonKeyPressed"]}');
-    switch (notificationData["buttonKeyPressed"].toString()) {
-      case 'snooze':
-        print('CLICKED SNOOZE');
-        // final now = DateTime.now();
-        // Alarm.set(
-        //   alarmSettings: alarmSettings.copyWith(
-        //     dateTime: DateTime(
-        //       now.year,
-        //       now.month,
-        //       now.day,
-        //       now.hour,
-        //       now.minute,
-        //       0,
-        //       0,
-        //     ).add(const Duration(minutes: 1)),
-        //   ),
-        // ).then((_) => Navigator.pop(context));
-        // loadAlarms();
-        break;
-      case 'skip':
-        print('CLICKED SKIP');
-        // Alarm.stop(alarmSettings.id).then((_) => Navigator.pop(context));
-        // loadAlarms();
-        break;
-      case 'take':
-        print('CLICKED TAKE');
-        // Alarm.stop(alarmSettings.id).then((_) => Navigator.pop(context));
-        // loadAlarms();
-        break;
-      default:
-        print('CLICKED THE NOTIFICATION BODY');
-        break;
-    }
-  }
+  // Future<void> onActionReceivedMethod(
+  //     ReceivedNotification receivedNotification) async {
+  //   Map<String, dynamic> notificationData = receivedNotification.toMap();
+  //   print(
+  //       'Notification action clicked -${notificationData["buttonKeyPressed"]}');
+  //   switch (notificationData["buttonKeyPressed"].toString()) {
+  //     case 'snooze':
+  //       print('CLICKED SNOOZE');
+  //       // final now = DateTime.now();
+  //       // Alarm.set(
+  //       //   alarmSettings: alarmSettings.copyWith(
+  //       //     dateTime: DateTime(
+  //       //       now.year,
+  //       //       now.month,
+  //       //       now.day,
+  //       //       now.hour,
+  //       //       now.minute,
+  //       //       0,
+  //       //       0,
+  //       //     ).add(const Duration(minutes: 1)),
+  //       //   ),
+  //       // ).then((_) => Navigator.pop(context));
+  //       // loadAlarms();
+  //       break;
+  //     case 'skip':
+  //       print('CLICKED SKIP');
+  //       // Alarm.stop(alarmSettings.id).then((_) => Navigator.pop(context));
+  //       // loadAlarms();
+  //       break;
+  //     case 'take':
+  //       print('CLICKED TAKE');
+  //       // Alarm.stop(alarmSettings.id).then((_) => Navigator.pop(context));
+  //       // loadAlarms();
+  //       break;
+  //     default:
+  //       print('CLICKED THE NOTIFICATION BODY');
+  //       break;
+  //   }
+  // }
 
-  static Future<void> onNotificationCreatedMethod(
-      ReceivedNotification receivedNotification) async {
-    print('Notification created');
-  }
+  // static Future<void> onNotificationCreatedMethod(
+  //     ReceivedNotification receivedNotification) async {
+  //   print('Notification created');
+  // }
 
-  static Future<void> onNotificationDisplayedMethod(
-      ReceivedNotification receivedNotification) async {
-    print('Notification displayed');
-  }
+  // static Future<void> onNotificationDisplayedMethod(
+  //     ReceivedNotification receivedNotification) async {
+  //   print('Notification displayed');
+  // }
 
-  static Future<void> onDismissActionReceivedMethod(
-      ReceivedNotification receivedNotification) async {
-    print('Notification dismissed');
-  }
+  // static Future<void> onDismissActionReceivedMethod(
+  //     ReceivedNotification receivedNotification) async {
+  //   print('Notification dismissed');
+  // }
 
   @override
   void dispose() {
@@ -368,12 +368,21 @@ class _HomePage2State extends State<HomePage2> {
                           ),
                         );
                       },
-                      child: CircleAvatar(
-                        radius: 20,
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                        foregroundColor: Theme.of(context).colorScheme.surface,
-                        child: const Icon(Icons.person_outlined),
-                      ),
+                      child: currentUser!.photoURL!.isEmpty
+                          ? CircleAvatar(
+                              radius: 20,
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.primary,
+                              foregroundColor:
+                                  Theme.of(context).colorScheme.surface,
+                              child: const Icon(Icons.person_outlined),
+                            )
+                          : CircleAvatar(
+                              radius: 20,
+                              backgroundImage:
+                                  NetworkImage(currentUser!.photoURL!),
+                              backgroundColor: Colors.transparent,
+                            ),
                     ),
                   ],
                 ),
@@ -575,13 +584,13 @@ class _HomePage2State extends State<HomePage2> {
                                     ),
                                   ),
                                   const SizedBox(
-                                    height: 10,
+                                    height: 20,
                                   ),
                                   const Text('No reminders'),
                                   const SizedBox(
                                     height: 20,
                                   ),
-                                  TextButton(
+                                  ElevatedButton(
                                     onPressed: () {
                                       Navigator.push(
                                         context,
