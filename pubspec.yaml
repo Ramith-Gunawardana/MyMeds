@@ -55,7 +55,16 @@ dependencies:
   syncfusion_flutter_charts: ^22.2.9
   settings_ui: ^2.0.2
   flutter_svg: ^1.1.6
-  day_night_time_picker: 
+  flutter_spinner_picker: ^0.0.7
+  day_night_time_picker:
+  custom_date_range_picker: ^1.0.10
+  custom_radio_grouped_button: ^2.2.0
+  direct_select_flutter: ^1.1.1
+  weekday_selector: ^1.1.0
+  direct_select: ^2.0.0
+  flutter_awesome_alert_box: ^2.0.0
+  multi_dropdown: ^2.0.1
+  multi_select_flutter:
   text_scroll: ^0.2.0
   alarm: ^1.2.2
   awesome_notifications: any
@@ -260,6 +269,8 @@ flutter:
     - lib/assets/icons/syringe.gif
     - lib/assets/icons/tablet.gif
     - lib/assets/icons/tube.gif
+    - lib/assets/icons/medicine.gif
+    - lib/assets/icons/summerymedicine.gif
     - lib/assets/icons/no_reminders.gif
     - lib/assets/icons/emergency-call.gif
     - lib/assets/icons/height.gif

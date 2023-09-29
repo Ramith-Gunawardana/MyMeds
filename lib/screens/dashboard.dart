@@ -4,11 +4,13 @@ import 'package:alarm/alarm.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mymeds_app/screens/add_medication1.dart';
+// import 'package:my_navigation/stat';
 import 'package:mymeds_app/screens/alarm_ring.dart';
+// import 'package:mymeds_app/screens/settings.dart';
 import 'package:mymeds_app/screens/homepage2.dart';
 import 'package:mymeds_app/screens/medication.dart';
-import 'package:mymeds_app/screens/statistic.dart';
 import 'package:mymeds_app/screens/more.dart';
+import 'package:mymeds_app/screens/statistic.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});

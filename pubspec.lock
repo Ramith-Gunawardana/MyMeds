@@ -141,10 +141,10 @@ packages:
     dependency: transitive
     description:
       name: collection
-      sha256: "4a07be6cb69c84d677a6c3096fcf960cc3285a8330b4603e0d463d15d9bd934c"
+      sha256: f092b211a4319e98e5ff58223576de6c2803db36221657b46c82574721240687
       url: "https://pub.dev"
     source: hosted
-    version: "1.17.1"
+    version: "1.17.2"
   convert:
     dependency: transitive
     description:
@@ -185,6 +185,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
+  custom_date_range_picker:
+    dependency: "direct main"
+    description:
+      name: custom_date_range_picker
+      sha256: e2814b22af6fd72909f23a86400eec0454417e6955314e2bfb2ffd88019ac345
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.10"
+  custom_radio_grouped_button:
+    dependency: "direct main"
+    description:
+      name: custom_radio_grouped_button
+      sha256: b07bd6dec2c1c5d64776a354eb2c01c67a77e4a5700098ae6fbde18cc94ad33d
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.1"
   day_night_time_picker:
     dependency: "direct main"
     description:
@@ -217,6 +233,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.0.0"
+  direct_select:
+    dependency: "direct main"
+    description:
+      name: direct_select
+      sha256: "6f366f1da0ce0ffaffb08c34ecfb66d64d558f2a8712f8a48bbdbe08c42ab3ae"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
+  direct_select_flutter:
+    dependency: "direct main"
+    description:
+      name: direct_select_flutter
+      sha256: "747f32aa0c5c85d633e7006a82f9d4ca8c4b0415709f842892893b44b288cda9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.1"
   fake_async:
     dependency: transitive
     description:
@@ -358,6 +390,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_awesome_alert_box:
+    dependency: "direct main"
+    description:
+      name: flutter_awesome_alert_box
+      sha256: "6cca2b65856286c3ffbb21cc2262a8c36e81908d1cbdd30f29e3edc46ac61b0d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.1"
   flutter_fgbg:
     dependency: transitive
     description:
@@ -430,6 +470,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.15"
+  flutter_spinner_picker:
+    dependency: "direct main"
+    description:
+      name: flutter_spinner_picker
+      sha256: c9ca4cb5d022a90aa54e5b8c893d2b7e4029fc788875efd678e8be6e55ffa2b4
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.7"
   flutter_svg:
     dependency: "direct main"
     description:
@@ -764,18 +812,18 @@ packages:
     dependency: transitive
     description:
       name: matcher
-      sha256: "6501fbd55da300384b768785b83e5ce66991266cec21af89ab9ae7f5ce1c4cbb"
+      sha256: "1803e76e6653768d64ed8ff2e1e67bea3ad4b923eb5c56a295c3e634bad5960e"
       url: "https://pub.dev"
     source: hosted
-    version: "0.12.15"
+    version: "0.12.16"
   material_color_utilities:
     dependency: transitive
     description:
       name: material_color_utilities
-      sha256: d92141dc6fe1dad30722f9aa826c7fbc896d021d792f80678280601aff8cf724
+      sha256: "9528f2f296073ff54cb9fee677df673ace1218163c3bc7628093e7eed5203d41"
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.0"
+    version: "0.5.0"
   meta:
     dependency: transitive
     description:
@@ -792,6 +840,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
+  multi_dropdown:
+    dependency: "direct main"
+    description:
+      name: multi_dropdown
+      sha256: "2db9b41ae543a9277defc2b5ba95622acb72ed0fb49d6dead357a1639371bee3"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.0"
+  multi_select_flutter:
+    dependency: "direct main"
+    description:
+      name: multi_select_flutter
+      sha256: "503857b415d390d29159df8a9d92d83c6aac17aaf1c307fb7bcfc77d097d20ed"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.1.3"
   nested:
     dependency: transitive
     description:
@@ -960,6 +1024,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.1"
+  rect_getter:
+    dependency: transitive
+    description:
+      name: rect_getter
+      sha256: "1c71e4ab5fb7d83d2b14a8338f979bc9ae57eefba786e7fbc91f6746dac2193d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   rxdart:
     dependency: transitive
     description:
@@ -1057,10 +1129,10 @@ packages:
     dependency: transitive
     description:
       name: source_span
-      sha256: dd904f795d4b4f3b870833847c461801f6750a9fa8e61ea5ac53f9422b31f250
+      sha256: "53e943d4206a5e30df338fd4c6e7a077e02254531b138a15aec3bd143c1a8b3c"
       url: "https://pub.dev"
     source: hosted
-    version: "1.9.1"
+    version: "1.10.0"
   stack_trace:
     dependency: transitive
     description:
@@ -1113,10 +1185,10 @@ packages:
     dependency: transitive
     description:
       name: test_api
-      sha256: eb6ac1540b26de412b3403a163d919ba86f6a973fe6cc50ae3541b80092fdcfb
+      sha256: "75760ffd7786fffdfb9597c35c5b27eaeec82be8edfb6d71d32651128ed7aab8"
       url: "https://pub.dev"
     source: hosted
-    version: "0.5.1"
+    version: "0.6.0"
   text_scroll:
     dependency: "direct main"
     description:
@@ -1253,6 +1325,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.7"
+  web:
+    dependency: transitive
+    description:
+      name: web
+      sha256: dc8ccd225a2005c1be616fe02951e2e342092edf968cf0844220383757ef8f10
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.4-beta"
+  weekday_selector:
+    dependency: "direct main"
+    description:
+      name: weekday_selector
+      sha256: "783954997aa30a8890b24196784543752dbf179282ca4d9139ecd70d63fea99e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   win32:
     dependency: transitive
     description:
@@ -1294,5 +1382,5 @@ packages:
     source: hosted
     version: "3.1.2"
 sdks:
-  dart: ">=3.0.5 <4.0.0"
+  dart: ">=3.1.0-185.0.dev <4.0.0"
   flutter: ">=3.10.0"
