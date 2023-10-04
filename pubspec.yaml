@@ -58,7 +58,7 @@ dependencies:
   day_night_time_picker: 
   text_scroll: ^0.2.0
   alarm: ^1.2.2
-  awesome_notifications: any
+  # awesome_notifications: any
   localstorage: ^4.0.1+4
   firebase_storage: ^11.2.6
   url_launcher: ^6.1.12

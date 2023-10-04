@@ -1,4 +1,3 @@
-import 'package:day_night_time_picker/day_night_time_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -26,40 +25,66 @@ class _AddMedication3State extends State<AddMedication3> {
   // final _medicationStartingDateController = TextEditingController();
   // final _medicationEndingDateController = TextEditingController();
 
-  TextEditingController _medicationTimeOfDayController =
+  final TextEditingController _medicationTimeOfDayController =
       MedicationControllerData().medicationDosageValueController;
-  TextEditingController _medicationNumberOfTimesController =
+  final TextEditingController _medicationNumberOfTimesController =
       MedicationControllerData().medicationNumberOfTimesController;
-  TextEditingController _medicationStartingDateController =
+  final TextEditingController _medicationStartingDateController =
       MedicationControllerData().medicationStartingDateController;
-  TextEditingController _medicationEndingDateController =
+  final TextEditingController _medicationEndingDateController =
       MedicationControllerData().medicationEndingDateController;
 
-  Time _time = Time(hour: 11, minute: 30, second: 20);
   bool iosStyle = true;
 
   var endDate;
 
   var startDate;
 
-  List<String> selectedTimes = [];
+  List<String?> selectedTimes = [];
 
-  void onTimeChanged(Time newTime) {
-    setState(() {
-      _time = newTime;
-      _medicationNumberOfTimesController.text = selectedTimes.length.toString();
+  // void onTimeChanged(Time newTime) {
+  //   setState(() {
+  //     _time = newTime;
+  //     _medicationNumberOfTimesController.text = selectedTimes.length.toString();
+  //   });
+  // }
+
+  void addFirstTime() {
+    if (selectedTimes.isEmpty) {
+      String formattedTime = formatTime(TimeOfDay.fromDateTime(DateTime.now()));
+      setState(() {
+        selectedTimes.add(formattedTime);
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      addFirstTime();
     });
+  }
+
+  String formatTime(TimeOfDay timeOfDay) {
+    int hour = timeOfDay.hour;
+    int minute = timeOfDay.minute;
+
+    String hourStr = hour.toString().padLeft(2, '0');
+    String minuteStr = minute.toString().padLeft(2, '0');
+
+    return '$hourStr:$minuteStr';
   }
 
   @override
   Widget build(BuildContext context) {
     // Sort the selected times list
-    selectedTimes.sort((a, b) => _compareTimes(a, b));
+    // selectedTimes.sort((a, b) => _compareTimes(a, b));
 
     // Get the current date for date pickers
     final DateTime now = DateTime.now();
     final DateTime firstStartDate =
-        now.subtract(Duration(days: 1)); // To include today
+        now.subtract(const Duration(days: 1)); // To include today
     final DateTime lastStartDate = DateTime(2101);
 
     return Scaffold(
@@ -71,167 +96,434 @@ class _AddMedication3State extends State<AddMedication3> {
             fontWeight: FontWeight.w600,
           ),
         ),
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            color: Colors.black,
-          ),
-          padding: const EdgeInsets.only(left: 20),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.white,
+        elevation: 5,
       ),
       body: Form(
         key: _formKey,
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
           child: ListView(
             children: [
-              SizedBox(height: 24),
               // This is a title
               Text(
-                'Times of the Day',
+                'Medication Times: ${selectedTimes.length} time(s) per day',
                 style: GoogleFonts.roboto(
                   fontSize: 20,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-
-              SizedBox(height: 16),
+              const SizedBox(height: 20),
               // Time input field with the ability to add times directly
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          showPicker(
-                            context: context,
-                            value: _time,
-                            sunrise: TimeOfDay(hour: 6, minute: 0), // optional
-                            sunset: TimeOfDay(hour: 18, minute: 0), // optional
-                            duskSpanInMinutes: 120, // optional
-                            onChange: onTimeChanged,
-                            iosStylePicker: iosStyle,
-                            is24HrFormat: true,
-                            blurredBackground: true,
-                            onChangeDateTime: (DateTime dateTime) {
-                              setState(() {
-                                _medicationTimeOfDayController =
-                                    TextEditingController(
-                                  text: TimeOfDay.fromDateTime(dateTime)
-                                      .format(context),
-                                );
-                              });
-                              print(dateTime);
-                            },
-                          ),
-                        );
-                      },
-                      controller: _medicationTimeOfDayController,
-                      readOnly: true,
-                      style: GoogleFonts.roboto(
-                        height: 2,
-                        color: const Color.fromARGB(255, 16, 15, 15),
-                      ),
-                      cursorColor: const Color.fromARGB(255, 7, 82, 96),
-                      decoration: InputDecoration(
-                        hintText: 'Select the Time and add it',
-                        labelText: 'Medication Times',
-                        labelStyle: GoogleFonts.roboto(
-                          color: const Color.fromARGB(255, 16, 15, 15),
-                        ),
-                        filled: true,
-                        floatingLabelBehavior: FloatingLabelBehavior.auto,
-                        focusedBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(20),
-                          ),
-                          borderSide: BorderSide(
-                            color: Color.fromARGB(255, 7, 82, 96),
-                          ),
-                        ),
-                        enabledBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(20),
-                          ),
-                          borderSide: BorderSide(color: Colors.transparent),
-                        ),
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.add),
-                    onPressed: () {
-                      String selectedTime = _medicationTimeOfDayController.text;
-                      if (selectedTime.isNotEmpty &&
-                          !selectedTimes.contains(selectedTime)) {
-                        setState(() {
-                          selectedTimes.add(selectedTime);
-                          _medicationTimeOfDayController.clear();
-                        });
-                      } else {
-                        // Show a snackbar if the same time is added
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('This time is already added.'),
-                            duration: Duration(seconds: 2),
-                          ),
-                        );
+              // Row(
+              //   children: [
+              //     Expanded(
+              //       child: TextField(
+              //         onTap: () {
+              //           Navigator.of(context).push(
+              //             showPicker(
+              //               context: context,
+              //               value: _time,
+              //               sunrise:
+              //                   const TimeOfDay(hour: 6, minute: 0), // optional
+              //               sunset: const TimeOfDay(
+              //                   hour: 18, minute: 0), // optional
+              //               duskSpanInMinutes: 120, // optional
+              //               onChange: onTimeChanged,
+              //               iosStylePicker: iosStyle,
+              //               is24HrFormat: true,
+              //               onChangeDateTime: (DateTime dateTime) {
+              //                 setState(() {
+              //                   _medicationTimeOfDayController =
+              //                       TextEditingController(
+              //                     text: TimeOfDay.fromDateTime(dateTime)
+              //                         .format(context),
+              //                   );
+              //                 });
+              //                 print(dateTime);
+              //               },
+              //             ),
+              //           );
+              //         },
+              //         controller: _medicationTimeOfDayController,
+              //         readOnly: true,
+              //         style: GoogleFonts.roboto(
+              //           height: 2,
+              //           color: const Color.fromARGB(255, 16, 15, 15),
+              //         ),
+              //         cursorColor: const Color.fromARGB(255, 7, 82, 96),
+              //         decoration: InputDecoration(
+              //           hintText: 'Select the Time and add it',
+              //           labelText: 'Medication Times',
+              //           labelStyle: GoogleFonts.roboto(
+              //             color: const Color.fromARGB(255, 16, 15, 15),
+              //           ),
+              //           filled: true,
+              //           floatingLabelBehavior: FloatingLabelBehavior.auto,
+              //           focusedBorder: const OutlineInputBorder(
+              //             borderRadius: BorderRadius.all(
+              //               Radius.circular(20),
+              //             ),
+              //             borderSide: BorderSide(
+              //               color: Color.fromARGB(255, 7, 82, 96),
+              //             ),
+              //           ),
+              //           enabledBorder: const OutlineInputBorder(
+              //             borderRadius: BorderRadius.all(
+              //               Radius.circular(20),
+              //             ),
+              //             borderSide: BorderSide(color: Colors.transparent),
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //     IconButton(
+              //       icon: const Icon(Icons.add),
+              //       onPressed: () {
+              //         String selectedTime = _medicationTimeOfDayController.text;
+              //         if (selectedTime.isNotEmpty &&
+              //             !selectedTimes.contains(selectedTime)) {
+              //           setState(() {
+              //             selectedTimes.add(selectedTime);
+              //             _medicationTimeOfDayController.clear();
+              //           });
+              //         } else {
+              //           // Show a snackbar if the same time is added
+              //           ScaffoldMessenger.of(context).showSnackBar(
+              //             const SnackBar(
+              //               content: Text('This time is already added.'),
+              //               duration: Duration(seconds: 2),
+              //             ),
+              //           );
 
-                        // Show another snackbar after a brief delay
-                        Future.delayed(Duration(seconds: 2), () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Same Time cannot be added twice.'),
-                              duration: Duration(seconds: 2),
-                            ),
-                          );
-                        });
-                      }
-                    },
-                  ),
-                ],
-              ),
+              //           // Show another snackbar after a brief delay
+              //           Future.delayed(const Duration(seconds: 2), () {
+              //             ScaffoldMessenger.of(context).showSnackBar(
+              //               const SnackBar(
+              //                 content: Text('Same Time cannot be added twice.'),
+              //                 duration: Duration(seconds: 2),
+              //               ),
+              //             );
+              //           });
+              //         }
+              //       },
+              //     ),
+              //   ],
+              // ),
 
-              SizedBox(height: 16),
               // Display the count of selected times
-              Text(
-                  'Number of Medication Times per day: ${selectedTimes.length}'),
+              // Text('Number of Medication Times per day: ${selectedTimes.length}'),
 
-              SizedBox(height: 16),
               // Display the selected times with delete buttons
               Column(
-                children: selectedTimes
-                    .asMap()
-                    .entries
-                    .map(
-                      (entry) => ListTile(
-                        title: Text(entry.value),
-                        trailing: IconButton(
-                          icon: Icon(Icons.delete),
+                children: [
+                  for (int index = 0; index < selectedTimes.length; index++)
+                    ListTile(
+                      contentPadding: const EdgeInsets.all(0),
+                      title: TextField(
+                        onTap: () async {
+                          TimeOfDay? pickedTime = await showTimePicker(
+                            initialTime: TimeOfDay.fromDateTime(DateTime.parse(
+                                '1970-01-01 ${selectedTimes[index]}:00')),
+                            context: context, //context of current state
+                          );
+                          if (pickedTime != null) {
+                            String formattedTime = formatTime(pickedTime);
+                            print(
+                                "Selected time in 24-hour format: $formattedTime");
+                            setState(() {
+                              selectedTimes[index] = formattedTime;
+                            });
+                          } else {
+                            print("No time selected");
+                          }
+                        },
+                        readOnly: true,
+                        style: GoogleFonts.roboto(
+                          height: 2,
+                          color: const Color.fromARGB(255, 16, 15, 15),
+                        ),
+                        cursorColor: const Color.fromARGB(255, 7, 82, 96),
+                        decoration: InputDecoration(
+                          hintText: TimeOfDay.fromDateTime(DateTime.parse(
+                                  '1970-01-01 ${selectedTimes[index]}:00'))
+                              .format(context),
+                          labelText: TimeOfDay.fromDateTime(DateTime.parse(
+                                  '1970-01-01 ${selectedTimes[index]}:00'))
+                              .format(context),
+                          hintStyle: GoogleFonts.roboto(
+                            color: const Color.fromARGB(255, 16, 15, 15),
+                          ),
+                          labelStyle: GoogleFonts.roboto(
+                            color: const Color.fromARGB(255, 16, 15, 15),
+                          ),
+                          filled: true,
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                          focusedBorder: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(20),
+                            ),
+                            borderSide: BorderSide(
+                              color: Colors.transparent,
+                            ),
+                          ),
+                          enabledBorder: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(20),
+                            ),
+                            borderSide: BorderSide(color: Colors.transparent),
+                          ),
+                        ),
+                      ),
+                      trailing: SizedBox(
+                        height: double.maxFinite,
+                        width: MediaQuery.of(context).size.width * 0.15,
+                        child: IconButton(
+                          padding: const EdgeInsets.all(0),
+                          icon: const Icon(Icons.remove_circle_outline_rounded),
+                          color: Colors.red[900],
+                          style: ButtonStyle(
+                              backgroundColor: const MaterialStatePropertyAll(
+                                Color.fromARGB(255, 219, 228, 232),
+                              ),
+                              shape: MaterialStatePropertyAll(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)),
+                              )),
                           onPressed: () {
                             setState(() {
-                              selectedTimes.removeAt(entry.key);
+                              selectedTimes.removeAt(index); // Remove by index
                             });
                           },
                         ),
                       ),
-                    )
-                    .toList(),
+                    ),
+                ],
               ),
-              SizedBox(height: 36),
-              //Horizontal line
+              ListTile(
+                contentPadding: const EdgeInsets.all(0),
+                title: TextField(
+                  onTap: () {
+                    // String time = TimeOfDay.fromDateTime(DateTime.now()).format(context);
+                    String formattedTime =
+                        formatTime(TimeOfDay.fromDateTime(DateTime.now()));
+
+                    if (selectedTimes.isEmpty) {
+                      setState(() {
+                        selectedTimes.add(formattedTime);
+                      });
+                    } else if (selectedTimes.length == 24) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          backgroundColor: Color.fromARGB(255, 7, 83, 96),
+                          behavior: SnackBarBehavior.floating,
+                          duration: Duration(seconds: 2),
+                          content: Text(
+                            'Maximum medication times per day is 24',
+                          ),
+                        ),
+                      );
+                    } else {
+                      String lastPlus10 = formatTime(TimeOfDay.fromDateTime(
+                              DateTime.parse(
+                                      '1970-01-01 ${selectedTimes.last}:00')
+                                  .add(const Duration(minutes: 10))))
+                          .toString();
+                      print(lastPlus10);
+                      if (selectedTimes.last.toString() == lastPlus10) {
+                        setState(() {
+                          selectedTimes.add(formattedTime);
+                        });
+                      } else {
+                        setState(() {
+                          selectedTimes.add(lastPlus10);
+                        });
+                      }
+                    }
+                  },
+                  readOnly: true,
+                  style: GoogleFonts.roboto(
+                    height: 2,
+                    color: const Color.fromARGB(255, 16, 15, 15),
+                  ),
+                  cursorColor: const Color.fromARGB(255, 7, 82, 96),
+                  decoration: InputDecoration(
+                    hintText: 'Add a time',
+                    labelText: 'Add a time',
+                    hintStyle: GoogleFonts.roboto(
+                      color: const Color.fromARGB(255, 16, 15, 15),
+                    ),
+                    labelStyle: GoogleFonts.roboto(
+                      color: const Color.fromARGB(255, 16, 15, 15),
+                    ),
+                    filled: true,
+                    floatingLabelBehavior: FloatingLabelBehavior.never,
+                    focusedBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(20),
+                      ),
+                      borderSide: BorderSide(
+                        color: Colors.transparent,
+                      ),
+                    ),
+                    enabledBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(20),
+                      ),
+                      borderSide: BorderSide(color: Colors.transparent),
+                    ),
+                  ),
+                ),
+                trailing: SizedBox(
+                  height: double.maxFinite,
+                  width: MediaQuery.of(context).size.width * 0.15,
+                  child: IconButton(
+                    padding: const EdgeInsets.all(0),
+                    icon: const Icon(Icons.add_circle_outline_rounded),
+                    color: Colors.green[900],
+                    style: ButtonStyle(
+                        backgroundColor: const MaterialStatePropertyAll(
+                          Color.fromARGB(255, 219, 228, 232),
+                        ),
+                        shape: MaterialStatePropertyAll(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                        )),
+                    onPressed: () {
+                      String formattedTime =
+                          formatTime(TimeOfDay.fromDateTime(DateTime.now()));
+
+                      if (selectedTimes.isEmpty) {
+                        setState(() {
+                          selectedTimes.add(formattedTime);
+                        });
+                      } else if (selectedTimes.length == 24) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            backgroundColor: Color.fromARGB(255, 7, 83, 96),
+                            behavior: SnackBarBehavior.floating,
+                            duration: Duration(seconds: 2),
+                            content: Text(
+                              'Maximum medication times per day is 24',
+                            ),
+                          ),
+                        );
+                      } else {
+                        String lastPlus10 = formatTime(TimeOfDay.fromDateTime(
+                                DateTime.parse(
+                                        '1970-01-01 ${selectedTimes.last}:00')
+                                    .add(const Duration(minutes: 10))))
+                            .toString();
+                        print(lastPlus10);
+                        if (selectedTimes.last.toString() == lastPlus10) {
+                          setState(() {
+                            selectedTimes.add(formattedTime);
+                          });
+                        } else {
+                          setState(() {
+                            selectedTimes.add(lastPlus10);
+                          });
+                        }
+                      }
+                    },
+                  ),
+                ),
+              ),
+              // Column(
+              //   children: selectedTimes
+              //       .asMap()
+              //       .entries
+              //       .map(
+              //         (entry) => ListTile(
+              //           // title: Text(entry.value),
+              //           title: TextField(
+              //             onTap: () async {
+              //               TimeOfDay? pickedTime = await showTimePicker(
+              //                 initialTime: TimeOfDay.now(),
+              //                 context: context, //context of current state
+              //               );
+              //               // TimeOfDay? formattedTime = pickedTime!
+              //               //     .replacing(hour: pickedTime.hourOfPeriod);
+              //               // print(formattedTime);
+              //               if (pickedTime != null) {
+              //                 String formattedTime = formatTime(pickedTime);
+              //                 print(
+              //                     "Selected time in 24-hour format: $formattedTime");
+              //                 setState(() {
+              //                   selectedTimes.add(formattedTime);
+              //                 });
+              //               } else {
+              //                 print("No time selected");
+              //               }
+              //               // if (pickedTime != null) {
+              //               //   // String time =
+              //               //   //     '${pickedTime.hour}:${pickedTime.minute}';
+              //               //   setState(() {
+              //               //     selectedTimes.add(pickedTime.format(context));
+              //               //   });
+              //               //   //output 10:51 PM
+              //               //   // DateTime parsedTime = DateFormat.jm().parse(pickedTime.format(context).toString());
+              //               //   //converting to DateTime so that we can further format on different pattern.
+              //               //   // print(parsedTime); //output 1970-01-01 22:53:00.000
+              //               //   // String formattedTime = DateFormat('HH:mm:ss').format(parsedTime);
+              //               //   // print(formattedTime); //output 14:59:00
+              //               //   //DateFormat() is from intl package, you can format the time on any pattern you need.
+              //               // } else {
+              //               //   print("Time is not selected");
+              //               // }
+              //             },
+              //             readOnly: true,
+              //             style: GoogleFonts.roboto(
+              //               height: 2,
+              //               color: const Color.fromARGB(255, 16, 15, 15),
+              //             ),
+              //             cursorColor: const Color.fromARGB(255, 7, 82, 96),
+              //             decoration: InputDecoration(
+              //               hintText: entry.value,
+              //               labelText: entry.value,
+              //               hintStyle: GoogleFonts.roboto(
+              //                 color: const Color.fromARGB(255, 16, 15, 15),
+              //               ),
+              //               labelStyle: GoogleFonts.roboto(
+              //                 color: const Color.fromARGB(255, 16, 15, 15),
+              //               ),
+              //               filled: true,
+              //               floatingLabelBehavior: FloatingLabelBehavior.never,
+              //               focusedBorder: const OutlineInputBorder(
+              //                 borderRadius: BorderRadius.all(
+              //                   Radius.circular(20),
+              //                 ),
+              //                 borderSide: BorderSide(
+              //                   color: Colors.transparent,
+              //                 ),
+              //               ),
+              //               enabledBorder: const OutlineInputBorder(
+              //                 borderRadius: BorderRadius.all(
+              //                   Radius.circular(20),
+              //                 ),
+              //                 borderSide: BorderSide(color: Colors.transparent),
+              //               ),
+              //             ),
+              //           ),
+              //           trailing: IconButton(
+              //             icon: const Icon(Icons.delete),
+              //             onPressed: () {
+              //               setState(() {
+              //                 selectedTimes.removeAt(entry.key);
+              //               });
+              //             },
+              //           ),
+              //         ),
+              //       )
+              //       .toList(),
+              // ),
+              const SizedBox(height: 20),
               Container(
-                margin: EdgeInsets.symmetric(vertical: 10),
+                margin: const EdgeInsets.all(10),
                 width: double.infinity,
-                height: 3,
+                height: 2,
                 color: Colors.grey.shade300,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 20),
               Text(
                 'When will you take this?',
                 style: GoogleFonts.roboto(
@@ -240,7 +532,7 @@ class _AddMedication3State extends State<AddMedication3> {
                 ),
               ),
 
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
 
               ElevatedButton(
                 onPressed: () {
@@ -248,14 +540,14 @@ class _AddMedication3State extends State<AddMedication3> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => AddMediFrequency(),
+                      builder: (context) => const AddMediFrequency(),
                     ),
                   );
                 },
-                child: Text('Add Medication Frequency'),
+                child: const Text('Add Medication Frequency'),
               ),
 
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextField(
                 onTap: () async {
                   final DateTime? pickedStartDate = await showDatePicker(
@@ -264,12 +556,13 @@ class _AddMedication3State extends State<AddMedication3> {
                     firstDate: firstStartDate,
                     lastDate: lastStartDate,
                   );
-                  if (pickedStartDate != null && pickedStartDate != startDate)
+                  if (pickedStartDate != null && pickedStartDate != startDate) {
                     setState(() {
                       startDate = pickedStartDate;
                       _startingDateController = TextEditingController(
                           text: startDate.toString().substring(0, 10));
                     });
+                  }
                 },
                 controller: _startingDateController,
                 readOnly: true,
@@ -305,7 +598,7 @@ class _AddMedication3State extends State<AddMedication3> {
                 ),
               ),
 
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               // Checkbox to make ending date optional
               Row(
                 children: [
@@ -324,7 +617,7 @@ class _AddMedication3State extends State<AddMedication3> {
                       });
                     },
                   ),
-                  Text('Ending Date (Optional)'),
+                  const Text('Ending Date (Optional)'),
                 ],
               ),
 
@@ -338,12 +631,13 @@ class _AddMedication3State extends State<AddMedication3> {
                       firstDate: firstStartDate,
                       lastDate: lastStartDate,
                     );
-                    if (pickedEndDate != null && pickedEndDate != endDate)
+                    if (pickedEndDate != null && pickedEndDate != endDate) {
                       setState(() {
                         endDate = pickedEndDate;
                         _startingDateController = TextEditingController(
                             text: endDate.toString().substring(0, 10));
                       });
+                    }
                   },
                   controller: _startingDateController,
                   readOnly: true,
@@ -378,7 +672,7 @@ class _AddMedication3State extends State<AddMedication3> {
                     ),
                   ),
                 ),
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: () async {
                   Navigator.push(
@@ -392,7 +686,7 @@ class _AddMedication3State extends State<AddMedication3> {
                   print(_medicationStartingDateController.text);
                   print(_medicationEndingDateController.text);
                 },
-                child: Text('Next'),
+                child: const Text('Next'),
               ),
             ],
           ),

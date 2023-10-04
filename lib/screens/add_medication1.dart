@@ -185,9 +185,14 @@ class _AddMedication1State extends State<AddMedication1> {
                 txtEditController: _medicationNameController,
                 focusNode: focusNode_medName,
               ),
-              const SizedBox(
-                height: 40,
+              const SizedBox(height: 20),
+              Container(
+                margin: const EdgeInsets.all(10),
+                width: double.infinity,
+                height: 2,
+                color: Colors.grey.shade300,
               ),
+              const SizedBox(height: 20),
               const Text(
                 'Category',
                 style: TextStyle(
@@ -278,9 +283,14 @@ class _AddMedication1State extends State<AddMedication1> {
                   },
                 ),
               ),
-              const SizedBox(
-                height: 40,
+              const SizedBox(height: 20),
+              Container(
+                margin: const EdgeInsets.all(10),
+                width: double.infinity,
+                height: 2,
+                color: Colors.grey.shade300,
               ),
+              const SizedBox(height: 20),
               const Text(
                 'Strength (Optional)',
                 style: TextStyle(
@@ -344,7 +354,7 @@ class _AddMedication1State extends State<AddMedication1> {
                       height: 2,
                       color: const Color.fromARGB(255, 16, 15, 15),
                     ),
-                    width: MediaQuery.of(context).size.width * 0.45,
+                    width: MediaQuery.of(context).size.width * 0.43,
                     menuStyle: const MenuStyle(
                       shape: MaterialStatePropertyAll(
                         RoundedRectangleBorder(
