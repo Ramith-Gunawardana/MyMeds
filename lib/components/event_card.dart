@@ -10,6 +10,7 @@ class EventCard extends StatelessWidget {
   final String medName;
   final String dosage;
   final String time;
+  final String time24H;
   final bool isTaken;
   final String selectedDate;
   final VoidCallback refreshCallback;
@@ -21,6 +22,7 @@ class EventCard extends StatelessWidget {
     required this.medName,
     required this.dosage,
     required this.time,
+    required this.time24H,
     required this.isTaken,
     required this.selectedDate,
     required this.refreshCallback,
@@ -37,8 +39,12 @@ class EventCard extends StatelessWidget {
         .collection('Users')
         .doc(currentUser!.email)
         .collection('Medications');
+    List<String> dateStr = selectedDate.split('-');
 
-    if (isPast) {
+    if (DateTime(
+            DateTime.now().year, DateTime.now().month, DateTime.now().day) ==
+        DateTime(int.parse(dateStr[0]), int.parse(dateStr[1]),
+            int.parse(dateStr[2]))) {
       if (isTaken) {
         takenTxt = 'Taken';
         takenIcon = Icons.done;
@@ -58,11 +64,11 @@ class EventCard extends StatelessWidget {
           .collection('Medications')
           .doc(documentID)
           .collection('Logs')
-          .doc(selectedDate)
+          .doc('$selectedDate $time24H')
           .set(
         {
           'isTaken': true,
-          'timeTaken': "",
+          'timeTaken': "${DateTime.now()}",
         },
       );
     }
@@ -74,7 +80,7 @@ class EventCard extends StatelessWidget {
           .collection('Medications')
           .doc(documentID)
           .collection('Logs')
-          .doc(selectedDate)
+          .doc('$selectedDate $time24H')
           .set(
         {
           'isTaken': false,
@@ -144,10 +150,10 @@ class EventCard extends StatelessWidget {
                           snapshot.data!.data() != null
                               ? snapshot.data!.data() as Map<String, dynamic>
                               : <String, dynamic>{};
-                      List<String> time =
-                          medData['times'].toString().split(':');
-                      int hour = int.parse(time[0]);
-                      int minute = int.parse(time[1]);
+                      // List<String> timeStr = time.toString().split(':');
+                      // print(time);
+                      // int hour = int.parse(timeStr[0]);
+                      // int minute = int.parse(timeStr[1]);
 
                       // print(snapshot.data!.data());
                       return Column(
@@ -168,21 +174,21 @@ class EventCard extends StatelessWidget {
                           const SizedBox(
                             height: 20,
                           ),
-                          Text(
-                            '${medData['strength']} ${medData['strength_unit']}',
-                            style: GoogleFonts.roboto(
-                              color: const Color.fromARGB(255, 16, 15, 15),
-                              fontSize: 16,
+                          Visibility(
+                            visible: medData['strength'] != null,
+                            child: Text(
+                              '${medData['strength']} ${medData['strength_unit']}',
+                              style: GoogleFonts.roboto(
+                                color: const Color.fromARGB(255, 16, 15, 15),
+                                fontSize: 16,
+                              ),
                             ),
                           ),
                           const SizedBox(
                             height: 10,
                           ),
                           Text(
-                            'Take ${medData['medcount']} ${medData['category']}(s) at ${TimeOfDay(
-                              hour: hour,
-                              minute: minute,
-                            ).format(context).toString()}',
+                            'Take ${medData['medcount']} ${medData['category']}(s) at $time',
                             style: GoogleFonts.roboto(
                               color: const Color.fromARGB(255, 16, 15, 15),
                               fontSize: 16,
@@ -298,13 +304,16 @@ class EventCard extends StatelessWidget {
                   ),
                 ),
                 //dosage
-                Text(
-                  dosage,
-                  style: GoogleFonts.roboto(
-                    fontSize: 15,
-                    color: !isTaken
-                        ? Theme.of(context).colorScheme.surface
-                        : const Color.fromARGB(255, 16, 15, 15),
+                Visibility(
+                  visible: dosage != null,
+                  child: Text(
+                    dosage,
+                    style: GoogleFonts.roboto(
+                      fontSize: 15,
+                      color: !isTaken
+                          ? Theme.of(context).colorScheme.surface
+                          : const Color.fromARGB(255, 16, 15, 15),
+                    ),
                   ),
                 ),
               ],

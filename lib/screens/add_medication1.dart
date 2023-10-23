@@ -74,14 +74,26 @@ class _AddMedication1State extends State<AddMedication1> {
       );
     } else {
       if (_medicationStrengthValueController.text.isNotEmpty &&
-          _selectedCategoryIndex < 0) {
+          _medicationStrengthController.text.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             backgroundColor: Color.fromARGB(255, 7, 83, 96),
             behavior: SnackBarBehavior.floating,
             duration: Duration(seconds: 2),
             content: Text(
-              'Please select the strength value type',
+              'Please select the strength type',
+            ),
+          ),
+        );
+      } else if (_medicationStrengthValueController.text.isEmpty &&
+          _medicationStrengthController.text.isNotEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: Color.fromARGB(255, 7, 83, 96),
+            behavior: SnackBarBehavior.floating,
+            duration: Duration(seconds: 2),
+            content: Text(
+              'Please enter the strength value',
             ),
           ),
         );
@@ -290,13 +302,31 @@ class _AddMedication1State extends State<AddMedication1> {
                 height: 2,
                 color: Colors.grey.shade300,
               ),
-              const SizedBox(height: 20),
-              const Text(
-                'Strength (Optional)',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  const Text(
+                    'Strength ',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  const Text(
+                    '(Optional)',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 15,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      _medicationStrengthController.clear();
+                      _medicationStrengthValueController.clear();
+                    },
+                    child: const Text('Clear'),
+                  ),
+                ],
               ),
               const SizedBox(height: 20),
               Row(

@@ -2,8 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mymeds_app/components/controller_data.dart';
-import 'package:mymeds_app/screens/add_medi_frequency.dart';
 import 'package:mymeds_app/screens/add_medication4.dart';
+
+import 'add_medi_frequency.dart';
 
 class AddMedication3 extends StatefulWidget {
   const AddMedication3({Key? key}) : super(key: key);
@@ -16,25 +17,25 @@ class _AddMedication3State extends State<AddMedication3> {
   final user = FirebaseAuth.instance.currentUser;
   final _formKey = GlobalKey<FormState>();
 
-  var _startingDateController = TextEditingController(
-    text: DateTime.now().toString().substring(0, 10),
-  );
+  // var _startingDateController = TextEditingController(
+  //   text: DateTime.now().toString().substring(0, 10),
+  // );
 
   // var _medicationTimeOfDayController = TextEditingController();
   // final _medicationNumberOfTimesController = TextEditingController();
   // final _medicationStartingDateController = TextEditingController();
   // final _medicationEndingDateController = TextEditingController();
 
-  final TextEditingController _medicationTimeOfDayController =
-      MedicationControllerData().medicationDosageValueController;
-  final TextEditingController _medicationNumberOfTimesController =
-      MedicationControllerData().medicationNumberOfTimesController;
+  final TextEditingController _medicationFrequencyController =
+      MedicationControllerData().medicationFrequencyController;
+  final TextEditingController _medicationTimesController =
+      MedicationControllerData().medicationTimesController;
+  final TextEditingController _medicationTimesOfDayController =
+      MedicationControllerData().medicationTimeOfDayController;
   final TextEditingController _medicationStartingDateController =
       MedicationControllerData().medicationStartingDateController;
   final TextEditingController _medicationEndingDateController =
       MedicationControllerData().medicationEndingDateController;
-
-  bool iosStyle = true;
 
   var endDate;
 
@@ -64,6 +65,8 @@ class _AddMedication3State extends State<AddMedication3> {
     Future.delayed(Duration.zero, () {
       addFirstTime();
     });
+    _medicationStartingDateController.text =
+        DateTime.now().toString().substring(0, 10);
   }
 
   String formatTime(TimeOfDay timeOfDay) {
@@ -76,6 +79,61 @@ class _AddMedication3State extends State<AddMedication3> {
     return '$hourStr:$minuteStr';
   }
 
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: const Color.fromARGB(255, 7, 83, 96),
+        behavior: SnackBarBehavior.floating,
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
+  void goToSummaryPage() {
+    if (selectedTimes.isEmpty) {
+      _showSnackBar('Add at least one medication time');
+    } else if (_medicationFrequencyController.text.isEmpty) {
+      _showSnackBar('Select medication frequency');
+    } else if (_medicationStartingDateController.text.isEmpty) {
+      _showSnackBar('Select medication starting date');
+    } else {
+      _medicationTimesController.text = selectedTimes.length.toString();
+      _medicationTimesOfDayController.text =
+          selectedTimes.toString().replaceAll('[', '').replaceAll(']', '');
+
+      if (_medicationEndingDateController.text.isNotEmpty) {
+        //start date
+        List<String> start = _medicationStartingDateController.text.split('-');
+        DateTime startdate = DateTime(
+            int.parse(start[0]), int.parse(start[1]), int.parse(start[2]));
+        //end date
+        List<String> end = _medicationEndingDateController.text.split('-');
+        DateTime enddate =
+            DateTime(int.parse(end[0]), int.parse(end[1]), int.parse(end[2]));
+
+        Duration difference = enddate.difference(startdate);
+        if (difference.isNegative) {
+          _showSnackBar('Ending date must be a future date');
+        } else {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AddMedication4(),
+            ),
+          );
+        }
+      } else {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AddMedication4(),
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // Sort the selected times list
@@ -83,8 +141,7 @@ class _AddMedication3State extends State<AddMedication3> {
 
     // Get the current date for date pickers
     final DateTime now = DateTime.now();
-    final DateTime firstStartDate =
-        now.subtract(const Duration(days: 1)); // To include today
+    final DateTime firstStartDate = DateTime.now(); // To include today
     final DateTime lastStartDate = DateTime(2101);
 
     return Scaffold(
@@ -108,7 +165,7 @@ class _AddMedication3State extends State<AddMedication3> {
               Text(
                 'Medication Times: ${selectedTimes.length} time(s) per day',
                 style: GoogleFonts.roboto(
-                  fontSize: 20,
+                  fontSize: 18,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -527,44 +584,165 @@ class _AddMedication3State extends State<AddMedication3> {
               Text(
                 'When will you take this?',
                 style: GoogleFonts.roboto(
-                  fontSize: 20,
+                  fontSize: 18,
                   fontWeight: FontWeight.w600,
                 ),
               ),
+              const SizedBox(height: 20),
 
-              const SizedBox(height: 24),
-
-              ElevatedButton(
-                onPressed: () {
-                  // navigate to add_medi_frequency.dart
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const AddMediFrequency(),
-                    ),
-                  );
-                },
-                child: const Text('Add Medication Frequency'),
-              ),
-
-              const SizedBox(height: 16),
+              //add medi freq button
+              // SizedBox(
+              //   height: 55,
+              //   width: MediaQuery.of(context).size.width * 0.42,
+              //   child: TextButton(
+              //     onPressed: () {
+              //       // navigate to add_medi_frequency.dart
+              //       // Navigator.push(
+              //       //   context,
+              //       //   MaterialPageRoute(
+              //       //     builder: (context) => const AddMediFrequency(),
+              //       //   ),
+              //       // );
+              //       showModalBottomSheet(
+              //         context: context,
+              //         isScrollControlled: true,
+              //         isDismissible: false,
+              //         showDragHandle: false,
+              //         shape: const RoundedRectangleBorder(
+              //           borderRadius: BorderRadius.vertical(
+              //             top: Radius.circular(25.0),
+              //           ),
+              //         ),
+              //         builder: (context) => DraggableScrollableSheet(
+              //             // initialChildSize: 0.5,
+              //             maxChildSize: 0.8,
+              //             minChildSize: 0.5,
+              //             expand: false,
+              //             builder: (context, scrollController) {
+              //               return Scaffold(
+              //                 backgroundColor: Colors.transparent,
+              //                 body: SingleChildScrollView(
+              //                   controller: scrollController,
+              //                   child: Container(
+              //                     // color: Colors.grey.shade300,
+              //                     padding:
+              //                         const EdgeInsets.fromLTRB(20, 0, 20, 0),
+              //                     child: Stack(
+              //                       alignment: AlignmentDirectional.center,
+              //                       clipBehavior: Clip.none,
+              //                       children: [
+              //                         Positioned(
+              //                           top: -35,
+              //                           child: Container(
+              //                             width: 50,
+              //                             height: 6,
+              //                             margin:
+              //                                 const EdgeInsets.only(bottom: 20),
+              //                             decoration: BoxDecoration(
+              //                               borderRadius:
+              //                                   BorderRadius.circular(2.5),
+              //                               color: Colors.white,
+              //                             ),
+              //                           ),
+              //                         ),
+              //                         const SizedBox(
+              //                           height: 20,
+              //                         ),
+              //                         const AddMediFrequency(),
+              //                       ],
+              //                     ),
+              //                   ),
+              //                 ),
+              //               );
+              //             }),
+              //       );
+              //     },
+              //     style: const ButtonStyle(
+              //       backgroundColor: MaterialStatePropertyAll(
+              //           Color.fromARGB(255, 217, 237, 239)),
+              //       foregroundColor:
+              //           MaterialStatePropertyAll(Color.fromRGBO(7, 82, 96, 1)),
+              //       shape: MaterialStatePropertyAll(
+              //         RoundedRectangleBorder(
+              //           borderRadius: BorderRadius.all(
+              //             Radius.circular(20),
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //     child: Text(
+              //       'Add Medication Frequency',
+              //       style: GoogleFonts.roboto(
+              //         fontSize: 18,
+              //         fontWeight: FontWeight.w600,
+              //       ),
+              //     ),
+              //   ),
+              // ),
               TextField(
                 onTap: () async {
-                  final DateTime? pickedStartDate = await showDatePicker(
+                  showModalBottomSheet(
                     context: context,
-                    initialDate: now,
-                    firstDate: firstStartDate,
-                    lastDate: lastStartDate,
-                  );
-                  if (pickedStartDate != null && pickedStartDate != startDate) {
-                    setState(() {
-                      startDate = pickedStartDate;
-                      _startingDateController = TextEditingController(
-                          text: startDate.toString().substring(0, 10));
-                    });
-                  }
+                    isScrollControlled: true,
+                    isDismissible: false,
+                    showDragHandle: false,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(25.0),
+                      ),
+                    ),
+                    builder: (context) => DraggableScrollableSheet(
+                        // initialChildSize: 0.5,
+                        maxChildSize: 0.8,
+                        minChildSize: 0.5,
+                        expand: false,
+                        builder: (context, scrollController) {
+                          return Scaffold(
+                            backgroundColor: Colors.transparent,
+                            body: SingleChildScrollView(
+                              controller: scrollController,
+                              child: Container(
+                                // color: Colors.grey.shade300,
+                                padding:
+                                    const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                child: Stack(
+                                  alignment: AlignmentDirectional.center,
+                                  clipBehavior: Clip.none,
+                                  children: [
+                                    Positioned(
+                                      top: -35,
+                                      child: Container(
+                                        width: 50,
+                                        height: 6,
+                                        margin:
+                                            const EdgeInsets.only(bottom: 20),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(2.5),
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    const AddMediFrequency(),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        }),
+                  ).then((value) {
+                    if (value != null) {
+                      print('Bottm sheet data: ' + value);
+                      setState(() {
+                        _medicationFrequencyController.text = value;
+                      });
+                    }
+                  });
                 },
-                controller: _startingDateController,
+                controller: _medicationFrequencyController,
                 readOnly: true,
                 style: GoogleFonts.roboto(
                   height: 2,
@@ -572,8 +750,7 @@ class _AddMedication3State extends State<AddMedication3> {
                 ),
                 cursorColor: const Color.fromARGB(255, 7, 82, 96),
                 decoration: InputDecoration(
-                  hintText: 'Select the Date',
-                  labelText: 'Starting Date',
+                  hintText: 'Medication Frequency',
                   labelStyle: GoogleFonts.roboto(
                     color: const Color.fromARGB(255, 16, 15, 15),
                   ),
@@ -584,7 +761,7 @@ class _AddMedication3State extends State<AddMedication3> {
                       Radius.circular(20),
                     ),
                     borderSide: BorderSide(
-                      color: Color.fromARGB(255, 7, 82, 96),
+                      color: Colors.transparent,
                     ),
                   ),
                   enabledBorder: const OutlineInputBorder(
@@ -598,96 +775,286 @@ class _AddMedication3State extends State<AddMedication3> {
                 ),
               ),
 
-              const SizedBox(height: 16),
-              // Checkbox to make ending date optional
-              Row(
-                children: [
-                  Checkbox(
-                    value: endDate != null,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        if (value == true) {
-                          // Enable the ending date
-                          endDate = DateTime.now();
-                        } else {
-                          // Disable the ending date
-                          endDate = null;
-                        }
-                        _startingDateController.clear();
-                      });
-                    },
-                  ),
-                  const Text('Ending Date (Optional)'),
-                ],
+              // ElevatedButton(
+              //   onPressed: () {
+              //     // navigate to add_medi_frequency.dart
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(
+              //         builder: (context) => const AddMediFrequency(),
+              //       ),
+              //     );
+              //   },
+              //   child: const Text('Add Medication Frequency'),
+              // ),
+
+              const SizedBox(height: 20),
+              Container(
+                margin: const EdgeInsets.all(10),
+                width: double.infinity,
+                height: 2,
+                color: Colors.grey.shade300,
+              ),
+              const SizedBox(height: 20),
+              //startd date
+              Text(
+                'Start date',
+                style: GoogleFonts.roboto(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
 
-              // Ending date picker (conditionally shown)
-              if (endDate != null)
-                TextField(
-                  onTap: () async {
-                    final DateTime? pickedEndDate = await showDatePicker(
-                      context: context,
-                      initialDate: now,
-                      firstDate: firstStartDate,
-                      lastDate: lastStartDate,
-                    );
-                    if (pickedEndDate != null && pickedEndDate != endDate) {
-                      setState(() {
-                        endDate = pickedEndDate;
-                        _startingDateController = TextEditingController(
-                            text: endDate.toString().substring(0, 10));
-                      });
-                    }
-                  },
-                  controller: _startingDateController,
-                  readOnly: true,
-                  style: GoogleFonts.roboto(
-                    height: 2,
+              const SizedBox(height: 20),
+              TextField(
+                onTap: () async {
+                  final DateTime? pickedStartDate = await showDatePicker(
+                    context: context,
+                    initialDate: now,
+                    firstDate: firstStartDate,
+                    lastDate: lastStartDate,
+                  );
+                  if (pickedStartDate != null && pickedStartDate != startDate) {
+                    setState(() {
+                      startDate = pickedStartDate;
+                      _medicationStartingDateController.text =
+                          startDate.toString().substring(0, 10);
+                    });
+                  }
+                },
+                controller: _medicationStartingDateController,
+                readOnly: true,
+                style: GoogleFonts.roboto(
+                  height: 2,
+                  color: const Color.fromARGB(255, 16, 15, 15),
+                ),
+                cursorColor: const Color.fromARGB(255, 7, 82, 96),
+                decoration: InputDecoration(
+                  labelStyle: GoogleFonts.roboto(
                     color: const Color.fromARGB(255, 16, 15, 15),
                   ),
-                  cursorColor: const Color.fromARGB(255, 7, 82, 96),
-                  decoration: InputDecoration(
-                    hintText: 'Select the Date',
-                    labelText: 'Ending Date',
-                    labelStyle: GoogleFonts.roboto(
-                      color: const Color.fromARGB(255, 16, 15, 15),
+                  filled: true,
+                  floatingLabelBehavior: FloatingLabelBehavior.auto,
+                  focusedBorder: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20),
                     ),
-                    filled: true,
-                    floatingLabelBehavior: FloatingLabelBehavior.auto,
-                    focusedBorder: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(20),
-                      ),
-                      borderSide: BorderSide(
-                        color: Color.fromARGB(255, 7, 82, 96),
-                      ),
+                    borderSide: BorderSide(
+                      color: Colors.transparent,
                     ),
-                    enabledBorder: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(20),
-                      ),
-                      borderSide: BorderSide(
-                        color: Colors.transparent,
-                      ),
+                  ),
+                  enabledBorder: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20),
+                    ),
+                    borderSide: BorderSide(
+                      color: Colors.transparent,
                     ),
                   ),
                 ),
-              const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: () async {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AddMedication4(),
-                    ),
-                  );
-                  //Print in Debug Console
-                  print(_medicationTimeOfDayController.text);
-                  print(_medicationStartingDateController.text);
-                  print(_medicationEndingDateController.text);
-                },
-                child: const Text('Next'),
               ),
+
+              const SizedBox(height: 20),
+              Container(
+                margin: const EdgeInsets.all(10),
+                width: double.infinity,
+                height: 2,
+                color: Colors.grey.shade300,
+              ),
+              const SizedBox(height: 10),
+              //user note
+              Row(
+                children: [
+                  const Row(
+                    children: [
+                      Text(
+                        'End Date ',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      Text(
+                        '(Optional)',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ],
+                  ),
+                  TextButton(
+                      onPressed: () {
+                        _medicationEndingDateController.clear();
+                      },
+                      child: const Text('Clear')),
+                ],
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                onTap: () async {
+                  final DateTime? pickedEndDate = await showDatePicker(
+                    context: context,
+                    initialDate: now,
+                    firstDate: firstStartDate,
+                    lastDate: lastStartDate,
+                  );
+                  if (pickedEndDate != null) {
+                    setState(() {
+                      endDate = pickedEndDate;
+                      _medicationEndingDateController.text =
+                          endDate.toString().substring(0, 10);
+                    });
+                  }
+                },
+                controller: _medicationEndingDateController,
+                readOnly: true,
+                style: GoogleFonts.roboto(
+                  height: 2,
+                  color: const Color.fromARGB(255, 16, 15, 15),
+                ),
+                cursorColor: const Color.fromARGB(255, 7, 82, 96),
+                decoration: InputDecoration(
+                  hintText: 'End date',
+                  labelStyle: GoogleFonts.roboto(
+                    color: const Color.fromARGB(255, 16, 15, 15),
+                  ),
+                  filled: true,
+                  floatingLabelBehavior: FloatingLabelBehavior.auto,
+                  focusedBorder: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20),
+                    ),
+                    borderSide: BorderSide(
+                      color: Colors.transparent,
+                    ),
+                  ),
+                  enabledBorder: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20),
+                    ),
+                    borderSide: BorderSide(
+                      color: Colors.transparent,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 40),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.42,
+                height: 55,
+                child: FilledButton(
+                  onPressed: goToSummaryPage,
+                  style: const ButtonStyle(
+                    elevation: MaterialStatePropertyAll(2),
+                    shape: MaterialStatePropertyAll(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(20),
+                        ),
+                      ),
+                    ),
+                  ),
+                  child: Text(
+                    'Next',
+                    style: GoogleFonts.roboto(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+
+              // const SizedBox(height: 16),
+              // // Checkbox to make ending date optional
+              // Row(
+              //   children: [
+              //     Checkbox(
+              //       value: endDate != null,
+              //       onChanged: (bool? value) {
+              //         setState(() {
+              //           if (value == true) {
+              //             // Enable the ending date
+              //             endDate = DateTime.now();
+              //           } else {
+              //             // Disable the ending date
+              //             endDate = null;
+              //           }
+              //           _startingDateController.clear();
+              //         });
+              //       },
+              //     ),
+              //     const Text('Ending Date (Optional)'),
+              //   ],
+              // ),
+
+              // // Ending date picker (conditionally shown)
+              // if (endDate != null)
+              //   TextField(
+              //     onTap: () async {
+              //       final DateTime? pickedEndDate = await showDatePicker(
+              //         context: context,
+              //         initialDate: now,
+              //         firstDate: firstStartDate,
+              //         lastDate: lastStartDate,
+              //       );
+              //       if (pickedEndDate != null && pickedEndDate != endDate) {
+              //         setState(() {
+              //           endDate = pickedEndDate;
+              //           _startingDateController = TextEditingController(
+              //               text: endDate.toString().substring(0, 10));
+              //         });
+              //       }
+              //     },
+              //     controller: _startingDateController,
+              //     readOnly: true,
+              //     style: GoogleFonts.roboto(
+              //       height: 2,
+              //       color: const Color.fromARGB(255, 16, 15, 15),
+              //     ),
+              //     cursorColor: const Color.fromARGB(255, 7, 82, 96),
+              //     decoration: InputDecoration(
+              //       hintText: 'Select the Date',
+              //       labelText: 'Ending Date',
+              //       labelStyle: GoogleFonts.roboto(
+              //         color: const Color.fromARGB(255, 16, 15, 15),
+              //       ),
+              //       filled: true,
+              //       floatingLabelBehavior: FloatingLabelBehavior.auto,
+              //       focusedBorder: const OutlineInputBorder(
+              //         borderRadius: BorderRadius.all(
+              //           Radius.circular(20),
+              //         ),
+              //         borderSide: BorderSide(
+              //           color: Color.fromARGB(255, 7, 82, 96),
+              //         ),
+              //       ),
+              //       enabledBorder: const OutlineInputBorder(
+              //         borderRadius: BorderRadius.all(
+              //           Radius.circular(20),
+              //         ),
+              //         borderSide: BorderSide(
+              //           color: Colors.transparent,
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // const SizedBox(height: 24),
+              // ElevatedButton(
+              //   onPressed: () async {
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(
+              //         builder: (context) => AddMedication4(),
+              //       ),
+              //     );
+              //     //Print in Debug Console
+              //     print(_medicationTimeOfDayController.text);
+              //     print(_medicationStartingDateController.text);
+              //     print(_medicationEndingDateController.text);
+              //   },
+              //   child: const Text('Next'),
+              // ),
             ],
           ),
         ),

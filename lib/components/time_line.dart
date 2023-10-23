@@ -10,6 +10,7 @@ class TimeLine extends StatelessWidget {
   final String medName;
   final String dosage;
   final String time;
+  final String time24H;
   final bool isTaken;
   final String selectedDate;
   final VoidCallback refreshCallback;
@@ -23,6 +24,7 @@ class TimeLine extends StatelessWidget {
     required this.medName,
     required this.dosage,
     required this.time,
+    required this.time24H,
     required this.isTaken,
     required this.selectedDate,
     required this.refreshCallback,
@@ -71,6 +73,7 @@ class TimeLine extends StatelessWidget {
           medName: medName,
           dosage: dosage,
           time: time,
+          time24H: time24H,
           isTaken: isTaken,
           selectedDate: selectedDate,
           refreshCallback: refreshCallback,

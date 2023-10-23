@@ -7,6 +7,8 @@ import 'package:shimmer/shimmer.dart';
 
 class MedCard extends StatelessWidget {
   final String documentID;
+  final String dateID;
+  final String timeID;
   final int index;
   final int size;
   late CalendarDateTime selectedDate;
@@ -15,6 +17,8 @@ class MedCard extends StatelessWidget {
   MedCard(
       {super.key,
       required this.documentID,
+      required this.dateID,
+      required this.timeID,
       required this.index,
       required this.size,
       required this.selectedDate,
@@ -43,7 +47,7 @@ class MedCard extends StatelessWidget {
 
             return Column(
               children: [
-                // Text('Medication name: ${data['medname']}'),
+                // Text('$dateID $timeID'),
                 // Text('Dosage: ${data['strength']} ${data['strength_unit']}'),
                 // Text('Frequency: ${data['frequency']}'),
                 // Text('$selectedDate'),
@@ -53,7 +57,7 @@ class MedCard extends StatelessWidget {
                   future: medications
                       .doc(documentID)
                       .collection('Logs')
-                      .doc('$selectedDate')
+                      .doc('$dateID $timeID')
                       .get(const GetOptions(source: Source.cache)),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
@@ -68,11 +72,10 @@ class MedCard extends StatelessWidget {
                           print('No medications for $selectedDate');
                           return const Text('');
                         } else {
-                          // print('${log_data['isTaken']}');
+                          // print('${logData['isTaken']}');
                           // print(
                           // '${med_data['medname']} ${med_data['strength']} ${med_data['strength_unit']}');
-                          List<String> time =
-                              medData['times'].toString().split(':');
+                          List<String> time = timeID.toString().split(':');
                           int hour = int.parse(time[0]);
                           int minute = int.parse(time[1]);
 
@@ -83,11 +86,12 @@ class MedCard extends StatelessWidget {
                             isPast: true,
                             medName: medData['medname'],
                             dosage:
-                                '${medData['strength']} ${medData['strength_unit']}',
+                                '${medData['strength'] ?? ''} ${medData['strength_unit'] ?? ''}',
                             time: TimeOfDay(
                               hour: hour,
                               minute: minute,
                             ).format(context).toString(),
+                            time24H: timeID,
                             isTaken: logData['isTaken'],
                             selectedDate: selectedDate.toString(),
                             refreshCallback: refreshCallback,

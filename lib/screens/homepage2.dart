@@ -33,6 +33,8 @@ class _HomePage2State extends State<HomePage2> {
 
   //document IDs of medicatiions
   late List<String> docIds = [];
+  late List<String> dateIds = [];
+  late List<String> timeIds = [];
   late List<String> dates = [];
   late List<String> times = [];
 
@@ -48,9 +50,100 @@ class _HomePage2State extends State<HomePage2> {
   }
 
   Future setAlarms() async {
+    print('Running set alarms...');
     docIds = [];
     dates = [];
     times = [];
+
+    try {
+      final snapshot = await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(currentUser!.email)
+          .collection('Medications')
+          .get();
+
+      for (final document in snapshot.docs) {
+        print('Medications Doc ID: ${document.reference.id}');
+
+        final snapshotDates = await FirebaseFirestore.instance
+            .collection('Users')
+            .doc(currentUser!.email)
+            .collection('Medications')
+            .doc(document.reference.id)
+            .collection('Logs')
+            .get();
+
+        for (final document1 in snapshotDates.docs) {
+          print('DateTime: ${document1.reference.id}');
+          List<String> dateTimeStr = document1.reference.id.split(' ');
+          dates.add(dateTimeStr[0]);
+          Map<String, dynamic> medData = document.data();
+          List<String> date = dateTimeStr[0].split('-');
+
+          // final snapshotTime = await FirebaseFirestore.instance
+          //     .collection('Users')
+          //     .doc(currentUser!.email)
+          //     .collection('Medications')
+          //     .doc(document.reference.id)
+          //     .collection('Logs')
+          //     .doc(document1.reference.id)
+          //     .collection('Times')
+          //     .get();
+
+          int year = int.parse(date[0]);
+          int month = int.parse(date[1]);
+          int day = int.parse(date[2]);
+
+          List<String> time = dateTimeStr[1].toString().split(':');
+
+          int hours = int.parse(time[0]);
+          int mins = int.parse(time[1]);
+
+          DateTime dateTime = DateTime(
+            year,
+            month,
+            day,
+            hours,
+            mins,
+            0,
+            0,
+          );
+          Duration difference = dateTime.difference(DateTime.now());
+          print('Difference: $difference');
+          // int id = DateTime.now().millisecondsSinceEpoch % 100000;
+          int id = dateTime.hashCode;
+          print('Alaram ID: $id');
+          if (!difference.isNegative) {
+            final alarmSettings = AlarmSettings(
+              id: id,
+              dateTime: dateTime,
+              assetAudioPath: 'assets/audio/marimba.mp3',
+              volumeMax: false,
+              vibrate: false,
+              notificationTitle: 'Medication Reminder',
+              notificationBody:
+                  'Take ${medData['frequency']} ${medData['category']}(s) of ${medData['medname']}',
+              // enableNotificationOnKill: false,
+              stopOnNotificationOpen: false,
+            );
+            Alarm.set(alarmSettings: alarmSettings);
+            print('Alarm setted!');
+          }
+        }
+      }
+    } on FirebaseException catch (e) {
+      print('ERROR: ${e.code}');
+    }
+
+    print('Date array: $dates');
+    print('Times array: $times');
+    // print(alarms);
+  }
+
+  Future getDocIDs() async {
+    docIds = [];
+    dateIds = [];
+    timeIds = [];
 
     final snapshot = await FirebaseFirestore.instance
         .collection('Users')
@@ -70,86 +163,13 @@ class _HomePage2State extends State<HomePage2> {
           .get();
 
       for (final document1 in snapshot1.docs) {
-        dates.add(document1.reference.id);
-        Map<String, dynamic> medData = document.data();
-        times.add(medData['times']);
-        print(
-            'Date: ${document1.reference.id}, Medication name: ${medData['medname']}, Time: ${medData['times']}');
-
-        List<String> date = document1.reference.id.split('-');
-
-        int year = int.parse(date[0]);
-        int month = int.parse(date[1]);
-        int day = int.parse(date[2]);
-
-        List<String> time = medData['times'].toString().split(':');
-
-        int hours = int.parse(time[0]);
-        int mins = int.parse(time[1]);
-
-        DateTime dateTime = DateTime(
-          year,
-          month,
-          day,
-          hours,
-          mins,
-          0,
-          0,
-        );
-        Duration difference = dateTime.difference(DateTime.now());
-        print('Difference: $difference');
-        // int id = DateTime.now().millisecondsSinceEpoch % 100000;
-        int id = dateTime.hashCode;
-        print('Alaram ID: $id');
-        if (!difference.isNegative) {
-          final alarmSettings = AlarmSettings(
-            id: id,
-            dateTime: dateTime,
-            assetAudioPath: 'assets/audio/marimba.mp3',
-            volumeMax: false,
-            vibrate: false,
-            notificationTitle: 'Medication Reminder',
-            notificationBody:
-                'Take ${medData['frequency']} ${medData['category']}(s) of ${medData['medname']}',
-            // enableNotificationOnKill: false,
-            stopOnNotificationOpen: false,
-          );
-          Alarm.set(alarmSettings: alarmSettings);
-          print('Alarm setted!');
-        }
-      }
-    }
-
-    print(dates);
-    print(times);
-    // print(alarms);
-  }
-
-  Future getDocIDs() async {
-    docIds = [];
-
-    final snapshot = await FirebaseFirestore.instance
-        .collection('Users')
-        .doc(currentUser!.email)
-        .collection('Medications')
-        .get();
-
-    for (final document in snapshot.docs) {
-      print('Medications Doc ID: ${document.reference.id}');
-
-      final snapshot1 = await FirebaseFirestore.instance
-          .collection('Users')
-          .doc(currentUser!.email)
-          .collection('Medications')
-          .doc(document.reference.id)
-          .collection('Logs')
-          .get();
-
-      for (final document1 in snapshot1.docs) {
-        // print('Date ID: ${document1.reference.id}');
+        print('Date ID: ${document1.reference.id}');
+        List<String> dateTime = document1.reference.id.split(' ');
         //check selected date from timeline calendar
-        if (document1.reference.id == _selectedDate.value.toString()) {
+        if (dateTime[0] == _selectedDate.value.toString()) {
           docIds.add(document.reference.id);
+          dateIds.add(dateTime[0]);
+          timeIds.add(dateTime[1]);
           // print('${document.reference.id} added for list on ${_selectedDate.value.toString()}');
           // print('Array LENGTH: ${docIds.length}');
         } else {
@@ -616,6 +636,8 @@ class _HomePage2State extends State<HomePage2> {
                                       builder: (context, value, child) {
                                         return MedCard(
                                           documentID: docIds[index],
+                                          dateID: dateIds[index],
+                                          timeID: timeIds[index],
                                           index: index,
                                           size: docIds.length,
                                           selectedDate: value,

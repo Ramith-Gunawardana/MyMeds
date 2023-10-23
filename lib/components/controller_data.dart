@@ -13,6 +13,7 @@ class MedicationControllerData {
   TextEditingController medicationCountController = TextEditingController();
   TextEditingController medicationNoteController = TextEditingController();
   TextEditingController medicationTimeOfDayController = TextEditingController();
+  TextEditingController medicationTimesController = TextEditingController();
   TextEditingController medicationNumberOfTimesController =
       TextEditingController();
   TextEditingController medicationStartingDateController =
@@ -20,6 +21,10 @@ class MedicationControllerData {
   TextEditingController medicationEndingDateController =
       TextEditingController();
   TextEditingController medicationFrequencyController = TextEditingController();
+  TextEditingController medicationFrequency_isSpecificDays_Controller =
+      TextEditingController();
+  TextEditingController medicationFrequency_weekday_Controller =
+      TextEditingController();
 
   // Singleton pattern for accessing the instance
   static final MedicationControllerData _instance =

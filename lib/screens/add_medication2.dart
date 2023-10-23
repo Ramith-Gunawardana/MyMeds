@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mymeds_app/components/category_model.dart';
 import 'package:mymeds_app/components/controller_data.dart';
 import 'package:mymeds_app/components/text_field.dart';
-import 'package:mymeds_app/screens/add_medication1.dart';
 import 'package:mymeds_app/screens/add_medication3.dart';
 // import 'package:show_time_picker/show_time_picker.dart';
 
@@ -51,16 +50,26 @@ class _AddMedication2State extends State<AddMedication2> {
     if (_medicationDosageController.text.isEmpty) {
       focusNode_dosage.requestFocus();
     } else {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const AddMedication3(),
-        ),
-      );
-      //Print in Debug Console
-      print(_medicationDosageController.text);
-      print(_medicationCountController.text);
-      print(_medicationNoteController.text);
+      if (_medicationCountController.text.isNotEmpty &&
+          int.parse(_medicationCountController.text) <
+              int.parse(_medicationDosageController.text)) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: Color.fromARGB(255, 7, 83, 96),
+            behavior: SnackBarBehavior.floating,
+            content: Text(
+              'Available pill count must be greater than dosage.',
+            ),
+          ),
+        );
+      } else {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const AddMedication3(),
+          ),
+        );
+      }
     }
   }
 
@@ -193,13 +202,23 @@ class _AddMedication2State extends State<AddMedication2> {
               ),
               const SizedBox(height: 20),
               //total pill count
-              const Text(
-                'Available Pill Count (Optional)',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                ),
+              const Row(
+                children: [
+                  Text(
+                    'Available Pill Count ',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  Text(
+                    '(Optional)',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 15,
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 20),
               Text_Field(
@@ -219,12 +238,23 @@ class _AddMedication2State extends State<AddMedication2> {
               ),
               const SizedBox(height: 20),
               //user note
-              const Text(
-                'Medication Note (Optional)',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600),
+              const Row(
+                children: [
+                  Text(
+                    'Medication Note ',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  Text(
+                    '(Optional)',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 15,
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 16),
               Text_Field(
@@ -236,70 +266,29 @@ class _AddMedication2State extends State<AddMedication2> {
                 focusNode: focusNode_note,
               ),
               const SizedBox(height: 40),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  //back button
-                  SizedBox(
-                    height: 55,
-                    width: MediaQuery.of(context).size.width * 0.42,
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => AddMedication1(),
-                          ),
-                        );
-                      },
-                      style: const ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(
-                            Color.fromARGB(255, 217, 237, 239)),
-                        foregroundColor: MaterialStatePropertyAll(
-                            Color.fromRGBO(7, 82, 96, 1)),
-                        shape: MaterialStatePropertyAll(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(20),
-                            ),
-                          ),
-                        ),
-                      ),
-                      child: Text(
-                        'Back',
-                        style: GoogleFonts.roboto(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.42,
+                height: 55,
+                child: FilledButton(
+                  onPressed: goToNextPage,
+                  style: const ButtonStyle(
+                    elevation: MaterialStatePropertyAll(2),
+                    shape: MaterialStatePropertyAll(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(20),
                         ),
                       ),
                     ),
                   ),
-                  //next button
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.42,
-                    height: 55,
-                    child: FilledButton(
-                      onPressed: goToNextPage,
-                      style: const ButtonStyle(
-                        elevation: MaterialStatePropertyAll(2),
-                        shape: MaterialStatePropertyAll(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(20),
-                            ),
-                          ),
-                        ),
-                      ),
-                      child: Text(
-                        'Next',
-                        style: GoogleFonts.roboto(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
+                  child: Text(
+                    'Next',
+                    style: GoogleFonts.roboto(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
-                ],
+                ),
               ),
               // const SizedBox(height: 24),
               // ElevatedButton(
