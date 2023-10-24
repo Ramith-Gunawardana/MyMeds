@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:mymeds_app/screens/account_settings.dart';
 import 'package:mymeds_app/screens/alarm_settings.dart';
 import 'package:mymeds_app/screens/bmi.dart';
@@ -110,22 +109,22 @@ class _SettingsState extends State<More> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     //logo and name
-                    Column(
+                    const Column(
                       children: [
                         //logo
-                        const Image(
+                        Image(
                           image: AssetImage('lib/assets/icon_small.png'),
                           height: 50,
                         ),
                         //app name
-                        Text(
-                          'MyMeds',
-                          style: GoogleFonts.poppins(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                            color: const Color.fromRGBO(7, 82, 96, 1),
-                          ),
-                        ),
+                        // Text(
+                        //   'MyMeds',
+                        //   style: GoogleFonts.poppins(
+                        //     fontSize: 20,
+                        //     fontWeight: FontWeight.w600,
+                        //     color: const Color.fromRGBO(7, 82, 96, 1),
+                        //   ),
+                        // ),
                       ],
                     ),
 
@@ -184,7 +183,7 @@ class _SettingsState extends State<More> {
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.12,
                         width: MediaQuery.of(context).size.width * 0.4,
-                        child: ElevatedButton(
+                        child: FilledButton(
                           onPressed: () {
                             Navigator.push(
                               context,
@@ -193,10 +192,19 @@ class _SettingsState extends State<More> {
                               ),
                             );
                           },
-                          style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          )),
+                          style: const ButtonStyle(
+                            backgroundColor: MaterialStatePropertyAll(
+                                Color.fromARGB(255, 217, 237, 239)),
+                            foregroundColor: MaterialStatePropertyAll(
+                                Color.fromRGBO(7, 82, 96, 1)),
+                            shape: MaterialStatePropertyAll(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(20),
+                                ),
+                              ),
+                            ),
+                          ),
                           child: const Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -221,7 +229,7 @@ class _SettingsState extends State<More> {
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.12,
                         width: MediaQuery.of(context).size.width * 0.4,
-                        child: ElevatedButton(
+                        child: FilledButton(
                           onPressed: () async {
                             await _getCurrentLocation();
                             if (_currentPosition != null) {
@@ -229,9 +237,17 @@ class _SettingsState extends State<More> {
                                   'nearby hospitals and pharmacies');
                             }
                           },
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
+                          style: const ButtonStyle(
+                            backgroundColor: MaterialStatePropertyAll(
+                                Color.fromARGB(255, 217, 237, 239)),
+                            foregroundColor: MaterialStatePropertyAll(
+                                Color.fromRGBO(7, 82, 96, 1)),
+                            shape: MaterialStatePropertyAll(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(20),
+                                ),
+                              ),
                             ),
                           ),
                           child: const Column(
@@ -267,7 +283,7 @@ class _SettingsState extends State<More> {
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.12,
                         width: MediaQuery.of(context).size.width * 0.4,
-                        child: ElevatedButton(
+                        child: FilledButton(
                           onPressed: () {
                             Navigator.push(
                               context,
@@ -276,10 +292,19 @@ class _SettingsState extends State<More> {
                               ),
                             );
                           },
-                          style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          )),
+                          style: const ButtonStyle(
+                            backgroundColor: MaterialStatePropertyAll(
+                                Color.fromARGB(255, 217, 237, 239)),
+                            foregroundColor: MaterialStatePropertyAll(
+                                Color.fromRGBO(7, 82, 96, 1)),
+                            shape: MaterialStatePropertyAll(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(20),
+                                ),
+                              ),
+                            ),
+                          ),
                           child: const Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -304,7 +329,7 @@ class _SettingsState extends State<More> {
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.12,
                         width: MediaQuery.of(context).size.width * 0.4,
-                        child: ElevatedButton(
+                        child: FilledButton(
                           onPressed: () {
                             Navigator.push(
                               context,
@@ -326,10 +351,19 @@ class _SettingsState extends State<More> {
                             //   ),
                             // );
                           },
-                          style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          )),
+                          style: const ButtonStyle(
+                            backgroundColor: MaterialStatePropertyAll(
+                                Color.fromARGB(255, 217, 237, 239)),
+                            foregroundColor: MaterialStatePropertyAll(
+                                Color.fromRGBO(7, 82, 96, 1)),
+                            shape: MaterialStatePropertyAll(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(20),
+                                ),
+                              ),
+                            ),
+                          ),
                           child: const Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -360,7 +394,7 @@ class _SettingsState extends State<More> {
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.12,
                         width: MediaQuery.of(context).size.width * 0.4,
-                        child: ElevatedButton(
+                        child: FilledButton(
                           onPressed: () {
                             Navigator.push(
                               context,
@@ -369,10 +403,19 @@ class _SettingsState extends State<More> {
                               ),
                             );
                           },
-                          style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          )),
+                          style: const ButtonStyle(
+                            backgroundColor: MaterialStatePropertyAll(
+                                Color.fromARGB(255, 217, 237, 239)),
+                            foregroundColor: MaterialStatePropertyAll(
+                                Color.fromRGBO(7, 82, 96, 1)),
+                            shape: MaterialStatePropertyAll(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(20),
+                                ),
+                              ),
+                            ),
+                          ),
                           child: const Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [

@@ -9,6 +9,8 @@ class EventCard extends StatelessWidget {
   final bool isPast;
   final String medName;
   final String dosage;
+  final String category;
+  final int medcount;
   final String time;
   final String time24H;
   final bool isTaken;
@@ -21,12 +23,57 @@ class EventCard extends StatelessWidget {
     required this.isPast,
     required this.medName,
     required this.dosage,
+    required this.category,
+    required this.medcount,
     required this.time,
     required this.time24H,
     required this.isTaken,
     required this.selectedDate,
     required this.refreshCallback,
   });
+
+  String categoryImagePath(String catgoryStr) {
+    switch (catgoryStr) {
+      case 'Capsule':
+        return 'lib/assets/icons/pills.png';
+      case 'Tablet':
+        return 'lib/assets/icons/tablet.png';
+      case 'Liquid':
+        return 'lib/assets/icons/liquid.png';
+      case 'Topical':
+        return 'lib/assets/icons/tube.png';
+      case 'Cream':
+        return 'lib/assets/icons/cream.png';
+      case 'Drops':
+        return 'lib/assets/icons/drops.png';
+      case 'Foam':
+        return 'lib/assets/icons/foam.png';
+      case 'Gel':
+        return 'lib/assets/icons/tube.png';
+      case 'Herbal':
+        return 'lib/assets/icons/herbal.png';
+      case 'Inhaler':
+        return 'lib/assets/icons/inhalator.png';
+      case 'Injection':
+        return 'lib/assets/icons/syringe.png';
+      case 'Lotion':
+        return 'lib/assets/icons/lotion.png';
+      case 'Nasal Spray':
+        return 'lib/assets/icons/nasalspray.png';
+      case 'Ointment':
+        return 'lib/assets/icons/tube.png';
+      case 'Patch':
+        return 'lib/assets/icons/patch.png';
+      case 'Powder':
+        return 'lib/assets/icons/powder.png';
+      case 'Spray':
+        return 'lib/assets/icons/spray.png';
+      case 'Suppository':
+        return 'lib/assets/icons/suppository.png';
+      default:
+        return 'lib/assets/icons/medicine.png';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -209,7 +256,7 @@ class EventCard extends StatelessWidget {
                             height: 10,
                           ),
                           Visibility(
-                            visible: medData['user_note'].toString().isNotEmpty,
+                            visible: medData['user_note'] != null,
                             child: Text(
                               'Note: ${medData['user_note']}',
                               style: GoogleFonts.roboto(
@@ -263,6 +310,12 @@ class EventCard extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
+          boxShadow: const [
+            BoxShadow(
+                color: Color.fromARGB(255, 132, 153, 156),
+                blurRadius: 5.0,
+                offset: Offset(0, 2))
+          ],
           // color: isPast
           //     ? const Color.fromARGB(255, 6, 129, 151)
           //     : const Color.fromARGB(255, 183, 197, 200),
@@ -281,40 +334,71 @@ class EventCard extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Icon(
-              Icons.medication,
-              color: !isTaken
-                  ? Theme.of(context).colorScheme.surface
-                  : const Color.fromARGB(255, 16, 15, 15),
-            ),
-            //medication anem
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                //medication name
-                Text(
-                  medName,
-                  style: GoogleFonts.roboto(
-                    fontSize: 25,
-                    fontWeight: FontWeight.w600,
-                    color: !isTaken
-                        ? Theme.of(context).colorScheme.surface
-                        : const Color.fromARGB(255, 16, 15, 15),
+                //category image
+                Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    // color: !isTaken
+                    //     ? Theme.of(context).colorScheme.surface
+                    //     : const Color.fromARGB(255, 16, 15, 15),
+                    color: Theme.of(context).colorScheme.surface,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.asset(
+                      categoryImagePath(category),
+                    ),
+                    // child: Image(
+                    //   image: AssetImage(categoryImagePath(category)),
+                    //   height: MediaQuery.of(context).size.height * 0.25,
+                    //   // width: MediaQuery.of(context).size.width * 0.6,
+                    //   color: Theme.of(context).colorScheme.surface,
+                    //   colorBlendMode: BlendMode.darken,
+                    // ),
                   ),
                 ),
-                //dosage
-                Visibility(
-                  visible: dosage != null,
-                  child: Text(
-                    dosage,
-                    style: GoogleFonts.roboto(
-                      fontSize: 15,
-                      color: !isTaken
-                          ? Theme.of(context).colorScheme.surface
-                          : const Color.fromARGB(255, 16, 15, 15),
+                // Icon(
+                //   Icons.medication,
+                //   color: !isTaken
+                //       ? Theme.of(context).colorScheme.surface
+                //       : const Color.fromARGB(255, 16, 15, 15),
+                // ),
+                const SizedBox(
+                  width: 15,
+                ),
+                //medication anem
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    //medication name
+                    Text(
+                      medName,
+                      textAlign: TextAlign.start,
+                      style: GoogleFonts.roboto(
+                        fontSize: 25,
+                        fontWeight: FontWeight.w600,
+                        color: !isTaken
+                            ? Theme.of(context).colorScheme.surface
+                            : const Color.fromARGB(255, 16, 15, 15),
+                      ),
                     ),
-                  ),
+                    //dosage
+                    Text(
+                      '$medcount $category(s)',
+                      style: GoogleFonts.roboto(
+                        fontSize: 15,
+                        color: !isTaken
+                            ? Theme.of(context).colorScheme.surface
+                            : const Color.fromARGB(255, 16, 15, 15),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

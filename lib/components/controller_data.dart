@@ -14,6 +14,7 @@ class MedicationControllerData {
   TextEditingController medicationNoteController = TextEditingController();
   TextEditingController medicationTimeOfDayController = TextEditingController();
   TextEditingController medicationTimesController = TextEditingController();
+  TextEditingController medicationTimes12HController = TextEditingController();
   TextEditingController medicationNumberOfTimesController =
       TextEditingController();
   TextEditingController medicationStartingDateController =

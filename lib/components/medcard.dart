@@ -87,6 +87,8 @@ class MedCard extends StatelessWidget {
                             medName: medData['medname'],
                             dosage:
                                 '${medData['strength'] ?? ''} ${medData['strength_unit'] ?? ''}',
+                            category: medData['category'],
+                            medcount: medData['medcount'],
                             time: TimeOfDay(
                               hour: hour,
                               minute: minute,

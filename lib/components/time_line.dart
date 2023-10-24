@@ -9,6 +9,8 @@ class TimeLine extends StatelessWidget {
   final bool isPast; //to the show progress within the timeline
   final String medName;
   final String dosage;
+  final String category;
+  final int medcount;
   final String time;
   final String time24H;
   final bool isTaken;
@@ -23,6 +25,8 @@ class TimeLine extends StatelessWidget {
     required this.isPast,
     required this.medName,
     required this.dosage,
+    required this.category,
+    required this.medcount,
     required this.time,
     required this.time24H,
     required this.isTaken,
@@ -72,6 +76,8 @@ class TimeLine extends StatelessWidget {
           isPast: isPast,
           medName: medName,
           dosage: dosage,
+          category: category,
+          medcount: medcount,
           time: time,
           time24H: time24H,
           isTaken: isTaken,

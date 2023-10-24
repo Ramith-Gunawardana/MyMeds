@@ -45,22 +45,22 @@ class _StatisticState extends State<Statistic> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     //logo and name
-                    Column(
+                    const Column(
                       children: [
                         //logo
-                        const Image(
+                        Image(
                           image: AssetImage('lib/assets/icon_small.png'),
                           height: 50,
                         ),
                         //app name
-                        Text(
-                          'MyMeds',
-                          style: GoogleFonts.poppins(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                            color: const Color.fromRGBO(7, 82, 96, 1),
-                          ),
-                        ),
+                        // Text(
+                        //   'MyMeds',
+                        //   style: GoogleFonts.poppins(
+                        //     fontSize: 20,
+                        //     fontWeight: FontWeight.w600,
+                        //     color: const Color.fromRGBO(7, 82, 96, 1),
+                        //   ),
+                        // ),
                       ],
                     ),
 
@@ -74,18 +74,18 @@ class _StatisticState extends State<Statistic> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return SettingsPageUI();
+                                  return const SettingsPageUI();
                                 },
                               ),
                             );
                           },
                           child: CircleAvatar(
                             radius: 20,
-                            child: const Icon(Icons.person_outlined),
                             backgroundColor:
                                 Theme.of(context).colorScheme.primary,
                             foregroundColor:
                                 Theme.of(context).colorScheme.surface,
+                            child: const Icon(Icons.person_outlined),
                           ),
                         ),
                       ],
@@ -96,9 +96,9 @@ class _StatisticState extends State<Statistic> {
               SfCircularChart(
                 title: ChartTitle(
                   text: 'Daily Dosage Usage',
-                  textStyle: TextStyle(fontSize: 15),
+                  textStyle: const TextStyle(fontSize: 15),
                 ),
-                legend: Legend(
+                legend: const Legend(
                   isVisible: true,
                   overflowMode: LegendItemOverflowMode.wrap,
                 ),
@@ -107,7 +107,7 @@ class _StatisticState extends State<Statistic> {
                     dataSource: _chartData,
                     xValueMapper: (GDPData data, _) => data.type,
                     yValueMapper: (GDPData data, _) => data.amount,
-                    dataLabelSettings: DataLabelSettings(
+                    dataLabelSettings: const DataLabelSettings(
                       isVisible: true,
                       labelPosition: ChartDataLabelPosition.outside,
                       labelAlignment: ChartDataLabelAlignment.top,
@@ -127,9 +127,9 @@ class _StatisticState extends State<Statistic> {
               SfCartesianChart(
                 title: ChartTitle(
                   text: 'Weekly Dosage Usage',
-                  textStyle: TextStyle(fontSize: 15),
+                  textStyle: const TextStyle(fontSize: 15),
                 ),
-                legend: Legend(
+                legend: const Legend(
                   isVisible: true,
                   overflowMode: LegendItemOverflowMode.wrap,
                 ),

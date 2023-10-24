@@ -37,57 +37,60 @@ class AlarmTile extends StatelessWidget {
         ),
       ),
       onDismissed: (_) => onDismissed?.call(),
-      child: Container(
-        // color: Colors.white,
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primary,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        height: 100,
-        padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  date,
-                  style: const TextStyle(
-                    fontSize: 22,
-                    color: Colors.white,
-                  ),
-                ),
-                Text(
-                  time,
-                  style: const TextStyle(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+        child: Container(
+          // color: Colors.white,
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.primary,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          height: 100,
+          padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    date,
+                    style: const TextStyle(
+                      fontSize: 22,
                       color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-                color: Colors.white,
+                    ),
+                  ),
+                  Text(
+                    time,
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600),
+                  ),
+                ],
               ),
-            ),
-            // const Row(
-            //   children: [
-            //     Icon(Icons.keyboard_arrow_left_rounded, size: 15),
-            //     Icon(Icons.keyboard_arrow_left_rounded, size: 15),
-            //     Icon(Icons.delete_outline, size: 20),
-            //   ],
-            // ),
-          ],
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white,
+                ),
+              ),
+              // const Row(
+              //   children: [
+              //     Icon(Icons.keyboard_arrow_left_rounded, size: 15),
+              //     Icon(Icons.keyboard_arrow_left_rounded, size: 15),
+              //     Icon(Icons.delete_outline, size: 20),
+              //   ],
+              // ),
+            ],
+          ),
         ),
       ),
     );

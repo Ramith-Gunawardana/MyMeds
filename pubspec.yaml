@@ -65,6 +65,7 @@ dependencies:
   multi_dropdown: ^2.0.1
   weekday_selector: ^1.1.0
   custom_radio_grouped_button: ^2.2.0
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:

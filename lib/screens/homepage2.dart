@@ -122,7 +122,7 @@ class _HomePage2State extends State<HomePage2> {
               vibrate: false,
               notificationTitle: 'Medication Reminder',
               notificationBody:
-                  'Take ${medData['frequency']} ${medData['category']}(s) of ${medData['medname']}',
+                  'Take ${medData['medcount']} ${medData['category']}(s) of ${medData['medname']}',
               // enableNotificationOnKill: false,
               stopOnNotificationOpen: false,
             );
@@ -354,22 +354,22 @@ class _HomePage2State extends State<HomePage2> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 //logo and name
-                Column(
+                const Column(
                   children: [
                     //logo
-                    const Image(
+                    Image(
                       image: AssetImage('lib/assets/icon_small.png'),
                       height: 50,
                     ),
                     //app name
-                    Text(
-                      'MyMeds',
-                      style: GoogleFonts.poppins(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        color: const Color.fromRGBO(7, 82, 96, 1),
-                      ),
-                    ),
+                    // Text(
+                    //   'MyMeds',
+                    //   style: GoogleFonts.poppins(
+                    //     fontSize: 20,
+                    //     fontWeight: FontWeight.w600,
+                    //     color: const Color.fromRGBO(7, 82, 96, 1),
+                    //   ),
+                    // ),
                   ],
                 ),
 
@@ -606,11 +606,18 @@ class _HomePage2State extends State<HomePage2> {
                                   const SizedBox(
                                     height: 20,
                                   ),
-                                  const Text('No reminders'),
+                                  Text(
+                                    'Your medication reminders\n will be displayed here',
+                                    textAlign: TextAlign.center,
+                                    style: GoogleFonts.roboto(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 18,
+                                    ),
+                                  ),
                                   const SizedBox(
                                     height: 20,
                                   ),
-                                  ElevatedButton(
+                                  FilledButton(
                                     onPressed: () {
                                       Navigator.push(
                                         context,
@@ -620,7 +627,26 @@ class _HomePage2State extends State<HomePage2> {
                                         ),
                                       );
                                     },
-                                    child: const Text('Add a medication'),
+                                    style: const ButtonStyle(
+                                      backgroundColor: MaterialStatePropertyAll(
+                                          Color.fromARGB(255, 217, 237, 239)),
+                                      foregroundColor: MaterialStatePropertyAll(
+                                          Color.fromRGBO(7, 82, 96, 1)),
+                                      shape: MaterialStatePropertyAll(
+                                        RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(20),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      'Add a medication',
+                                      style: GoogleFonts.roboto(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 16,
+                                      ),
+                                    ),
                                   ),
                                 ],
                               );

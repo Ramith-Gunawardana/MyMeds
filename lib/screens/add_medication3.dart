@@ -30,6 +30,8 @@ class _AddMedication3State extends State<AddMedication3> {
       MedicationControllerData().medicationFrequencyController;
   final TextEditingController _medicationTimesController =
       MedicationControllerData().medicationTimesController;
+  final TextEditingController _medicationTimes12HController =
+      MedicationControllerData().medicationTimes12HController;
   final TextEditingController _medicationTimesOfDayController =
       MedicationControllerData().medicationTimeOfDayController;
   final TextEditingController _medicationStartingDateController =
@@ -37,11 +39,12 @@ class _AddMedication3State extends State<AddMedication3> {
   final TextEditingController _medicationEndingDateController =
       MedicationControllerData().medicationEndingDateController;
 
-  var endDate;
+  DateTime? endDate;
 
-  var startDate;
+  DateTime? startDate;
 
   List<String?> selectedTimes = [];
+  List<String?> selectedTimes12H = [];
 
   // void onTimeChanged(Time newTime) {
   //   setState(() {
@@ -90,6 +93,16 @@ class _AddMedication3State extends State<AddMedication3> {
     );
   }
 
+  void covert24H_to_12H() {
+    //resetting before adding
+    selectedTimes12H = [];
+    for (var time in selectedTimes) {
+      selectedTimes12H.add(
+          TimeOfDay.fromDateTime(DateTime.parse('1970-01-01 $time:00'))
+              .format(context));
+    }
+  }
+
   void goToSummaryPage() {
     if (selectedTimes.isEmpty) {
       _showSnackBar('Add at least one medication time');
@@ -101,6 +114,11 @@ class _AddMedication3State extends State<AddMedication3> {
       _medicationTimesController.text = selectedTimes.length.toString();
       _medicationTimesOfDayController.text =
           selectedTimes.toString().replaceAll('[', '').replaceAll(']', '');
+
+      covert24H_to_12H();
+      _medicationTimes12HController.text =
+          selectedTimes12H.toString().replaceAll('[', '').replaceAll(']', '');
+      print('Times in 12 Hour: ${_medicationTimes12HController.text}');
 
       if (_medicationEndingDateController.text.isNotEmpty) {
         //start date
@@ -348,7 +366,7 @@ class _AddMedication3State extends State<AddMedication3> {
                               )),
                           onPressed: () {
                             setState(() {
-                              selectedTimes.removeAt(index); // Remove by index
+                              selectedTimes.removeAt(index); // Remove by index\
                             });
                           },
                         ),
@@ -810,7 +828,7 @@ class _AddMedication3State extends State<AddMedication3> {
                 onTap: () async {
                   final DateTime? pickedStartDate = await showDatePicker(
                     context: context,
-                    initialDate: now,
+                    initialDate: startDate ?? now,
                     firstDate: firstStartDate,
                     lastDate: lastStartDate,
                   );
@@ -886,6 +904,7 @@ class _AddMedication3State extends State<AddMedication3> {
                   TextButton(
                       onPressed: () {
                         _medicationEndingDateController.clear();
+                        endDate = null;
                       },
                       child: const Text('Clear')),
                 ],
@@ -895,7 +914,7 @@ class _AddMedication3State extends State<AddMedication3> {
                 onTap: () async {
                   final DateTime? pickedEndDate = await showDatePicker(
                     context: context,
-                    initialDate: now,
+                    initialDate: endDate ?? now,
                     firstDate: firstStartDate,
                     lastDate: lastStartDate,
                   );

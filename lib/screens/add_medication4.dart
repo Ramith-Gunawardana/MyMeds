@@ -55,6 +55,9 @@ class _AddMedication4State extends State<AddMedication4> {
   final TextEditingController weeekdays_List =
       MedicationControllerData().medicationFrequency_weekday_Controller;
 
+  final TextEditingController times12H =
+      MedicationControllerData().medicationTimes12HController;
+
   void _showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -240,9 +243,8 @@ class _AddMedication4State extends State<AddMedication4> {
         'medname': medname.text.isNotEmpty ? medname.text : null,
         'category': category.text.isNotEmpty ? category.text : null,
         'strength': strength.text.isNotEmpty ? int.parse(strength.text) : null,
-        'strength_unit': strength_unit.text.isNotEmpty
-            ? strength_unit.text.isNotEmpty
-            : null,
+        'strength_unit':
+            strength_unit.text.isNotEmpty ? strength_unit.text : null,
         'medcount': int.parse(medcount.text),
         'total_med:':
             total_med.text.isNotEmpty ? int.parse(total_med.text) : null,
@@ -270,6 +272,7 @@ class _AddMedication4State extends State<AddMedication4> {
         // 'time22': medtimes[21],
         // 'time23': medtimes[22],
         // 'time24': medtimes[23],
+        'times': times12H.text,
         'frequency': frequency.text.isNotEmpty ? frequency.text : null,
         'start_date': start_date.text.isNotEmpty ? start_date.text : null,
         'end_date': end_date.text.isNotEmpty ? end_date.text : null,
@@ -719,7 +722,7 @@ class _AddMedication4State extends State<AddMedication4> {
                     ),
                     Expanded(
                       child: Text(
-                        times.text,
+                        times12H.text,
                         maxLines: 8,
                         overflow: TextOverflow.clip,
                         style: const TextStyle(

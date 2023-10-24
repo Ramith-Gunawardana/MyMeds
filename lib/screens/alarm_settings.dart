@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:alarm/alarm.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mymeds_app/components/alarm_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:mymeds_app/screens/add_medication1.dart';
@@ -79,12 +80,12 @@ class _AlarmSettingsPageState extends State<AlarmSettingsPage> {
       body: SafeArea(
         child: alarms.isNotEmpty
             ? Padding(
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                 child: ListView.separated(
                   itemCount: alarms.length,
                   separatorBuilder: (context, index) {
                     return const SizedBox(
-                      height: 20,
+                      height: 5,
                     );
                   },
                   itemBuilder: (context, index) {
@@ -122,11 +123,18 @@ class _AlarmSettingsPageState extends State<AlarmSettingsPage> {
                     const SizedBox(
                       height: 20,
                     ),
-                    const Text('No upcoimg alarms'),
+                    Text(
+                      'Your medication alarms\n will be displayed here',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.roboto(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                      ),
+                    ),
                     const SizedBox(
                       height: 40,
                     ),
-                    ElevatedButton(
+                    FilledButton(
                       onPressed: () {
                         Navigator.push(
                           context,
@@ -135,7 +143,26 @@ class _AlarmSettingsPageState extends State<AlarmSettingsPage> {
                           ),
                         );
                       },
-                      child: const Text('Add a medication'),
+                      style: const ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll(
+                            Color.fromARGB(255, 217, 237, 239)),
+                        foregroundColor: MaterialStatePropertyAll(
+                            Color.fromRGBO(7, 82, 96, 1)),
+                        shape: MaterialStatePropertyAll(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(20),
+                            ),
+                          ),
+                        ),
+                      ),
+                      child: Text(
+                        'Add a medication',
+                        style: GoogleFonts.roboto(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        ),
+                      ),
                     ),
                   ],
                 ),
