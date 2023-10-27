@@ -156,6 +156,8 @@ class MedCard2 extends StatelessWidget {
                       //dosage
                       Text(
                         '$medcount $category(s) $frequency',
+                        maxLines: 2,
+                        overflow: TextOverflow.clip,
                         style: GoogleFonts.roboto(
                           fontSize: 15,
                           color: Theme.of(context).colorScheme.surface,
@@ -167,6 +169,8 @@ class MedCard2 extends StatelessWidget {
                       //times
                       Text(
                         times!,
+                        maxLines: 8,
+                        overflow: TextOverflow.clip,
                         style: GoogleFonts.roboto(
                           fontSize: 15,
                           color: Theme.of(context).colorScheme.surface,
