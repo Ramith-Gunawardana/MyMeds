@@ -149,21 +149,29 @@ class _MediactionState extends State<Mediaction> {
                             ),
                           );
                         },
-                        child: currentUser!.photoURL!.isEmpty
-                            ? CircleAvatar(
-                                radius: 20,
-                                backgroundColor:
-                                    Theme.of(context).colorScheme.primary,
-                                foregroundColor:
-                                    Theme.of(context).colorScheme.surface,
-                                child: const Icon(Icons.person_outlined),
-                              )
-                            : CircleAvatar(
-                                radius: 20,
-                                backgroundImage:
-                                    NetworkImage(currentUser!.photoURL!),
-                                backgroundColor: Colors.transparent,
-                              ),
+                        // child: currentUser!.photoURL!.isEmpty
+                        //     ? CircleAvatar(
+                        //         radius: 20,
+                        //         backgroundColor:
+                        //             Theme.of(context).colorScheme.primary,
+                        //         foregroundColor:
+                        //             Theme.of(context).colorScheme.surface,
+                        //         child: const Icon(Icons.person_outlined),
+                        //       )
+                        //     : CircleAvatar(
+                        //         radius: 20,
+                        //         backgroundImage:
+                        //             NetworkImage(currentUser!.photoURL!),
+                        //         backgroundColor: Colors.transparent,
+                        //       ),
+                        child: CircleAvatar(
+                          radius: 20,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                          foregroundColor:
+                              Theme.of(context).colorScheme.surface,
+                          child: const Icon(Icons.person_outlined),
+                        ),
                       ),
                     ],
                   ),
