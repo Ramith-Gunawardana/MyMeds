@@ -38,6 +38,9 @@ class _SignUpState extends State<SignUp> {
   bool _isPwd = false;
   bool _isPwdConfirm = false;
 
+  bool isLoading = false;
+  bool isLoadingGoogle = false;
+
   bool _isError = false;
   bool _isSuccess = false;
   //firebase error message
@@ -126,16 +129,19 @@ class _SignUpState extends State<SignUp> {
               _isPwdConfirm = false;
             });
             //loading circle
-            showDialog(
-              context: context,
-              builder: (context) {
-                return const Center(
-                  child: CircularProgressIndicator(
-                    color: Color.fromRGBO(7, 82, 96, 1),
-                  ),
-                );
-              },
-            );
+            // showDialog(
+            //   context: context,
+            //   builder: (context) {
+            //     return const Center(
+            //       child: CircularProgressIndicator(
+            //         color: Color.fromRGBO(7, 82, 96, 1),
+            //       ),
+            //     );
+            //   },
+            // );
+            setState(() {
+              isLoading = true;
+            });
             //create user
             UserCredential userCredential =
                 await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -157,17 +163,18 @@ class _SignUpState extends State<SignUp> {
               },
             );
 
-            if (!mounted) {
-              return;
-            }
+            // if (!mounted) {
+            //   return;
+            // }
 
             //pop loading cicle
-            Navigator.of(context).pop();
+            // Navigator.of(context).pop();
 
             //account created successfully
             setState(() {
               _isError = false;
               _isSuccess = true;
+              isLoading = false;
             });
 
             // showDialog(
@@ -192,6 +199,7 @@ class _SignUpState extends State<SignUp> {
           setState(() {
             _isError = true;
             _isSuccess = false;
+            isLoading = false;
             errorMsg = getErrorMessage(e.code);
           });
 
@@ -208,7 +216,7 @@ class _SignUpState extends State<SignUp> {
           // );
 
           //pop loading cicle
-          Navigator.of(context).pop();
+          // Navigator.of(context).pop();
         }
       }
 
@@ -856,13 +864,17 @@ class _SignUpState extends State<SignUp> {
                             ),
                           ),
                         ),
-                        child: Text(
-                          'Sign Up',
-                          style: GoogleFonts.roboto(
-                            fontSize: 25,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
+                        child: !isLoading
+                            ? Text(
+                                'Sign Up',
+                                style: GoogleFonts.roboto(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              )
+                            : const CircularProgressIndicator(
+                                color: Colors.white,
+                              ),
                       ),
                     ),
 
@@ -891,6 +903,9 @@ class _SignUpState extends State<SignUp> {
                           UserCredential userCredential =
                               await AuthService().signInWithGoogle(context);
                           print(userCredential.user!.email);
+                          setState(() {
+                            isLoading = true;
+                          });
                           await FirebaseFirestore.instance
                               .collection('Users')
                               .doc(userCredential.user!.email)
@@ -904,6 +919,9 @@ class _SignUpState extends State<SignUp> {
                               'mobile': null,
                             },
                           );
+                          setState(() {
+                            isLoading = false;
+                          });
                         },
                         style: const ButtonStyle(
                           // overlayColor:
@@ -930,16 +948,20 @@ class _SignUpState extends State<SignUp> {
                         ),
                         icon: const FaIcon(
                           FontAwesomeIcons.google,
-                          // color: Color.fromARGB(255, 7, 82, 96),
+                          color: Color.fromARGB(255, 7, 82, 96),
                           size: 20,
                         ),
-                        label: Text(
-                          'Sign up with Google',
-                          style: GoogleFonts.roboto(
-                            fontSize: 20,
-                            // color: const Color.fromARGB(255, 7, 82, 96),
-                          ),
-                        ),
+                        label: !isLoading
+                            ? Text(
+                                'Sign up with Google',
+                                style: GoogleFonts.roboto(
+                                  fontSize: 20,
+                                  color: const Color.fromARGB(255, 7, 82, 96),
+                                ),
+                              )
+                            : const CircularProgressIndicator(
+                                color: Color.fromARGB(255, 7, 82, 96),
+                              ),
                       ),
                     ),
                     const SizedBox(

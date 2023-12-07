@@ -519,7 +519,7 @@ class _AddMedication4State extends State<AddMedication4> {
                   Text(
                     'MEDICINE DETAILS',
                     style: TextStyle(
-                        color: Colors.tealAccent[700],
+                        color: Theme.of(context).colorScheme.primary,
                         fontSize: 18,
                         fontWeight: FontWeight.w600),
                   ),
@@ -623,7 +623,7 @@ class _AddMedication4State extends State<AddMedication4> {
                   Text(
                     'MEDICATION INTAKE',
                     style: TextStyle(
-                        color: Colors.tealAccent[700],
+                        color: Theme.of(context).colorScheme.primary,
                         fontSize: 18,
                         fontWeight: FontWeight.w600),
                   ),
@@ -697,7 +697,7 @@ class _AddMedication4State extends State<AddMedication4> {
                   Text(
                     'FREQUENCY',
                     style: TextStyle(
-                        color: Colors.tealAccent[700],
+                        color: Theme.of(context).colorScheme.primary,
                         fontSize: 18,
                         fontWeight: FontWeight.w600),
                   ),

@@ -120,9 +120,10 @@ class _HomePage2State extends State<HomePage2> {
               assetAudioPath: 'assets/audio/marimba.mp3',
               volumeMax: false,
               vibrate: false,
+              androidFullScreenIntent: true,
               notificationTitle: 'Medication Reminder',
               notificationBody:
-                  'Take ${medData['medcount']} ${medData['category']}(s) of ${medData['medname']}',
+                  '${medData['medcount']} ${medData['category']}(s) of ${medData['medname']}',
               // enableNotificationOnKill: false,
               stopOnNotificationOpen: false,
             );

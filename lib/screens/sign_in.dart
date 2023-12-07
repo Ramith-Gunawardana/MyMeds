@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,6 +24,9 @@ class _SignInState extends State<SignIn> {
   final _passwordController = TextEditingController();
   late FocusNode focusNode_email;
   late FocusNode focusNode_pwd;
+
+  bool isLoading = false;
+  bool isLoadingGoogle = false;
 
   bool _isEmail = false;
   bool _isError = false;
@@ -69,36 +73,42 @@ class _SignInState extends State<SignIn> {
           _isEmail = false;
         });
         try {
-          //loading circle
-          showDialog(
-            context: context,
-            builder: (context) {
-              return const Center(
-                child: CircularProgressIndicator(
-                  color: Color.fromRGBO(7, 82, 96, 1),
-                ),
-              );
-            },
-          );
+          setState(() {
+            isLoading = true;
+          });
+          // //loading circle
+          // showDialog(
+          //   context: context,
+          //   builder: (context) {
+          //     return const Center(
+          //       child: CircularProgressIndicator(
+          //         color: Color.fromRGBO(7, 82, 96, 1),
+          //       ),
+          //     );
+          //   },
+          // );
 
           await FirebaseAuth.instance.signInWithEmailAndPassword(
             email: _emailController.text.trim(),
             password: _passwordController.text.trim(),
           );
 
-          if (!mounted) {
-            return;
-          }
-          //pop loading cicle
-          Navigator.of(context).pop();
+          // if (!mounted) {
+          //   return;
+          // }
+          // //pop loading cicle
+          // Navigator.of(context).pop();
         } on FirebaseAuthException catch (e) {
           print(e.code);
-          if (!mounted) {
-            return;
-          }
+          setState(() {
+            isLoading = false;
+          });
+          // if (!mounted) {
+          //   return;
+          // }
 
-          //pop loading cicle
-          Navigator.of(context).pop();
+          // //pop loading cicle
+          // Navigator.of(context).pop();
 
           // showDialog(
           //   context: context,
@@ -119,6 +129,9 @@ class _SignInState extends State<SignIn> {
         }
       }
     }
+    setState(() {
+      isLoading = false;
+    });
   }
 
   // for memory mgt
@@ -208,8 +221,54 @@ class _SignInState extends State<SignIn> {
                       child: FilledButton.tonalIcon(
                         //sign in with google
                         // onPressed: () {},
-                        onPressed: () =>
-                            AuthService().signInWithGoogle(context),
+                        onPressed: () async {
+                          setState(() {
+                            isLoadingGoogle = false;
+                          });
+                          try {
+                            UserCredential user =
+                                await AuthService().signInWithGoogle(context);
+                            String? userEmail = user.user!.email;
+                            print('Email : $userEmail');
+
+                            setState(() {
+                              isLoadingGoogle = true;
+                            });
+
+                            try {
+                              var a = await FirebaseFirestore.instance
+                                  .collection('Users')
+                                  .doc(userEmail)
+                                  .get();
+                              if (a.exists) {
+                                print('Already Registered user');
+                              } else {
+                                print('New USER');
+                                await FirebaseFirestore.instance
+                                    .collection('Users')
+                                    .doc(userEmail)
+                                    .set(
+                                  {
+                                    'name': user.user!.displayName,
+                                    'dob': null,
+                                    'gender': null,
+                                    'nic': null,
+                                    'address': null,
+                                    'mobile': null,
+                                  },
+                                );
+                              }
+                            } catch (e) {
+                              print(e);
+                            }
+                          } catch (e) {
+                            print(e);
+                          }
+
+                          setState(() {
+                            isLoadingGoogle = false;
+                          });
+                        },
                         style: const ButtonStyle(
                           elevation: MaterialStatePropertyAll(2),
                           shape: MaterialStatePropertyAll(
@@ -222,16 +281,20 @@ class _SignInState extends State<SignIn> {
                         ),
                         icon: const FaIcon(
                           FontAwesomeIcons.google,
-                          // color: Color.fromARGB(255, 7, 82, 96),
+                          color: Color.fromARGB(255, 7, 82, 96),
                           size: 20,
                         ),
-                        label: Text(
-                          'Continue with Google',
-                          style: GoogleFonts.roboto(
-                            fontSize: 20,
-                            // color: const Color.fromARGB(255, 7, 82, 96),
-                          ),
-                        ),
+                        label: !isLoadingGoogle
+                            ? Text(
+                                'Continue with Google',
+                                style: GoogleFonts.roboto(
+                                  fontSize: 20,
+                                  color: const Color.fromARGB(255, 7, 82, 96),
+                                ),
+                              )
+                            : const CircularProgressIndicator(
+                                color: Color.fromARGB(255, 7, 82, 96),
+                              ),
                       ),
                     ),
                     const SizedBox(
@@ -434,13 +497,15 @@ class _SignInState extends State<SignIn> {
                 ),
               ),
             ),
-            child: Text(
-              'Sign In',
-              style: GoogleFonts.roboto(
-                fontSize: 25,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
+            child: !isLoading
+                ? Text(
+                    'Sign In',
+                    style: GoogleFonts.roboto(
+                      fontSize: 25,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  )
+                : const CircularProgressIndicator(color: Colors.white),
           ),
         ),
       ],

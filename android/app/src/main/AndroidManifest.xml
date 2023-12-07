@@ -18,6 +18,8 @@
 <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
 <!-- Notification -->
 <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY"/>
+<!-- Battery Optimisation -->
+<uses-permission  android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
 
     <application
         android:label="MyMeds"

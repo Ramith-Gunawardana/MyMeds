@@ -20,27 +20,27 @@ class AuthService {
     );
     UserCredential? userCredential;
     try {
-      //loading circle
-      showDialog(
-        context: context,
-        builder: (context) {
-          return const Center(
-            child: CircularProgressIndicator(
-              color: Color.fromRGBO(7, 82, 96, 1),
-            ),
-          );
-        },
-      );
+      // //loading circle
+      // showDialog(
+      //   context: context,
+      //   builder: (context) {
+      //     return const Center(
+      //       child: CircularProgressIndicator(
+      //         color: Color.fromRGBO(7, 82, 96, 1),
+      //       ),
+      //     );
+      //   },
+      // );
 
       userCredential =
           await FirebaseAuth.instance.signInWithCredential(credential);
 
       //pop loading cicle
-      Navigator.of(context).pop();
+      // Navigator.of(context).pop();
     } on FirebaseAuthException catch (e) {
       //pop loading cicle
-      Navigator.of(context).pop();
-
+      // Navigator.of(context).pop();
+      print(e);
       showDialog(
         context: context,
         builder: (context) {

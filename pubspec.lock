@@ -21,10 +21,10 @@ packages:
     dependency: "direct main"
     description:
       name: alarm
-      sha256: "4ec79ba7032cc1a70db66ece2653867a3b39262fd350a252bf5aed1c5b97d67e"
+      sha256: "16f1d9f5907e87e45b70cdc184a39a0490165a29a09d193c770e80fa5f606efa"
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.2"
+    version: "2.1.1"
   analyzer:
     dependency: transitive
     description:
@@ -832,6 +832,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
+  optimize_battery:
+    dependency: "direct main"
+    description:
+      name: optimize_battery
+      sha256: "4f0f974addbe54d3a705c1da5bf3a4bdae39502b1b2d2a17f9da1e558a34a4f8"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.4"
   package_config:
     dependency: transitive
     description:
@@ -1317,6 +1325,46 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
+  webview_flutter:
+    dependency: "direct main"
+    description:
+      name: webview_flutter
+      sha256: "42393b4492e629aa3a88618530a4a00de8bb46e50e7b3993fedbfdc5352f0dbf"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.4.2"
+  webview_flutter_android:
+    dependency: transitive
+    description:
+      name: webview_flutter_android
+      sha256: "8326ee235f87605a2bfc444a4abc897f4abc78d83f054ba7d3d1074ce82b4fbf"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.12.1"
+  webview_flutter_platform_interface:
+    dependency: transitive
+    description:
+      name: webview_flutter_platform_interface
+      sha256: "68e86162aa8fc646ae859e1585995c096c95fc2476881fa0c4a8d10f56013a5a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.8.0"
+  webview_flutter_wkwebview:
+    dependency: transitive
+    description:
+      name: webview_flutter_wkwebview
+      sha256: accdaaa49a2aca2dc3c3230907988954cdd23fed0a19525d6c9789d380f4dc76
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.9.4"
+  week_of_year:
+    dependency: "direct main"
+    description:
+      name: week_of_year
+      sha256: "578d2a9c7d93264b363ff3b1789e1acbae42295e803e70d362cfa07fcb73d3d1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.0"
   weekday_selector:
     dependency: "direct main"
     description:

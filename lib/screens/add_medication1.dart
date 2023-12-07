@@ -132,53 +132,53 @@ class _AddMedication1State extends State<AddMedication1> {
           key: _formKey,
           child: ListView(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment
-                    .center, // Align children vertically in the center
-                children: [
-                  // Expanded(
-                  //   child: Column(
-                  //     children: [
-                  //       Text(
-                  //         'Add each medicine separately',
-                  //         style: GoogleFonts.roboto(
-                  //             fontSize: 11, color: Colors.teal),
-                  //         textAlign: TextAlign.center,
-                  //       ),
-                  //       SizedBox(height: 6),
-                  //       Image.asset(
-                  //         'lib/assets/icons/medicine.gif',
-                  //         width: 30,
-                  //         height: 30,
-                  //         fit: BoxFit.fitHeight,
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-                  // SizedBox(width: 20),
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: _openImagePicker,
-                      child: Container(
-                        margin: const EdgeInsets.only(
-                            left: 40, right: 40, top: 10, bottom: 10),
-                        height: 80,
-                        width: 80,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: const Icon(Icons.add_a_photo_outlined, size: 50),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              //medication name
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   crossAxisAlignment: CrossAxisAlignment
+              //       .center, // Align children vertically in the center
+              //   children: [
+              //     // Expanded(
+              //     //   child: Column(
+              //     //     children: [
+              //     //       Text(
+              //     //         'Add each medicine separately',
+              //     //         style: GoogleFonts.roboto(
+              //     //             fontSize: 11, color: Colors.teal),
+              //     //         textAlign: TextAlign.center,
+              //     //       ),
+              //     //       SizedBox(height: 6),
+              //     //       Image.asset(
+              //     //         'lib/assets/icons/medicine.gif',
+              //     //         width: 30,
+              //     //         height: 30,
+              //     //         fit: BoxFit.fitHeight,
+              //     //       ),
+              //     //     ],
+              //     //   ),
+              //     // ),
+              //     // SizedBox(width: 20),
+              //     Expanded(
+              //       child: GestureDetector(
+              //         onTap: _openImagePicker,
+              //         child: Container(
+              //           margin: const EdgeInsets.only(
+              //               left: 40, right: 40, top: 10, bottom: 10),
+              //           height: 80,
+              //           width: 80,
+              //           decoration: BoxDecoration(
+              //             color: Colors.grey[300],
+              //             borderRadius: BorderRadius.circular(10),
+              //           ),
+              //           child: const Icon(Icons.add_a_photo_outlined, size: 50),
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              // const SizedBox(
+              //   height: 20,
+              // ),
+              // //medication name
               const Text(
                 'Medication Name',
                 style: TextStyle(
