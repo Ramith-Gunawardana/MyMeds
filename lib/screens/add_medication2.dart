@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mymeds_app/components/category_model.dart';
 import 'package:mymeds_app/components/controller_data.dart';
+import 'package:mymeds_app/components/language_constants.dart';
 import 'package:mymeds_app/components/text_field.dart';
 import 'package:mymeds_app/screens/add_medication3.dart';
 // import 'package:show_time_picker/show_time_picker.dart';
@@ -54,11 +55,11 @@ class _AddMedication2State extends State<AddMedication2> {
           int.parse(_medicationCountController.text) <
               int.parse(_medicationDosageController.text)) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
+          SnackBar(
             backgroundColor: Color.fromARGB(255, 7, 83, 96),
             behavior: SnackBarBehavior.floating,
             content: Text(
-              'Available pill count must be greater than dosage.',
+              translation(context).apcGd,
             ),
           ),
         );
@@ -78,8 +79,8 @@ class _AddMedication2State extends State<AddMedication2> {
     widget._getInitialInfo();
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Add Medication',
+        title: Text(
+          translation(context).addMed,
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.w600,
@@ -93,101 +94,17 @@ class _AddMedication2State extends State<AddMedication2> {
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
           child: ListView(
             children: [
-              const Text(
-                'Dosage per Intake',
+              Text(
+                translation(context).dpi,
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 18,
                     fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 20),
-              // Row(
-              //   children: [
-              //     Expanded(
-              //       child: TextField(
-              //         controller: _medicationDosageValueController,
-              //         keyboardType: TextInputType.number,
-              //         cursorColor: const Color.fromARGB(255, 7, 82, 96),
-              //         decoration: InputDecoration(
-              //           hintText: '1',
-              //           labelText: 'Count',
-              //           labelStyle: GoogleFonts.roboto(
-              //             color: const Color.fromARGB(255, 16, 15, 15),
-              //           ),
-              //           filled: true,
-              //           floatingLabelBehavior: FloatingLabelBehavior.auto,
-              //           focusedBorder: const OutlineInputBorder(
-              //             borderRadius: BorderRadius.all(
-              //               Radius.circular(20),
-              //             ),
-              //             borderSide: BorderSide(
-              //               color: Color.fromARGB(255, 7, 82, 96),
-              //             ),
-              //           ),
-              //           enabledBorder: const OutlineInputBorder(
-              //             borderRadius: BorderRadius.all(
-              //               Radius.circular(20),
-              //             ),
-              //             borderSide: BorderSide(
-              //               color: Colors.transparent,
-              //             ),
-              //           ),
-              //         ),
-              //       ),
-              //     ),
-              //     const SizedBox(
-              //         width: 8), // Add spacing between the two text fields
-              //     Expanded(
-              //       child: MultiSelectDropDown(
-              //         onOptionSelected: (List<ValueItem> selectedOptions) {
-              //           if (selectedOptions.isNotEmpty) {
-              //             // Assuming you want to concatenate selected options into a single string
-              //             String selectedValue = selectedOptions
-              //                 .map((option) => option.value)
-              //                 .join(', ');
-              //             _medicationDosageController.text = selectedValue;
-              //           } else {
-              //             // Handle the case where no options are selected
-              //             _medicationDosageController.text = '';
-              //           }
-              //         },
-              //         options: const <ValueItem>[
-              //           ValueItem(label: 'pill', value: 'pill'),
-              //           ValueItem(label: 'tsp', value: 'tsp'),
-              //           ValueItem(label: 'tbsp', value: 'tbsp'),
-              //           ValueItem(label: 'cup', value: 'cup'),
-              //           ValueItem(label: 'mg', value: 'mg'),
-              //           ValueItem(label: 'mcg', value: 'mcg'),
-              //           ValueItem(label: 'g', value: 'g'),
-              //           ValueItem(label: 'ml', value: 'ml'),
-              //           ValueItem(label: '%', value: '%'),
-              //           ValueItem(label: 'IU', value: 'IU'),
-              //           ValueItem(label: 'oz', value: 'oz'),
-              //           ValueItem(label: 'pt', value: 'pt'),
-              //           ValueItem(label: 'qt', value: 'qt'),
-              //           ValueItem(label: 'gal', value: 'gal'),
-              //           ValueItem(label: 'lb', value: 'lb'),
-              //           ValueItem(label: 'mg/mL', value: 'mg/mL'),
-              //         ],
-              //         selectionType: SelectionType.single,
-              //         chipConfig: const ChipConfig(wrapType: WrapType.wrap),
-              //         dropdownHeight: 400,
-              //         optionTextStyle: const TextStyle(fontSize: 16),
-              //         selectedOptionIcon: const Icon(Icons.check_circle),
-              //         backgroundColor: Colors.transparent,
-              //         focusedBorderWidth: 2,
-              //         inputDecoration: BoxDecoration(
-              //           color: const Color.fromARGB(255, 219, 228, 231),
-              //           borderRadius: BorderRadius.circular(20),
-              //         ),
-              //         focusedBorderColor: const Color.fromARGB(255, 7, 82, 96),
-              //         padding: const EdgeInsets.all(22),
-              //       ),
-              //     ),
-              //   ],
-              // ),
+              //dosage
               Text_Field(
-                  label: 'Count',
+                  label: translation(context).count,
                   hint: '1',
                   isPassword: false,
                   keyboard: TextInputType.number,
@@ -202,17 +119,17 @@ class _AddMedication2State extends State<AddMedication2> {
               ),
               const SizedBox(height: 20),
               //total pill count
-              const Row(
+              Row(
                 children: [
                   Text(
-                    'Available Pill Count ',
+                    translation(context).apc,
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 18,
                         fontWeight: FontWeight.w600),
                   ),
                   Text(
-                    '(Optional)',
+                    translation(context).optional,
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 15,
@@ -220,9 +137,9 @@ class _AddMedication2State extends State<AddMedication2> {
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
               Text_Field(
-                label: 'Total Pill Count',
+                label: translation(context).tpc,
                 hint: '30',
                 isPassword: false,
                 keyboard: TextInputType.number,
@@ -238,17 +155,17 @@ class _AddMedication2State extends State<AddMedication2> {
               ),
               const SizedBox(height: 20),
               //user note
-              const Row(
+              Row(
                 children: [
                   Text(
-                    'Medication Note ',
+                    translation(context).medNote,
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 18,
                         fontWeight: FontWeight.w600),
                   ),
                   Text(
-                    '(Optional)',
+                    translation(context).optional,
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 15,
@@ -258,8 +175,8 @@ class _AddMedication2State extends State<AddMedication2> {
               ),
               const SizedBox(height: 16),
               Text_Field(
-                label: 'Medication Note',
-                hint: 'Using for illness',
+                label: translation(context).medNote,
+                hint: translation(context).ufi,
                 isPassword: false,
                 keyboard: TextInputType.name,
                 txtEditController: _medicationNoteController,
@@ -282,7 +199,7 @@ class _AddMedication2State extends State<AddMedication2> {
                     ),
                   ),
                   child: Text(
-                    'Next',
+                    translation(context).next,
                     style: GoogleFonts.roboto(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
@@ -304,7 +221,7 @@ class _AddMedication2State extends State<AddMedication2> {
               //     print(_medicationCountController.text);
               //     print(_medicationNoteController.text);
               //   },
-              //   child: const Text('Next'),
+              //   child: Text('Next'),
               // ),
             ],
           ),

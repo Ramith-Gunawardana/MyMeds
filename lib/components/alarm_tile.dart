@@ -42,8 +42,7 @@ class AlarmTile extends StatelessWidget {
         child: Container(
           // color: Colors.white,
           decoration: BoxDecoration(
-            // color: Theme.of(context).colorScheme.primary,
-            color: const Color.fromARGB(255, 76, 112, 117),
+            color: Theme.of(context).colorScheme.primary,
             borderRadius: BorderRadius.circular(20),
           ),
           height: 100,

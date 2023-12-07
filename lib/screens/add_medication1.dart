@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mymeds_app/components/category_model.dart';
 import 'package:mymeds_app/components/controller_data.dart';
+import 'package:mymeds_app/components/language_constants.dart';
 import 'package:mymeds_app/components/text_field.dart';
 import 'package:mymeds_app/screens/add_medication2.dart';
 
@@ -63,12 +64,12 @@ class _AddMedication1State extends State<AddMedication1> {
       focusNode_medName.requestFocus();
     } else if (_selectedCategoryIndex < 0) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           backgroundColor: Color.fromARGB(255, 7, 83, 96),
           behavior: SnackBarBehavior.floating,
           duration: Duration(seconds: 2),
           content: Text(
-            'Please select the medication category',
+            translation(context).pstMedCategory,
           ),
         ),
       );
@@ -76,24 +77,24 @@ class _AddMedication1State extends State<AddMedication1> {
       if (_medicationStrengthValueController.text.isNotEmpty &&
           _medicationStrengthController.text.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
+          SnackBar(
             backgroundColor: Color.fromARGB(255, 7, 83, 96),
             behavior: SnackBarBehavior.floating,
             duration: Duration(seconds: 2),
             content: Text(
-              'Please select the strength type',
+              translation(context).pstStrType,
             ),
           ),
         );
       } else if (_medicationStrengthValueController.text.isEmpty &&
           _medicationStrengthController.text.isNotEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
+          SnackBar(
             backgroundColor: Color.fromARGB(255, 7, 83, 96),
             behavior: SnackBarBehavior.floating,
             duration: Duration(seconds: 2),
             content: Text(
-              'Please enter the strength value',
+              translation(context).pstStrType,
             ),
           ),
         );
@@ -117,8 +118,8 @@ class _AddMedication1State extends State<AddMedication1> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Add Medication',
+        title: Text(
+          translation(context).addMed,
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.w600,
@@ -132,55 +133,55 @@ class _AddMedication1State extends State<AddMedication1> {
           key: _formKey,
           child: ListView(
             children: [
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   crossAxisAlignment: CrossAxisAlignment
-              //       .center, // Align children vertically in the center
-              //   children: [
-              //     // Expanded(
-              //     //   child: Column(
-              //     //     children: [
-              //     //       Text(
-              //     //         'Add each medicine separately',
-              //     //         style: GoogleFonts.roboto(
-              //     //             fontSize: 11, color: Colors.teal),
-              //     //         textAlign: TextAlign.center,
-              //     //       ),
-              //     //       SizedBox(height: 6),
-              //     //       Image.asset(
-              //     //         'lib/assets/icons/medicine.gif',
-              //     //         width: 30,
-              //     //         height: 30,
-              //     //         fit: BoxFit.fitHeight,
-              //     //       ),
-              //     //     ],
-              //     //   ),
-              //     // ),
-              //     // SizedBox(width: 20),
-              //     Expanded(
-              //       child: GestureDetector(
-              //         onTap: _openImagePicker,
-              //         child: Container(
-              //           margin: const EdgeInsets.only(
-              //               left: 40, right: 40, top: 10, bottom: 10),
-              //           height: 80,
-              //           width: 80,
-              //           decoration: BoxDecoration(
-              //             color: Colors.grey[300],
-              //             borderRadius: BorderRadius.circular(10),
-              //           ),
-              //           child: const Icon(Icons.add_a_photo_outlined, size: 50),
-              //         ),
-              //       ),
-              //     ),
-              //   ],
-              // ),
-              // const SizedBox(
-              //   height: 20,
-              // ),
-              // //medication name
-              const Text(
-                'Medication Name',
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment
+                    .center, // Align children vertically in the center
+                children: [
+                  // Expanded(
+                  //   child: Column(
+                  //     children: [
+                  //       Text(
+                  //         'Add each medicine separately',
+                  //         style: GoogleFonts.roboto(
+                  //             fontSize: 11, color: Colors.teal),
+                  //         textAlign: TextAlign.center,
+                  //       ),
+                  //       SizedBox(height: 6),
+                  //       Image.asset(
+                  //         'lib/assets/icons/medicine.gif',
+                  //         width: 30,
+                  //         height: 30,
+                  //         fit: BoxFit.fitHeight,
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+                  // SizedBox(width: 20),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: _openImagePicker,
+                      child: Container(
+                        margin: const EdgeInsets.only(
+                            left: 40, right: 40, top: 10, bottom: 10),
+                        height: 80,
+                        width: 80,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: const Icon(Icons.add_a_photo_outlined, size: 50),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              //medication name
+              Text(
+                translation(context).medName,
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 18,
@@ -190,8 +191,8 @@ class _AddMedication1State extends State<AddMedication1> {
                 height: 20,
               ),
               Text_Field(
-                label: 'Medication Name',
-                hint: 'Vitamic C',
+                label: translation(context).medName,
+                hint: translation(context).vitaminC,
                 isPassword: false,
                 keyboard: TextInputType.text,
                 txtEditController: _medicationNameController,
@@ -205,8 +206,8 @@ class _AddMedication1State extends State<AddMedication1> {
                 color: Colors.grey.shade300,
               ),
               const SizedBox(height: 20),
-              const Text(
-                'Category',
+              Text(
+                translation(context).cat,
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 18,
@@ -281,7 +282,7 @@ class _AddMedication1State extends State<AddMedication1> {
                               ),
                               Text(
                                 widget.categories[index].name,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontWeight: FontWeight.w400,
                                   color: Colors.black,
                                   fontSize: 14,
@@ -305,15 +306,15 @@ class _AddMedication1State extends State<AddMedication1> {
               const SizedBox(height: 10),
               Row(
                 children: [
-                  const Text(
-                    'Strength ',
+                  Text(
+                    translation(context).strength,
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 18,
                         fontWeight: FontWeight.w600),
                   ),
-                  const Text(
-                    '(Optional)',
+                  Text(
+                    translation(context).optional,
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 15,
@@ -324,7 +325,7 @@ class _AddMedication1State extends State<AddMedication1> {
                       _medicationStrengthController.clear();
                       _medicationStrengthValueController.clear();
                     },
-                    child: const Text('Clear'),
+                    child: Text(translation(context).clear),
                   ),
                 ],
               ),
@@ -346,12 +347,12 @@ class _AddMedication1State extends State<AddMedication1> {
                       focusNode: focusNode_medStrengthValue,
                       keyboardType: TextInputType.number,
                       cursorColor: const Color.fromARGB(255, 7, 82, 96),
-                      style: const TextStyle(
+                      style: TextStyle(
                         height: 2,
                       ),
                       decoration: InputDecoration(
                         hintText: '100',
-                        labelText: 'Strength Value',
+                        labelText: translation(context).stVal,
                         labelStyle: GoogleFonts.roboto(
                           color: const Color.fromARGB(255, 16, 15, 15),
                         ),
@@ -435,7 +436,7 @@ class _AddMedication1State extends State<AddMedication1> {
                       DropdownMenuEntry(label: 'mg/mL', value: 'mg/mL'),
                     ],
                     menuHeight: 200,
-                    label: const Text('Type'),
+                    label: Text(translation(context).type),
                   ),
 
                   // Expanded(
@@ -472,7 +473,7 @@ class _AddMedication1State extends State<AddMedication1> {
                   //     selectionType: SelectionType.single,
                   //     chipConfig: const ChipConfig(wrapType: WrapType.wrap),
                   //     dropdownHeight: 200,
-                  //     optionTextStyle: const TextStyle(fontSize: 16),
+                  //     optionTextStyle: TextStyle(fontSize: 16),
                   //     selectedOptionIcon: const Icon(Icons.check_circle),
                   //     backgroundColor: Colors.transparent,
                   //     focusedBorderWidth: 2,
@@ -503,7 +504,7 @@ class _AddMedication1State extends State<AddMedication1> {
                     ),
                   ),
                   child: Text(
-                    'Next',
+                    translation(context).next,
                     style: GoogleFonts.roboto(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
@@ -520,7 +521,7 @@ class _AddMedication1State extends State<AddMedication1> {
               //     print(_medicationStrengthValueController.text +
               //         _medicationStrengthController.text);
               //   },
-              //   child: const Text('Next'),
+              //   child: Text('Next'),
               // ),
             ],
           ),

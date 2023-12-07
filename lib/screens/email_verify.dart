@@ -64,28 +64,10 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          //   title: Text(
-          //     'Verify your email address',
-          //     style: GoogleFonts.roboto(
-          //       fontWeight: FontWeight.w600,
-          //       // color: const Color.fromRGBO(7, 82, 96, 1),
-          //     ),
-          //   ),
-          //   elevation: 5.0,
-          //   leading: IconButton(
-          //       icon: const Icon(Icons.arrow_back, color: Colors.black),
-          //       onPressed: () {
-          //         Navigator.push(
-          //           context,
-          //           MaterialPageRoute(
-          //             builder: (context) {
-          //               return const AuthPage();
-          //             },
-          //           ),
-          //         );
-          //       }),
-          ),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(0),
+        child: AppBar(),
+      ),
       body: SafeArea(
         child: Container(
           margin: const EdgeInsets.fromLTRB(40, 0, 40, 0),

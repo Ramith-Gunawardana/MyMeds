@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mymeds_app/components/language_constants.dart';
+
 import '/components/re_usable_select_photo_button.dart';
 
 class SelectPhotoOptionsScreen extends StatelessWidget {
@@ -57,14 +59,14 @@ class SelectPhotoOptionsScreen extends StatelessWidget {
               SelectPhoto(
                 onTap: () => onTap(ImageSource.gallery),
                 icon: Icons.image_outlined,
-                textLabel: 'Browse Gallery',
+                textLabel: translation(context).photoBtn3,
               ),
               const SizedBox(
                 height: 10,
               ),
-              const Center(
+              Center(
                 child: Text(
-                  'or',
+                  translation(context).photoText2,
                   style: TextStyle(fontSize: 18),
                 ),
               ),
@@ -74,7 +76,7 @@ class SelectPhotoOptionsScreen extends StatelessWidget {
               SelectPhoto(
                 onTap: () => onTap(ImageSource.camera),
                 icon: Icons.camera_alt_outlined,
-                textLabel: 'Use Camera',
+                textLabel: translation(context).photoBtn4,
               ),
             ],
           ),

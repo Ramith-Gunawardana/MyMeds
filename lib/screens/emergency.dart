@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mymeds_app/components/language_constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Emergency extends StatefulWidget {
@@ -14,8 +15,8 @@ class _Emergency extends State<Emergency> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "Emergency Calls",
+        title: Text(
+          translation(context).emgcall,
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         elevation: 5.0,
@@ -56,38 +57,38 @@ class _Emergency extends State<Emergency> {
             _EmergencyButton(
               onPressed: () => _makeEmergencyCall("1990"),
               icon: FontAwesomeIcons.truckMedical,
-              label: 'Suwa Seriya Ambulance',
+              label: translation(context).ssa,
               number: '1990',
             ),
             _EmergencyButton(
               onPressed: () => _makeEmergencyCall("0112691111"),
               // icon: Icons.accessible_outlined,
               icon: FontAwesomeIcons.personFallingBurst,
-              label: 'Accident Service',
+              label: translation(context).as,
               number: '011 2691111',
             ),
             _EmergencyButton(
               onPressed: () => _makeEmergencyCall("119"),
               icon: Icons.local_police_outlined,
-              label: 'Police Emergency',
+              label: translation(context).pi,
               number: '119',
             ),
             _EmergencyButton(
               onPressed: () => _makeEmergencyCall("110"),
               icon: Icons.fire_truck_outlined,
-              label: 'Fire & Rescue',
+              label: translation(context).fi,
               number: '110',
             ),
             _EmergencyButton(
               onPressed: () => _makeEmergencyCall("1919"),
               icon: Icons.info_outline,
-              label: 'Government Information Center',
+              label: translation(context).gv,
               number: '1919',
             ),
             _EmergencyButton(
               onPressed: () => _makeEmergencyCall("0115717171"),
               icon: Icons.emergency_outlined,
-              label: 'Emergency Police Squad',
+              label: translation(context).eps,
               number: '011 5717171',
             ),
           ],
@@ -101,7 +102,7 @@ class _Emergency extends State<Emergency> {
     if (await canLaunchUrl(url)) {
       await launchUrl(url);
     } else {
-      print('Cannot launch');
+      print(translation(context).ctL);
     }
   }
 }

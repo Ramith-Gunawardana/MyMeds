@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mymeds_app/components/category_model.dart';
 import 'package:mymeds_app/components/controller_data.dart';
+import 'package:mymeds_app/components/language_constants.dart';
 import 'package:mymeds_app/screens/dashboard.dart';
 
 class AddMedication4 extends StatefulWidget {
@@ -279,7 +280,7 @@ class _AddMedication4State extends State<AddMedication4> {
         'user_note': user_note.text.isNotEmpty ? user_note.text : null,
       });
 
-      print('Added med data');
+      print(translation(context).mAddedSuccess);
 
       //adding days
       List<String> days = [];
@@ -451,7 +452,7 @@ class _AddMedication4State extends State<AddMedication4> {
           print('created : $day - $time');
         }
       }
-      print('Added log dates and times');
+      print(translation(context).aLDT);
 
       if (!mounted) {
         return;
@@ -466,7 +467,7 @@ class _AddMedication4State extends State<AddMedication4> {
           builder: (context) => const Dashboard(),
         ),
       );
-      _showSnackBar('Medication added successfully');
+      _showSnackBar(translation(context).mAddedSuccess);
     } on FirebaseException catch (e) {
       print('ERROR: ${e.code}');
       //pop loading cicle
@@ -479,8 +480,8 @@ class _AddMedication4State extends State<AddMedication4> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Summary',
+        title: Text(
+          translation(context).summary,
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.w600,
@@ -517,9 +518,9 @@ class _AddMedication4State extends State<AddMedication4> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'MEDICINE DETAILS',
+                    translation(context).medDetails,
                     style: TextStyle(
-                        color: Theme.of(context).colorScheme.primary,
+                        color: Colors.tealAccent[700],
                         fontSize: 18,
                         fontWeight: FontWeight.w600),
                   ),
@@ -534,8 +535,8 @@ class _AddMedication4State extends State<AddMedication4> {
                   children: [
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.38,
-                      child: const Text(
-                        'Name',
+                      child: Text(
+                        translation(context).name,
                         textWidthBasis: TextWidthBasis.parent,
                         style: TextStyle(
                             color: Colors.black,
@@ -563,8 +564,8 @@ class _AddMedication4State extends State<AddMedication4> {
                   children: [
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.38,
-                      child: const Text(
-                        'Category',
+                      child: Text(
+                        translation(context).cat,
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 18,
@@ -591,8 +592,8 @@ class _AddMedication4State extends State<AddMedication4> {
                     children: [
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.38,
-                        child: const Text(
-                          'Strength',
+                        child: Text(
+                          translation(context).strength,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 18,
@@ -621,9 +622,9 @@ class _AddMedication4State extends State<AddMedication4> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'MEDICATION INTAKE',
+                    translation(context).medIntake,
                     style: TextStyle(
-                        color: Theme.of(context).colorScheme.primary,
+                        color: Colors.tealAccent[700],
                         fontSize: 18,
                         fontWeight: FontWeight.w600),
                   ),
@@ -636,8 +637,8 @@ class _AddMedication4State extends State<AddMedication4> {
                   children: [
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.38,
-                      child: const Text(
-                        'Dosage per Intake',
+                      child: Text(
+                        translation(context).dpi,
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 18,
@@ -664,8 +665,8 @@ class _AddMedication4State extends State<AddMedication4> {
                     children: [
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.38,
-                        child: const Text(
-                          'Available Pill Count',
+                        child: Text(
+                          translation(context).apc,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 18,
@@ -695,9 +696,9 @@ class _AddMedication4State extends State<AddMedication4> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'FREQUENCY',
+                    translation(context).freQ,
                     style: TextStyle(
-                        color: Theme.of(context).colorScheme.primary,
+                        color: Colors.tealAccent[700],
                         fontSize: 18,
                         fontWeight: FontWeight.w600),
                   ),
@@ -712,7 +713,9 @@ class _AddMedication4State extends State<AddMedication4> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.38,
                       child: Text(
-                        '${number_of_times.text} time(s) per Day',
+                        translation(context).medTimes +
+                            ' ${number_of_times.text} ' +
+                            translation(context).tpd,
                         style: const TextStyle(
                           color: Colors.black,
                           fontSize: 18,
@@ -741,8 +744,8 @@ class _AddMedication4State extends State<AddMedication4> {
                   children: [
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.38,
-                      child: const Text(
-                        'Freqency',
+                      child: Text(
+                        translation(context).freq,
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 18,
@@ -766,8 +769,8 @@ class _AddMedication4State extends State<AddMedication4> {
                   children: [
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.38,
-                      child: const Text(
-                        'Starting Date',
+                      child: Text(
+                        translation(context).sDate,
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 18,
@@ -795,8 +798,8 @@ class _AddMedication4State extends State<AddMedication4> {
                     children: [
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.38,
-                        child: const Text(
-                          'Ending Date',
+                        child: Text(
+                          translation(context).eDate,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 18,
@@ -832,8 +835,8 @@ class _AddMedication4State extends State<AddMedication4> {
                         children: [
                           SizedBox(
                             width: MediaQuery.of(context).size.width * 0.38,
-                            child: const Text(
-                              'Notes',
+                            child: Text(
+                              translation(context).medNote,
                               style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 18,
@@ -884,7 +887,7 @@ class _AddMedication4State extends State<AddMedication4> {
                     ),
                   ),
                   child: Text(
-                    'Done',
+                    translation(context).done,
                     style: GoogleFonts.roboto(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,

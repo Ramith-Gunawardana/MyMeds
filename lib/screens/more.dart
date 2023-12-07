@@ -1,13 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:maps_launcher/maps_launcher.dart';
+import 'package:mymeds_app/components/language_constants.dart';
 import 'package:mymeds_app/screens/account_settings.dart';
 import 'package:mymeds_app/screens/alarm_settings.dart';
 import 'package:mymeds_app/screens/bmi.dart';
 import 'package:mymeds_app/screens/emergency.dart';
 import 'package:mymeds_app/screens/set_photo_screen.dart';
-
-import 'package:maps_launcher/maps_launcher.dart';
-import 'package:geolocator/geolocator.dart';
 
 class More extends StatefulWidget {
   const More({super.key});
@@ -41,7 +41,7 @@ class _SettingsState extends State<More> {
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
           // The user has denied access to location permissions.
-          print('User denied permissions to access the device\'s location.');
+          print(translation(context).locD);
           return;
         }
       }
@@ -67,9 +67,8 @@ class _SettingsState extends State<More> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Enable Location Services'),
-          content:
-              const Text('Please enable location services to use this app.'),
+          title: Text(translation(context).loc),
+          content: Text(translation(context).locSe),
           actions: [
             TextButton(
               onPressed: () async {
@@ -80,11 +79,11 @@ class _SettingsState extends State<More> {
                   await _getCurrentLocation();
                 }
               },
-              child: const Text('ENABLE'),
+              child: Text(translation(context).enable),
             ),
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('CANCEL'),
+              child: Text(translation(context).cancel),
             ),
           ],
         );
@@ -143,7 +142,7 @@ class _SettingsState extends State<More> {
                               ),
                             );
                           },
-                          child: currentUser!.photoURL!.isEmpty
+                          child: (currentUser?.photoURL?.isEmpty ?? true)
                               ? CircleAvatar(
                                   radius: 20,
                                   backgroundColor:
@@ -156,7 +155,6 @@ class _SettingsState extends State<More> {
                                   radius: 20,
                                   backgroundImage:
                                       NetworkImage(currentUser!.photoURL!),
-                                  backgroundColor: Colors.transparent,
                                 ),
                         ),
                       ],
@@ -205,7 +203,7 @@ class _SettingsState extends State<More> {
                               ),
                             ),
                           ),
-                          child: const Column(
+                          child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               SizedBox(
@@ -217,7 +215,7 @@ class _SettingsState extends State<More> {
                               SizedBox(
                                 height: 10,
                               ),
-                              Text('Presciption Image',
+                              Text(translation(context).presImg,
                                   textAlign: TextAlign.center),
                             ],
                           ),
@@ -234,7 +232,7 @@ class _SettingsState extends State<More> {
                             await _getCurrentLocation();
                             if (_currentPosition != null) {
                               MapsLauncher.launchQuery(
-                                  'nearby hospitals and pharmacies');
+                                  translation(context).nearby);
                             }
                           },
                           style: const ButtonStyle(
@@ -250,7 +248,7 @@ class _SettingsState extends State<More> {
                               ),
                             ),
                           ),
-                          child: const Column(
+                          child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               SizedBox(
@@ -262,7 +260,7 @@ class _SettingsState extends State<More> {
                               SizedBox(
                                 height: 10,
                               ),
-                              Text('Nearby Pharmacies & Hospitals',
+                              Text(translation(context).nearby,
                                   textAlign: TextAlign.center),
                             ],
                           ),
@@ -305,7 +303,7 @@ class _SettingsState extends State<More> {
                               ),
                             ),
                           ),
-                          child: const Column(
+                          child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               SizedBox(
@@ -317,7 +315,7 @@ class _SettingsState extends State<More> {
                               SizedBox(
                                 height: 10,
                               ),
-                              Text('Check your BMI',
+                              Text(translation(context).bmi,
                                   textAlign: TextAlign.center),
                             ],
                           ),
@@ -364,7 +362,7 @@ class _SettingsState extends State<More> {
                               ),
                             ),
                           ),
-                          child: const Column(
+                          child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               SizedBox(
@@ -376,7 +374,7 @@ class _SettingsState extends State<More> {
                               SizedBox(
                                 height: 10,
                               ),
-                              Text('Upcoming Alarms',
+                              Text(translation(context).upalarm,
                                   textAlign: TextAlign.center),
                             ],
                           ),
@@ -416,7 +414,7 @@ class _SettingsState extends State<More> {
                               ),
                             ),
                           ),
-                          child: const Column(
+                          child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               SizedBox(
@@ -428,7 +426,7 @@ class _SettingsState extends State<More> {
                               SizedBox(
                                 height: 10,
                               ),
-                              Text('Emergency Call',
+                              Text(translation(context).emgcall,
                                   textAlign: TextAlign.center),
                             ],
                           ),

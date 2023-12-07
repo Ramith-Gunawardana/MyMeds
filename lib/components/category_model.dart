@@ -19,13 +19,13 @@ class CategoryModel {
     categories.add(
       CategoryModel(
         name: 'Capsule',
-        iconPath: 'lib/assets/icons/pills.gif',
+        iconPath: 'lib/assets/icons/tablet.gif',
       ),
     );
 
     categories.add(CategoryModel(
       name: 'Tablet',
-      iconPath: 'lib/assets/icons/tablet.gif',
+      iconPath: 'lib/assets/icons/pills.gif',
     ));
 
     categories.add(CategoryModel(

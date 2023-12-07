@@ -235,7 +235,7 @@ class EventCard extends StatelessWidget {
                             height: 10,
                           ),
                           Text(
-                            '${medData['medcount']} ${medData['category']}(s) at $time',
+                            'Take ${medData['medcount']} ${medData['category']}(s) at $time',
                             style: GoogleFonts.roboto(
                               color: const Color.fromARGB(255, 16, 15, 15),
                               fontSize: 16,

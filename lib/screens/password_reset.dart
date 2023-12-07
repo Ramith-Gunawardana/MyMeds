@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'package:mymeds_app/components/alert.dart';
+
 import '../components/text_field.dart';
 
 class PasswordReset extends StatefulWidget {
@@ -19,8 +21,6 @@ class _PasswordResetState extends State<PasswordReset> {
 
   bool _isEmail = false;
   bool _isRest = false;
-
-  bool isLoading = false;
 
   bool _isError = false;
   String errorMsg = '';
@@ -49,47 +49,41 @@ class _PasswordResetState extends State<PasswordReset> {
         });
         try {
           //loading circle
-          // showDialog(
-          //   context: context,
-          //   builder: (context) {
-          //     return const Center(
-          //       child: CircularProgressIndicator(
-          //         color: Color.fromRGBO(7, 82, 96, 1),
-          //       ),
-          //     );
-          //   },
-          // );
-
-          setState(() {
-            isLoading = true;
-          });
+          showDialog(
+            context: context,
+            builder: (context) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: Color.fromRGBO(7, 82, 96, 1),
+                ),
+              );
+            },
+          );
 
           await FirebaseAuth.instance.sendPasswordResetEmail(
             email: _emailController.text.trim(),
           );
 
-          // if (!mounted) {
-          //   return;
-          // }
+          if (!mounted) {
+            return;
+          }
 
           setState(() {
             _isRest = true;
             _isError = false;
-            isLoading = false;
           });
         } on FirebaseAuthException catch (e) {
-          print(e.code);
-          // if (!mounted) {
-          //   return;
-          // }
+          print('${e.code}');
+          if (!mounted) {
+            return;
+          }
 
           //pop loading cicle
-          // Navigator.of(context).pop();
+          Navigator.of(context).pop();
 
           setState(() {
             _isError = true;
             _isRest = false;
-            isLoading = false;
             errorMsg = getErrorMessage(e.code);
           });
         }
@@ -246,7 +240,7 @@ class _PasswordResetState extends State<PasswordReset> {
                             style: GoogleFonts.roboto(
                               fontSize: 15,
                               fontWeight: FontWeight.w600,
-                              color: const Color.fromARGB(239, 0, 198, 89),
+                              color: Color.fromARGB(239, 0, 198, 89),
                             ),
                             textAlign: TextAlign.start,
                           ),
@@ -279,16 +273,12 @@ class _PasswordResetState extends State<PasswordReset> {
                       ),
                     ),
                   ),
-                  child: !isLoading
-                      ? Text(
-                          'Reset Password',
-                          style: GoogleFonts.roboto(
-                            fontSize: 25,
-                          ),
-                        )
-                      : const CircularProgressIndicator(
-                          color: Colors.white,
-                        ),
+                  child: Text(
+                    'Reset Password',
+                    style: GoogleFonts.roboto(
+                      fontSize: 25,
+                    ),
+                  ),
                 ),
               ),
             ],

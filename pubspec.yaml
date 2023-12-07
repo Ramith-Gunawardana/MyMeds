@@ -32,6 +32,10 @@ dependencies:
     sdk: flutter
   provider: ^5.0.0
 
+  flutter_localizations:
+    sdk: flutter
+  intl: any
+
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -57,8 +61,10 @@ dependencies:
   flutter_svg: ^1.1.6
   day_night_time_picker: 
   text_scroll: ^0.2.0
-  # alarm: ^1.2.2
-  alarm: ^2.1.1
+  alarm: ^1.2.2
+  build_runner: ^2.4.7
+  shared_preferences: ^2.2.2
+
   # awesome_notifications: any
   localstorage: ^4.0.1+4
   firebase_storage: ^11.2.6
@@ -66,10 +72,7 @@ dependencies:
   multi_dropdown: ^2.0.1
   weekday_selector: ^1.1.0
   custom_radio_grouped_button: ^2.2.0
-  intl: ^0.18.1
-  week_of_year: ^2.2.0
-  optimize_battery: ^0.0.4
-  webview_flutter: ^4.4.2
+  intl_translation: 
 
 dev_dependencies:
   flutter_test:
@@ -235,7 +238,7 @@ flutter_launcher_icons:
 
 # The following section is specific to Flutter packages.
 flutter:
-
+  generate: true
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -244,11 +247,11 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - lib/assets/
-
     - lib/assets/images/ 
     - lib/assets/icons/
-
-    - assets/audio/
+    - lib/l10n/
+    # - assets/audio/
+    
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

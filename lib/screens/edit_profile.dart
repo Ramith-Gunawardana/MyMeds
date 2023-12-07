@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:mymeds_app/components/language_constants.dart';
 
 class EditProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Edit Profile"),
+        title: Text(translation(context).yourProfile),
       ),
       body: Center(
           child: Column(
@@ -22,7 +23,7 @@ class EditProfilePage extends StatelessWidget {
             style: TextStyle(fontSize: 20),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height:10),
+          const SizedBox(height: 10),
           const Text(
             "If you forget your password relax and try to remember your password.",
             style: TextStyle(fontSize: 20),

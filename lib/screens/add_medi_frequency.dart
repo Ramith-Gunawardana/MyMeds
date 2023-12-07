@@ -2,6 +2,7 @@ import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mymeds_app/components/controller_data.dart';
+import 'package:mymeds_app/components/language_constants.dart';
 import 'package:weekday_selector/weekday_selector.dart';
 
 class AddMediFrequency extends StatefulWidget {
@@ -93,9 +94,9 @@ class _AddMediFrequencyState extends State<AddMediFrequency> {
 
   void addFrequency() {
     if (showFrequencySection && _medicationFrequencyController.text.isEmpty) {
-      _showSnackBar('Select interval');
+      _showSnackBar(translation(context).sInt);
     } else if (showDaysSection && !isDaySelected()) {
-      _showSnackBar('Select day(s)');
+      _showSnackBar(translation(context).sDays);
     } else {
       if (showFrequencySection) {
         _medicationFrequency_isSpecificDays_Controller.text = "false";
@@ -124,13 +125,13 @@ class _AddMediFrequencyState extends State<AddMediFrequency> {
               CustomRadioButton(
                 elevation: 4,
                 unSelectedColor: Theme.of(context).canvasColor,
-                buttonLables: const [
-                  'At Regular Intervals',
-                  'On Specific Days of the Week',
+                buttonLables: [
+                  translation(context).aRI,
+                  translation(context).oSDW,
                 ],
-                buttonValues: const [
-                  "At Regular Intervals",
-                  "On Specific Days of the Week",
+                buttonValues: [
+                  translation(context).aRI,
+                  translation(context).oSDW,
                 ],
                 buttonTextStyle: const ButtonTextStyle(
                     selectedColor: Colors.white,
@@ -138,14 +139,14 @@ class _AddMediFrequencyState extends State<AddMediFrequency> {
                     textStyle: TextStyle(fontSize: 16)),
                 radioButtonValue: (value) {
                   setState(() {
-                    showFrequencySection = value == "At Regular Intervals";
-                    showDaysSection = value == "On Specific Days of the Week";
+                    showFrequencySection = value == translation(context).aRI;
+                    showDaysSection = value == translation(context).oSDW;
                     //clear both input fields when click any of the buttons
                     _clearSelectionAndResetControllers();
                     _medicationFrequencyController.clear();
                   });
                 },
-                defaultSelected: "At Regular Intervals",
+                defaultSelected: translation(context).aRI,
                 selectedColor: Theme.of(context).colorScheme.primary,
                 unSelectedBorderColor: Theme.of(context).colorScheme.primary,
                 selectedBorderColor: Theme.of(context).colorScheme.primary,
@@ -159,8 +160,8 @@ class _AddMediFrequencyState extends State<AddMediFrequency> {
               ),
               if (showFrequencySection) ...[
                 const SizedBox(height: 16),
-                const Text(
-                  'Choose the Interval',
+                Text(
+                  translation(context).cTI,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -207,27 +208,34 @@ class _AddMediFrequencyState extends State<AddMediFrequency> {
                       ),
                     ),
                   ),
-                  dropdownMenuEntries: const [
-                    DropdownMenuEntry(label: 'Every Day', value: '1'),
-                    DropdownMenuEntry(label: 'Every 2 Days', value: '2'),
-                    DropdownMenuEntry(label: 'Every 3 Days', value: '3'),
-                    DropdownMenuEntry(label: 'Every 4 Days', value: '4'),
-                    DropdownMenuEntry(label: 'Every 5 Days', value: '5'),
-                    DropdownMenuEntry(label: 'Every 6 Days', value: '6'),
-                    DropdownMenuEntry(label: 'Every Week (7 Days)', value: '7'),
+                  dropdownMenuEntries: [
                     DropdownMenuEntry(
-                        label: 'Every 2 Weeks (14 Days)', value: '14'),
+                        label: translation(context).eD, value: '1'),
                     DropdownMenuEntry(
-                        label: 'Every 3 Weeks (21 Days)', value: '21'),
+                        label: translation(context).e2D, value: '2'),
                     DropdownMenuEntry(
-                        label: 'Every Month (30 Days)', value: '30'),
+                        label: translation(context).e3D, value: '3'),
                     DropdownMenuEntry(
-                        label: 'Every 2 Months (60 Days)', value: '60'),
+                        label: translation(context).e4D, value: '4'),
                     DropdownMenuEntry(
-                        label: 'Every 3 Months (90 Days)', value: '90'),
+                        label: translation(context).e5D, value: '5'),
+                    DropdownMenuEntry(
+                        label: translation(context).e6D, value: '6'),
+                    DropdownMenuEntry(
+                        label: translation(context).eW, value: '7'),
+                    DropdownMenuEntry(
+                        label: translation(context).e2W, value: '14'),
+                    DropdownMenuEntry(
+                        label: translation(context).e3W, value: '21'),
+                    DropdownMenuEntry(
+                        label: translation(context).eM, value: '30'),
+                    DropdownMenuEntry(
+                        label: translation(context).e2M, value: '60'),
+                    DropdownMenuEntry(
+                        label: translation(context).e3M, value: '90'),
                   ],
                   menuHeight: 200,
-                  label: const Text('Frequency'),
+                  label: Text(translation(context).freq),
                 ),
                 // MultiSelectDropDown(
                 //   onOptionSelected: (List<ValueItem> selectedOptions) {
@@ -269,8 +277,8 @@ class _AddMediFrequencyState extends State<AddMediFrequency> {
               ],
               if (showDaysSection) ...[
                 const SizedBox(height: 16),
-                const Text(
-                  'Select the Days',
+                Text(
+                  translation(context).sTD,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -280,14 +288,14 @@ class _AddMediFrequencyState extends State<AddMediFrequency> {
                 const SizedBox(height: 16),
                 WeekdaySelector(
                   firstDayOfWeek: 7,
-                  shortWeekdays: const [
-                    'Sun',
-                    'Mon',
-                    'Tue',
-                    'Wed',
-                    'Thu',
-                    'Fri',
-                    'Sat'
+                  shortWeekdays: [
+                    translation(context).su,
+                    translation(context).m,
+                    translation(context).t,
+                    translation(context).w,
+                    translation(context).th,
+                    translation(context).f,
+                    translation(context).s
                   ],
                   onChanged: (int day) {
                     setState(() {
@@ -351,7 +359,7 @@ class _AddMediFrequencyState extends State<AddMediFrequency> {
                         ),
                       ),
                       child: Text(
-                        'Cancel',
+                        translation(context).cancel,
                         style: GoogleFonts.roboto(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -374,7 +382,7 @@ class _AddMediFrequencyState extends State<AddMediFrequency> {
                         ),
                       ),
                       child: Text(
-                        'Done',
+                        translation(context).done,
                         style: GoogleFonts.roboto(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,

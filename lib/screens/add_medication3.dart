@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mymeds_app/components/controller_data.dart';
+import 'package:mymeds_app/components/language_constants.dart';
 import 'package:mymeds_app/screens/add_medication4.dart';
 
 import 'add_medi_frequency.dart';
@@ -105,11 +106,11 @@ class _AddMedication3State extends State<AddMedication3> {
 
   void goToSummaryPage() {
     if (selectedTimes.isEmpty) {
-      _showSnackBar('Add at least one medication time');
+      _showSnackBar(translation(context).aOneMedTime);
     } else if (_medicationFrequencyController.text.isEmpty) {
-      _showSnackBar('Select medication frequency');
+      _showSnackBar(translation(context).sMedFreq);
     } else if (_medicationStartingDateController.text.isEmpty) {
-      _showSnackBar('Select medication starting date');
+      _showSnackBar(translation(context).sMedSDate);
     } else {
       _medicationTimesController.text = selectedTimes.length.toString();
       _medicationTimesOfDayController.text =
@@ -118,7 +119,8 @@ class _AddMedication3State extends State<AddMedication3> {
       covert24H_to_12H();
       _medicationTimes12HController.text =
           selectedTimes12H.toString().replaceAll('[', '').replaceAll(']', '');
-      print('Times in 12 Hour: ${_medicationTimes12HController.text}');
+      print(
+          translation(context).t12H + '${_medicationTimes12HController.text}');
 
       if (_medicationEndingDateController.text.isNotEmpty) {
         //start date
@@ -132,7 +134,7 @@ class _AddMedication3State extends State<AddMedication3> {
 
         Duration difference = enddate.difference(startdate);
         if (difference.isNegative) {
-          _showSnackBar('Ending date must be a future date');
+          _showSnackBar(translation(context).eDMBAFu);
         } else {
           Navigator.push(
             context,
@@ -164,8 +166,8 @@ class _AddMedication3State extends State<AddMedication3> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Add Medication',
+        title: Text(
+          translation(context).addMed,
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.w600,
@@ -181,7 +183,9 @@ class _AddMedication3State extends State<AddMedication3> {
             children: [
               // This is a title
               Text(
-                'Medication Times: ${selectedTimes.length} time(s) per day',
+                translation(context).medTimes +
+                    ' ${selectedTimes.length} ' +
+                    translation(context).tpd,
                 style: GoogleFonts.roboto(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
@@ -304,12 +308,12 @@ class _AddMedication3State extends State<AddMedication3> {
                           if (pickedTime != null) {
                             String formattedTime = formatTime(pickedTime);
                             print(
-                                "Selected time in 24-hour format: $formattedTime");
+                                translation(context).st24H + "$formattedTime");
                             setState(() {
                               selectedTimes[index] = formattedTime;
                             });
                           } else {
-                            print("No time selected");
+                            print(translation(context).nTS);
                           }
                         },
                         readOnly: true,
@@ -388,12 +392,12 @@ class _AddMedication3State extends State<AddMedication3> {
                       });
                     } else if (selectedTimes.length == 24) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
+                        SnackBar(
                           backgroundColor: Color.fromARGB(255, 7, 83, 96),
                           behavior: SnackBarBehavior.floating,
                           duration: Duration(seconds: 2),
                           content: Text(
-                            'Maximum medication times per day is 24',
+                            translation(context).maxMedTPD,
                           ),
                         ),
                       );
@@ -422,8 +426,8 @@ class _AddMedication3State extends State<AddMedication3> {
                   ),
                   cursorColor: const Color.fromARGB(255, 7, 82, 96),
                   decoration: InputDecoration(
-                    hintText: 'Add a time',
-                    labelText: 'Add a time',
+                    hintText: translation(context).addTime,
+                    labelText: translation(context).addTime,
                     hintStyle: GoogleFonts.roboto(
                       color: const Color.fromARGB(255, 16, 15, 15),
                     ),
@@ -473,12 +477,12 @@ class _AddMedication3State extends State<AddMedication3> {
                         });
                       } else if (selectedTimes.length == 24) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
+                          SnackBar(
                             backgroundColor: Color.fromARGB(255, 7, 83, 96),
                             behavior: SnackBarBehavior.floating,
                             duration: Duration(seconds: 2),
                             content: Text(
-                              'Maximum medication times per day is 24',
+                              translation(context).maxMedTPD,
                             ),
                           ),
                         );
@@ -600,7 +604,7 @@ class _AddMedication3State extends State<AddMedication3> {
               ),
               const SizedBox(height: 20),
               Text(
-                'When will you take this?',
+                translation(context).whenWYTT,
                 style: GoogleFonts.roboto(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
@@ -753,7 +757,7 @@ class _AddMedication3State extends State<AddMedication3> {
                         }),
                   ).then((value) {
                     if (value != null) {
-                      print('Bottm sheet data: ' + value);
+                      print(translation(context).bSD + value);
                       setState(() {
                         _medicationFrequencyController.text = value;
                       });
@@ -768,7 +772,7 @@ class _AddMedication3State extends State<AddMedication3> {
                 ),
                 cursorColor: const Color.fromARGB(255, 7, 82, 96),
                 decoration: InputDecoration(
-                  hintText: 'Medication Frequency',
+                  hintText: translation(context).medFreq,
                   labelStyle: GoogleFonts.roboto(
                     color: const Color.fromARGB(255, 16, 15, 15),
                   ),
@@ -816,7 +820,7 @@ class _AddMedication3State extends State<AddMedication3> {
               const SizedBox(height: 20),
               //startd date
               Text(
-                'Start date',
+                translation(context).sDate,
                 style: GoogleFonts.roboto(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
@@ -883,17 +887,17 @@ class _AddMedication3State extends State<AddMedication3> {
               //user note
               Row(
                 children: [
-                  const Row(
+                  Row(
                     children: [
                       Text(
-                        'End Date ',
+                        translation(context).eDate,
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 18,
                             fontWeight: FontWeight.w600),
                       ),
                       Text(
-                        '(Optional)',
+                        translation(context).optional,
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 15,
@@ -906,7 +910,7 @@ class _AddMedication3State extends State<AddMedication3> {
                         _medicationEndingDateController.clear();
                         endDate = null;
                       },
-                      child: const Text('Clear')),
+                      child: Text(translation(context).clear)),
                 ],
               ),
               const SizedBox(height: 16),
@@ -934,7 +938,7 @@ class _AddMedication3State extends State<AddMedication3> {
                 ),
                 cursorColor: const Color.fromARGB(255, 7, 82, 96),
                 decoration: InputDecoration(
-                  hintText: 'End date',
+                  hintText: translation(context).eDate,
                   labelStyle: GoogleFonts.roboto(
                     color: const Color.fromARGB(255, 16, 15, 15),
                   ),
@@ -975,7 +979,7 @@ class _AddMedication3State extends State<AddMedication3> {
                     ),
                   ),
                   child: Text(
-                    'Next',
+                    translation(context).next,
                     style: GoogleFonts.roboto(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,

@@ -3,14 +3,13 @@ import 'dart:async';
 import 'package:alarm/alarm.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mymeds_app/components/language_constants.dart';
 import 'package:mymeds_app/screens/add_medication1.dart';
 import 'package:mymeds_app/screens/alarm_ring.dart';
-import 'package:mymeds_app/screens/chatbot.dart';
 import 'package:mymeds_app/screens/homepage2.dart';
 import 'package:mymeds_app/screens/medication.dart';
-import 'package:mymeds_app/screens/statistic.dart';
 import 'package:mymeds_app/screens/more.dart';
-import 'package:optimize_battery/optimize_battery.dart';
+import 'package:mymeds_app/screens/statistic.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -26,8 +25,7 @@ class _DashboardState extends State<Dashboard> {
   int _selectedIndex = 0;
 
   //Floating Action Button
-  bool isFABvisible = true;
-  bool chatBot = true;
+  bool isFABvisible = false;
 
   //alarm list
   late List<AlarmSettings> alarms;
@@ -38,19 +36,6 @@ class _DashboardState extends State<Dashboard> {
     setState(() {
       alarms = Alarm.getAlarms();
       alarms.sort((a, b) => a.dateTime.isBefore(b.dateTime) ? 0 : 1);
-    });
-  }
-
-  Future<void> batteryOptimise() async {
-    await OptimizeBattery.isIgnoringBatteryOptimizations().then((onValue) {
-      setState(() {
-        if (onValue) {
-          // Open Battery Optimization
-          OptimizeBattery.openBatteryOptimizationSettings();
-        } else {
-          // App is under battery optimization
-        }
-      });
     });
   }
 
@@ -83,7 +68,6 @@ class _DashboardState extends State<Dashboard> {
   @override
   void initState() {
     loadAlarms();
-    batteryOptimise();
     subscription ??= Alarm.ringStream.stream.listen(
       (alarmSettings) => navigateToRingScreen(alarmSettings),
     );
@@ -119,19 +103,12 @@ class _DashboardState extends State<Dashboard> {
       floatingActionButton: isFABvisible
           ? FloatingActionButton(
               onPressed: () {
-                !chatBot
-                    ? Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AddMedication1(),
-                        ),
-                      )
-                    : Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ChatBot(),
-                        ),
-                      );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AddMedication1(),
+                  ),
+                );
               },
               // shape: const RoundedRectangleBorder(
               //   borderRadius: BorderRadius.all(
@@ -139,11 +116,9 @@ class _DashboardState extends State<Dashboard> {
               //   ),
               // ),
 
-              backgroundColor: const Color.fromARGB(255, 14, 149, 173),
+              backgroundColor: Theme.of(context).colorScheme.primary,
               foregroundColor: Theme.of(context).colorScheme.background,
-              child: !chatBot
-                  ? const Icon(Icons.add)
-                  : const Icon(Icons.smart_toy_outlined),
+              child: const Icon(Icons.add),
             )
           : null,
       // floatingActionButtonLocation:
@@ -151,13 +126,13 @@ class _DashboardState extends State<Dashboard> {
       //bottom navigation
       bottomNavigationBar: NavigationBar(
         backgroundColor: const Color.fromARGB(255, 242, 253, 255),
-        destinations: const [
+        destinations: [
           //home
           NavigationDestination(
             icon: Icon(
               Icons.home_outlined,
             ),
-            label: 'Home',
+            label: translation(context).home,
             selectedIcon: Icon(
               Icons.home_rounded,
               color: Color.fromRGBO(7, 82, 96, 1),
@@ -168,7 +143,7 @@ class _DashboardState extends State<Dashboard> {
             icon: Icon(
               Icons.medication_outlined,
             ),
-            label: 'Medications',
+            label: translation(context).medications,
             selectedIcon: Icon(
               Icons.medication,
               color: Color.fromRGBO(7, 82, 96, 1),
@@ -179,7 +154,7 @@ class _DashboardState extends State<Dashboard> {
             icon: Icon(
               Icons.analytics_outlined,
             ),
-            label: 'Statistics',
+            label: translation(context).statistics,
             selectedIcon: Icon(
               Icons.analytics_rounded,
               color: Color.fromRGBO(7, 82, 96, 1),
@@ -190,7 +165,7 @@ class _DashboardState extends State<Dashboard> {
             icon: Icon(
               Icons.dashboard_customize_outlined,
             ),
-            label: 'More',
+            label: translation(context).more,
             selectedIcon: Icon(
               Icons.dashboard_customize_rounded,
               color: Color.fromRGBO(7, 82, 96, 1),
@@ -206,21 +181,13 @@ class _DashboardState extends State<Dashboard> {
         selectedIndex: _selectedIndex,
         onDestinationSelected: (int) {
           switch (int) {
-            case 0:
-              isFABvisible = true;
-              chatBot = true;
-              break;
             case 1: //home
               //show FAB in medication page
               isFABvisible = true;
-              chatBot = false;
               break;
+            case 0:
             case 2:
-              isFABvisible = false;
-              chatBot = false;
-              break;
             case 3:
-              chatBot = false;
               isFABvisible = false;
               break;
           }

@@ -1,9 +1,10 @@
 import 'dart:async';
 
 import 'package:alarm/alarm.dart';
+import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mymeds_app/components/alarm_tile.dart';
-import 'package:flutter/material.dart';
+import 'package:mymeds_app/components/language_constants.dart';
 import 'package:mymeds_app/screens/add_medication1.dart';
 import 'package:mymeds_app/screens/alarm_ring.dart';
 
@@ -71,8 +72,8 @@ class _AlarmSettingsPageState extends State<AlarmSettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Upcoming alarms',
+        title: Text(
+          translation(context).upalarm,
           style: TextStyle(fontWeight: FontWeight.w600),
         ),
         elevation: 5,
@@ -124,7 +125,7 @@ class _AlarmSettingsPageState extends State<AlarmSettingsPage> {
                       height: 20,
                     ),
                     Text(
-                      'Your medication alarms\n will be displayed here',
+                      translation(context).dashText3,
                       textAlign: TextAlign.center,
                       style: GoogleFonts.roboto(
                         fontWeight: FontWeight.w600,
@@ -157,7 +158,7 @@ class _AlarmSettingsPageState extends State<AlarmSettingsPage> {
                         ),
                       ),
                       child: Text(
-                        'Add a medication',
+                        translation(context).buttonText,
                         style: GoogleFonts.roboto(
                           fontWeight: FontWeight.w600,
                           fontSize: 16,

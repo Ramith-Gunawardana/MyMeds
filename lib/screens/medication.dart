@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mymeds_app/components/language_constants.dart';
 import 'package:mymeds_app/components/medcard2.dart';
 import 'package:mymeds_app/screens/account_settings.dart';
 import 'package:mymeds_app/screens/add_medication1.dart';
@@ -239,7 +240,7 @@ class _MediactionState extends State<Mediaction> {
                                     height: 20,
                                   ),
                                   Text(
-                                    'Your medications\n will be displayed here',
+                                    translation(context).medicationText1,
                                     textAlign: TextAlign.center,
                                     style: GoogleFonts.roboto(
                                       fontWeight: FontWeight.w600,
@@ -273,7 +274,7 @@ class _MediactionState extends State<Mediaction> {
                                       ),
                                     ),
                                     child: Text(
-                                      'Add a medication',
+                                      translation(context).buttonText,
                                       style: GoogleFonts.roboto(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 16,

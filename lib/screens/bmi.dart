@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mymeds_app/components/language_constants.dart';
 
 class BMI extends StatefulWidget {
   const BMI({super.key});
@@ -14,6 +15,14 @@ class _BMIState extends State<BMI> {
   final _weightController = TextEditingController();
   final _heightController = TextEditingController();
 
+  // Define lists for dropdown options
+  final List<String> weightUnits = ['kg', 'lbs'];
+  final List<String> heightUnits = ['cm', 'ft'];
+
+  // Selected values for dropdowns
+  String selectedWeightUnit = 'kg';
+  String selectedHeightUnit = 'cm';
+
   String yourBMITxt = '';
   double bmiValue = 0;
   String BMI_Value = '';
@@ -25,34 +34,47 @@ class _BMIState extends State<BMI> {
   void calculateBMI() {
     final double doubleWeight = double.parse(_weightController.text);
     final double doubleHeight = double.parse(_heightController.text);
+
+    // Convert units based on user's selection
+    double weightInKg =
+        selectedWeightUnit == 'lbs' ? doubleWeight * 0.453592 : doubleWeight;
+    double heightInCm =
+        selectedHeightUnit == 'ft' ? doubleHeight * 30.48 : doubleHeight * 2.54;
+
     setState(() {
-      bmiValue = doubleWeight / (doubleHeight * doubleHeight) * 10000;
+      bmiValue = weightInKg / (heightInCm * heightInCm) * 10000;
     });
   }
 
   void displayComment() {
     setState(() {
-      yourBMITxt = 'Your BMI Value is: ';
+      yourBMITxt = translation(context).bmiText1;
       BMI_Value = bmiValue.toStringAsFixed(3);
 
       if (bmiValue < 18.5) {
         bgColor = Colors.orange[300];
         commentIcon = Icons.sentiment_dissatisfied;
-        postComment = 'You\'re Underweight!';
+        postComment = translation(context).bmiText2;
       } else if (bmiValue < 24.9) {
         bgColor = Colors.green[300];
         commentIcon = Icons.sentiment_very_satisfied;
-        postComment = 'You\'re Healthy!';
+        postComment = translation(context).bmiText3;
       } else {
         bgColor = Colors.red[300];
         commentIcon = Icons.sentiment_very_dissatisfied;
-        postComment = 'You\'re Overweight!';
+        postComment = translation(context).bmiText4;
       }
 
       // Calculate ideal weight here
       double height = double.parse(_heightController.text);
-      double idealWeight = 50 + 0.91 * (height - 152.4);
-      idealWeightMessage = 'Ideal weight: ${idealWeight.toStringAsFixed(2)} kg';
+
+      // Convert units based on user's selection
+      double heightInCm =
+          selectedHeightUnit == 'ft' ? height * 30.48 : height * 2.54;
+
+      double idealWeight = 50 + 0.91 * (heightInCm - 152.4);
+      idealWeightMessage = translation(context).bmiText5 +
+          '${idealWeight.toStringAsFixed(2)} kg';
     });
   }
 
@@ -68,8 +90,8 @@ class _BMIState extends State<BMI> {
     return Scaffold(
       // backgroundColor: bgColor,
       appBar: AppBar(
-        title: const Text(
-          'BMI Calculator',
+        title: Text(
+          translation(context).bmiCal,
           style: TextStyle(fontWeight: FontWeight.w600),
         ),
         elevation: 5.0,
@@ -112,10 +134,10 @@ class _BMIState extends State<BMI> {
                       ]),
                     ],
                   ),
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.symmetric(vertical: 16.0),
                     child: Text(
-                      'Body Mass Index(BMI) is a metric of body fat percentage commonly used to estimate risk levels of potential health problems.',
+                      translation(context).bmiText,
                       style: TextStyle(fontSize: 16.0),
                     ),
                   ),
@@ -133,42 +155,66 @@ class _BMIState extends State<BMI> {
                         //   icon: Icons.scale,
 
                         // ),
-                        TextField(
-                          controller: _weightController,
-                          keyboardType: TextInputType.number,
-                          style: GoogleFonts.roboto(
-                            height: 2,
-                            color: const Color.fromARGB(255, 16, 15, 15),
-                          ),
-                          cursorColor: const Color.fromARGB(255, 7, 82, 96),
-                          decoration: InputDecoration(
-                            filled: true,
-                            floatingLabelBehavior: FloatingLabelBehavior.auto,
-                            focusedBorder: const OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(
-                                  20,
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                controller: _weightController,
+                                keyboardType: TextInputType.number,
+                                style: GoogleFonts.roboto(
+                                  height: 2,
+                                  color: const Color.fromARGB(255, 16, 15, 15),
+                                ),
+                                cursorColor:
+                                    const Color.fromARGB(255, 7, 82, 96),
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.auto,
+                                  focusedBorder: const OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(
+                                        20,
+                                      ),
+                                    ),
+                                    borderSide: BorderSide(
+                                      color: Color.fromARGB(255, 7, 82, 96),
+                                    ),
+                                  ),
+                                  enabledBorder: const OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(
+                                        20,
+                                      ),
+                                    ),
+                                    borderSide: BorderSide(
+                                      color: Colors.transparent,
+                                    ),
+                                  ),
+                                  labelText: translation(context).bmiform1,
+                                  labelStyle: GoogleFonts.roboto(
+                                    color:
+                                        const Color.fromARGB(255, 16, 15, 15),
+                                  ),
                                 ),
                               ),
-                              borderSide: BorderSide(
-                                color: Color.fromARGB(255, 7, 82, 96),
-                              ),
                             ),
-                            enabledBorder: const OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(
-                                  20,
-                                ),
-                              ),
-                              borderSide: BorderSide(
-                                color: Colors.transparent,
-                              ),
+                            SizedBox(width: 10),
+                            DropdownButton<String>(
+                              value: selectedWeightUnit,
+                              items: weightUnits.map((String unit) {
+                                return DropdownMenuItem<String>(
+                                  value: unit,
+                                  child: Text(unit),
+                                );
+                              }).toList(),
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  selectedWeightUnit = newValue!;
+                                });
+                              },
                             ),
-                            labelText: 'Weight (kg)',
-                            labelStyle: GoogleFonts.roboto(
-                              color: const Color.fromARGB(255, 16, 15, 15),
-                            ),
-                          ),
+                          ],
                         ),
                         const SizedBox(
                           height: 20,
@@ -178,44 +224,69 @@ class _BMIState extends State<BMI> {
                         //   title: 'Height (cm)',
                         //   icon: Icons.height,
                         // ),
-                        TextField(
-                          controller: _heightController,
-                          keyboardType: TextInputType.number,
-                          style: GoogleFonts.roboto(
-                            height: 2,
-                            color: const Color.fromARGB(255, 16, 15, 15),
-                          ),
-                          cursorColor: const Color.fromARGB(255, 7, 82, 96),
-                          decoration: InputDecoration(
-                            filled: true,
-                            floatingLabelBehavior: FloatingLabelBehavior.auto,
-                            // fillColor: Colors.white,
-                            focusedBorder: const OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(
-                                  20,
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                controller: _heightController,
+                                keyboardType: TextInputType.number,
+                                style: GoogleFonts.roboto(
+                                  height: 2,
+                                  color: const Color.fromARGB(255, 16, 15, 15),
+                                ),
+                                cursorColor:
+                                    const Color.fromARGB(255, 7, 82, 96),
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.auto,
+                                  // fillColor: Colors.white,
+                                  focusedBorder: const OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(
+                                        20,
+                                      ),
+                                    ),
+                                    borderSide: BorderSide(
+                                      color: Color.fromARGB(255, 7, 82, 96),
+                                    ),
+                                  ),
+                                  enabledBorder: const OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(
+                                        20,
+                                      ),
+                                    ),
+                                    borderSide: BorderSide(
+                                      color: Colors.transparent,
+                                    ),
+                                  ),
+                                  labelText: translation(context).bmiform2,
+                                  labelStyle: GoogleFonts.roboto(
+                                    color:
+                                        const Color.fromARGB(255, 16, 15, 15),
+                                  ),
                                 ),
                               ),
-                              borderSide: BorderSide(
-                                color: Color.fromARGB(255, 7, 82, 96),
-                              ),
                             ),
-                            enabledBorder: const OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(
-                                  20,
-                                ),
-                              ),
-                              borderSide: BorderSide(
-                                color: Colors.transparent,
-                              ),
+                            SizedBox(width: 10),
+                            DropdownButton<String>(
+                              value: selectedHeightUnit,
+                              items: heightUnits.map((String? unit) {
+                                return DropdownMenuItem<String>(
+                                  value: unit,
+                                  child: Text(
+                                      unit ?? ''), // Ensure unit is non-null
+                                );
+                              }).toList(),
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  selectedHeightUnit = newValue ?? '';
+                                });
+                              },
                             ),
-                            labelText: 'Height (cm)',
-                            labelStyle: GoogleFonts.roboto(
-                              color: const Color.fromARGB(255, 16, 15, 15),
-                            ),
-                          ),
-                        )
+                          ],
+                        ),
                       ],
                     ),
                   ),
@@ -228,31 +299,25 @@ class _BMIState extends State<BMI> {
                     height: 55,
                     child: FilledButton(
                       onPressed: () {
-                        // if (_formKey.currentState!.validate()) {
-                        //   calculateBMI();
-                        //   displayComment();
-                        // } else {
-                        //   // Do nothing
-                        // }
                         if (_weightController.text == '') {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
+                            SnackBar(
                               backgroundColor: Color.fromARGB(255, 7, 83, 96),
                               behavior: SnackBarBehavior.floating,
                               duration: Duration(seconds: 2),
                               content: Text(
-                                'Please enter your weight',
+                                translation(context).bmiText6,
                               ),
                             ),
                           );
                         } else if (_heightController.text == '') {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
+                            SnackBar(
                               backgroundColor: Color.fromARGB(255, 7, 83, 96),
                               behavior: SnackBarBehavior.floating,
                               duration: Duration(seconds: 2),
                               content: Text(
-                                'Please enter your height',
+                                translation(context).bmiText7,
                               ),
                             ),
                           );
@@ -276,7 +341,7 @@ class _BMIState extends State<BMI> {
                         ),
                       ),
                       child: Text(
-                        'Calculate',
+                        translation(context).bmiButton,
                         style: GoogleFonts.roboto(
                           fontSize: 20,
                           fontWeight: FontWeight.w600,
@@ -285,31 +350,6 @@ class _BMIState extends State<BMI> {
                     ),
                   ),
 
-                  // Container(
-                  //   width: screenWidth,
-                  //   margin: const EdgeInsets.symmetric(
-                  //       horizontal: 100.0, vertical: 8.0),
-                  //   child: ElevatedButton(
-                  //     onPressed: () {
-                  //       if (_formKey.currentState!.validate()) {
-                  //         calculateBMI();
-                  //         displayComment();
-                  //       } else {
-                  //         // Do nothing
-                  //       }
-                  //     },
-                  //     style: ElevatedButton.styleFrom(
-                  //       elevation: 5.0,
-                  //       shape: RoundedRectangleBorder(
-                  //         borderRadius: BorderRadius.circular(20.0),
-                  //       ),
-                  //     ),
-                  //     child: const Padding(
-                  //       padding: EdgeInsets.symmetric(vertical: 16.0),
-                  //       child: Text('Calculate'),
-                  //     ),
-                  //   ),
-                  // ),
                   const SizedBox(
                     height: 20,
                   ),

@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_timeline_calendar/timeline/flutter_timeline_calendar.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mymeds_app/components/language_constants.dart';
 import 'package:mymeds_app/components/medcard.dart';
 import 'package:mymeds_app/screens/account_settings.dart';
 import 'package:mymeds_app/screens/add_medication1.dart';
@@ -120,10 +121,9 @@ class _HomePage2State extends State<HomePage2> {
               assetAudioPath: 'assets/audio/marimba.mp3',
               volumeMax: false,
               vibrate: false,
-              androidFullScreenIntent: true,
               notificationTitle: 'Medication Reminder',
               notificationBody:
-                  '${medData['medcount']} ${medData['category']}(s) of ${medData['medname']}',
+                  'Take ${medData['medcount']} ${medData['category']}(s) of ${medData['medname']}',
               // enableNotificationOnKill: false,
               stopOnNotificationOpen: false,
             );
@@ -614,7 +614,7 @@ class _HomePage2State extends State<HomePage2> {
                                     height: 20,
                                   ),
                                   Text(
-                                    'Your medication reminders\n will be displayed here',
+                                    translation(context).dashText1,
                                     textAlign: TextAlign.center,
                                     style: GoogleFonts.roboto(
                                       fontWeight: FontWeight.w600,
@@ -648,7 +648,7 @@ class _HomePage2State extends State<HomePage2> {
                                       ),
                                     ),
                                     child: Text(
-                                      'Add a medication',
+                                      translation(context).buttonText,
                                       style: GoogleFonts.roboto(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 16,
