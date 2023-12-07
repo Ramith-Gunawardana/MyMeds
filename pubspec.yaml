@@ -64,6 +64,7 @@ dependencies:
   alarm: ^1.2.2
   build_runner: ^2.4.7
   shared_preferences: ^2.2.2
+  week_of_year: ^2.2.0
 
   # awesome_notifications: any
   localstorage: ^4.0.1+4
